@@ -9,55 +9,50 @@ import SwiftUI
 
 struct EmailLogin: View {
     @EnvironmentObject var loginVM: LoginViewModel
-    @State var email: String = ""
-    @State var password: String = ""
+    @State var email: String = "song@gmail.com"
+    @State var password: String = "1234"
     @State private var isEmailSignUpActive = false
     @State private var isLoginSuccessful = false // 로그인 성공 여부
 
     var body: some View {
-        VStack {
+        NavigationStack {
             VStack {
-                CustomTextField(icon: "person.fill", placeholder: "ID를 입력하시오.", text: $email)
-                CustomTextField(icon: "lock.fill", placeholder: "비밀번호를 입력하시오.", text: $password, isSecured: true)
-            }.padding(.bottom, 20)
-            
-            VStack {
-                WideImageButton(icon: "person.badge.key", title: "로그인", backgroundColor: .blue) {
-                    loginVM.emailLogin(email: email, password: password)
-                    print("로그인 버튼 클릭 - 현재 로그인 상태:", loginVM.isLoggedIn) // 로그인 버튼 클릭 시 상태 출력
-                }
-            }.padding(.bottom, 20)
-            
-            HStack {
-                Text("계정이 없으신가요?")
-                    .font(.subheadline)
+                VStack {
+                    CustomTextField(icon: "person.fill", placeholder: "ID를 입력하시오.", text: $email)
+                    CustomTextField(icon: "lock.fill", placeholder: "비밀번호를 입력하시오.", text: $password, isSecured: true)
+                }.padding(.bottom, 20)
                 
-                NavigationLink(destination: EmailSignUpView(), isActive: $isEmailSignUpActive) {
-                    Text("회원가입")
+                VStack {
+                    WideImageButton(icon: "person.badge.key", title: "로그인", backgroundColor: .blue) {
+                        loginVM.emailLogin(email: email, password: password)
+                    }
+                }.padding(.bottom, 20)
+                
+                HStack {
+                    Text("계정이 없으신가요?")
                         .font(.subheadline)
-                        .foregroundColor(.blue)
-                        .onTapGesture {
-                            isEmailSignUpActive = true
-                        }
+                    
+                    NavigationLink(destination: EmailSignUpView(), isActive: $isEmailSignUpActive) {
+                        Text("회원가입")
+                            .font(.subheadline)
+                            .foregroundColor(.blue)
+                            .onTapGesture {
+                                isEmailSignUpActive = true
+                            }
+                    }
                 }
+                
+                NavigationLink("", destination: MainView(), isActive: $loginVM.isLoggedIn)
+            }
+            .alert("로그인 실패", isPresented: $loginVM.isLoginShowing) {
+                Button("확인") {
+                    loginVM.isLoginShowing = false
+                }
+            } message: {
+                Text(loginVM.message)
             }
         }
-        .alert("로그인 실패", isPresented: $loginVM.isLoginShowing) {
-            Button("확인") {
-                loginVM.isLoginShowing = false
-            }
-        } message: {
-            Text(loginVM.message)
-        }
-        .onChange(of: loginVM.isLoggedIn) { isLoggedIn in
-            print("onChange:", isLoggedIn)
-            if isLoggedIn {
-                isLoginSuccessful = true // 로그인 성공 시 MainView로 이동
-            }
-        }
-        .navigationDestination(isPresented: $isLoginSuccessful) {
-            MainView() // MainView로 이동
-        }
+
     }
 }
 

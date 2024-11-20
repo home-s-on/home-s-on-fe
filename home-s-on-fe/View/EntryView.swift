@@ -17,7 +17,7 @@ struct EntryView: View {
             } else {
                 LoginView()
             }
-        }
+        }.animation(.easeOut, value:loginVM.isLoggedIn)
     }
 }
 
