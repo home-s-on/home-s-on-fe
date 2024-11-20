@@ -5,12 +5,13 @@ public enum LoginType {
     case naver
     case google
     case apple
+    case email
     
     var textColor: Color {
         switch self {
         case .kakao, .google:
             return .black
-        case .naver, .apple:
+        case .naver, .apple, .email:
             return .white
         }
     }
@@ -25,6 +26,8 @@ public enum LoginType {
             return .white
         case .apple:
             return .black
+        case .email:
+                    return .blue
         }
     }
     
@@ -38,6 +41,8 @@ public enum LoginType {
             return Image(systemName: "g.circle")
         case .apple:
             return Image(systemName: "applelogo")
-        }
+        case .email:
+                    return Image(systemName:"")
+                }
     }
 }
