@@ -15,12 +15,13 @@ class LoginViewModel: ObservableObject {
     @Published var isLoading = false
     @Published var isLoggedIn = false
     @Published var isLoginShowing = false
+    @Published var isJoinShowing = false
     
     private let endPoint = "http://localhost:5001"
     
-    init(){ // 이렇게 하면 처음 로그인화면 안 보여줌
-        self.isLoggedIn = UserDefaults.standard.bool(forKey: "isLoggedIn")
-    }
+//    init(){ // 이렇게 하면 처음 로그인화면 안 보여줌
+//        self.isLoggedIn = UserDefaults.standard.bool(forKey: "isLoggedIn")
+//    }
     
     func emailLogin(email: String, password: String) {
         isLoading = true
@@ -65,7 +66,45 @@ class LoginViewModel: ObservableObject {
                         }
                         self.isLoginShowing = true
                     }
-                }
+                } //
             }
     }
+    
+    func emailJoin(email: String, password:String) {
+        SVProgressHUD.show()
+        let url = "\(endPoint)/api/user"
+        let params: Parameters = ["email": email, "password": password]
+        AF.request(url, method: .post, parameters: params)
+            .responseDecodable(of: ApiResponse<SignUpData>.self) { [weak self] response in
+                guard let self = self else { return }
+                DispatchQueue.main.async {
+                    self.isJoinShowing = true // 에러가 나든 성공을 하든 보여주긴 해야함. 그래서 여기에서 true로 해줌
+                    
+                    switch response.result {
+                        case .success(let apiResponse):
+                            if apiResponse.status == "success" {
+                                // 회원가입 성공 시 처리
+                                self.message = "회원가입이 성공적으로 완료되었습니다."
+                                // 추가적인 작업 (예: 로그인 화면으로 이동)
+                            } else {
+                                // API에서 반환한 실패 메시지 처리
+                                self.message = apiResponse.message ?? "회원가입에 실패했습니다."
+                            }
+                    case .failure(let error):
+                        self.isLoginError = true
+                        if let data = response.data {
+                            do {
+                                let errorResponse = try JSONDecoder().decode(ApiResponse<SignUpData>.self, from: data)
+                                self.message = errorResponse.message ?? "알 수 없는 오류가 발생했습니다."
+                            } catch {
+                                self.message = "데이터 처리 중 오류가 발생했습니다: \(error.localizedDescription)"
+                            }
+                        } else {
+                            self.message = "네트워크 오류: \(error.localizedDescription)"
+                        }
+                    }
+                }
+            }
+            SVProgressHUD.dismiss()
+        }
 }

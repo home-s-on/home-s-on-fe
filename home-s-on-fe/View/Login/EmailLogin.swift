@@ -11,7 +11,9 @@ struct EmailLogin: View {
     @EnvironmentObject var loginVM: LoginViewModel
     @State var email: String = ""
     @State var password: String = ""
-    
+    @State private var isEmailSignUpActive = false
+    @State private var isLoginSuccessful = false // 로그인 성공 여부
+
     var body: some View {
         VStack {
             VStack {
@@ -20,8 +22,23 @@ struct EmailLogin: View {
             }.padding(.bottom, 20)
             
             VStack {
-                WideImageButton(icon: "person.fill", title: "로그인", backgroundColor: .blue) {
+                WideImageButton(icon: "person.badge.key", title: "로그인", backgroundColor: .blue) {
                     loginVM.emailLogin(email: email, password: password)
+                    print("로그인 버튼 클릭 - 현재 로그인 상태:", loginVM.isLoggedIn) // 로그인 버튼 클릭 시 상태 출력
+                }
+            }.padding(.bottom, 20)
+            
+            HStack {
+                Text("계정이 없으신가요?")
+                    .font(.subheadline)
+                
+                NavigationLink(destination: EmailSignUpView(), isActive: $isEmailSignUpActive) {
+                    Text("회원가입")
+                        .font(.subheadline)
+                        .foregroundColor(.blue)
+                        .onTapGesture {
+                            isEmailSignUpActive = true
+                        }
                 }
             }
         }
@@ -32,8 +49,18 @@ struct EmailLogin: View {
         } message: {
             Text(loginVM.message)
         }
+        .onChange(of: loginVM.isLoggedIn) { isLoggedIn in
+            print("onChange:", isLoggedIn)
+            if isLoggedIn {
+                isLoginSuccessful = true // 로그인 성공 시 MainView로 이동
+            }
+        }
+        .navigationDestination(isPresented: $isLoginSuccessful) {
+            MainView() // MainView로 이동
+        }
     }
 }
+
 #Preview {
     let loginVM = LoginViewModel()
     EmailLogin().environmentObject(loginVM)

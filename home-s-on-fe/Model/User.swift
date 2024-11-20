@@ -13,10 +13,14 @@ struct ApiResponse<T: Codable>: Codable {
     let data: T?
 }
 
+// 회원가입 성공 응답을 위한 빈 구조체
+struct SignUpData: Codable {}
+
 struct EmailLoginData: Codable {
     let user: User
     let token: String
 }
+
 
 struct User: Codable, Identifiable {
     let id: Int

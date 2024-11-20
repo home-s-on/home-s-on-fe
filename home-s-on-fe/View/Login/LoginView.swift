@@ -49,11 +49,14 @@ struct LoginView: View {
                         }
         }
         .onChange(of: loginVM.isLoggedIn) { newValue in
-                    if newValue {
-                        // 로그인 성공 시 필요한 추가 작업
-                        print("로그인 성공!")
-                    }
-                }
+            if newValue {
+                print("로그인 성공!")
+                MainView()
+                
+            } else {
+                print("로그아웃됨")
+            }
+        }
     }
 }
 
