@@ -8,11 +8,20 @@
 import SwiftUI
 
 struct EntryView: View {
+    @EnvironmentObject var loginVM:LoginViewModel
     var body: some View {
-        /*@START_MENU_TOKEN@*//*@PLACEHOLDER=Hello, world!@*/Text("Hello, world!")/*@END_MENU_TOKEN@*/
+        VStack{
+            
+            if loginVM.isLoggedIn {
+                MainView()
+            } else {
+                LoginView()
+            }
+        }.animation(.easeOut, value:loginVM.isLoggedIn)
     }
 }
 
 #Preview {
-    EntryView()
+    let loginVM = LoginViewModel()
+    EntryView().environmentObject(loginVM)
 }
