@@ -45,13 +45,13 @@ struct LoginView: View {
             }
             .padding(20)
             .navigationDestination(isPresented: $isEmailLoginActive) {
-                            EmailLogin()
+                            EmailLoginView()
                         }
         }
         .onChange(of: loginVM.isLoggedIn) { newValue in
             if newValue {
                 print("로그인 성공!")
-                MainView()
+                ProfileEditView()
                 
             } else {
                 print("로그아웃됨")

@@ -7,10 +7,10 @@
 
 import SwiftUI
 
-struct EmailLogin: View {
+struct EmailLoginView: View {
     @EnvironmentObject var loginVM: LoginViewModel
     @State var email: String = "song@gmail.com"
-    @State var password: String = "1234"
+    @State var password: String = "song1234"
     @State private var isEmailSignUpActive = false
     @State private var isLoginSuccessful = false // 로그인 성공 여부
 
@@ -58,5 +58,5 @@ struct EmailLogin: View {
 
 #Preview {
     let loginVM = LoginViewModel()
-    EmailLogin().environmentObject(loginVM)
+    EmailLoginView().environmentObject(loginVM)
 }

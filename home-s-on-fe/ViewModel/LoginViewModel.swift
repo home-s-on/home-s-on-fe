@@ -17,8 +17,6 @@ class LoginViewModel: ObservableObject {
     @Published var isLoginShowing = false
     @Published var isJoinShowing = false
     
-    private let endPoint = "http://localhost:5001"
-    
 //    init(){ // 이렇게 하면 처음 로그인화면 안 보여줌
 //        self.isLoggedIn = UserDefaults.standard.bool(forKey: "isLoggedIn")
 //    }
@@ -27,7 +25,7 @@ class LoginViewModel: ObservableObject {
         isLoading = true
         SVProgressHUD.show()
         
-        let url = "\(endPoint)/api/auth/email"
+        let url = "\(APIEndpoints.baseURL)/api/auth/email"
         let params: Parameters = ["email": email, "password": password]
         
         AF.request(url, method: .post, parameters: params)
@@ -77,7 +75,7 @@ class LoginViewModel: ObservableObject {
     
     func emailJoin(email: String, password:String) {
         SVProgressHUD.show()
-        let url = "\(endPoint)/api/user"
+        let url = "\(APIEndpoints.baseURL)/api/user"
         let params: Parameters = ["email": email, "password": password]
         AF.request(url, method: .post, parameters: params)
             .responseDecodable(of: ApiResponse<SignUpData>.self) { [weak self] response in
