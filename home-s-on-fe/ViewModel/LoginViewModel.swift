@@ -23,6 +23,15 @@ class LoginViewModel: ObservableObject {
 //        self.isLoggedIn = UserDefaults.standard.bool(forKey: "isLoggedIn")
 //    }
     
+    init(profileViewModel: ProfileViewModel? = nil) {
+            self.profileViewModel = profileViewModel
+            
+//            if let token = UserDefaults.standard.string(forKey: "token") {
+//                self.isLoggedIn = true
+//                self.profileViewModel?.token = token
+//            }
+        }
+    
     func emailLogin(email: String, password: String) {
         isLoading = true
         SVProgressHUD.show()
@@ -45,32 +54,26 @@ class LoginViewModel: ObservableObject {
                                 UserDefaults.standard.set(loginData.token, forKey: "token")
                                 UserDefaults.standard.set(loginData.user.email, forKey: "email")
                                 self.profileViewModel?.token = loginData.token
-                            } else {
-                                self.isLoginError = true
-                                self.message = "데이터 처리 중 오류가 발생했습니다."
+                                print("로그인 성공! 토큰:", loginData.token)
                             }
                         } else {
                             self.isLoginError = true
                             self.message = apiResponse.message ?? "알 수 없는 오류가 발생했습니다."
-                            self.isLoginShowing = true // 오류 메시지 표시를 위한 플래그 설정
+                            self.isLoginShowing = true
                         }
                     case .failure(let error):
-                        // 네트워크 오류 처리
                         self.isLoginError = true
                         if let data = response.data {
                             do {
-                                // 서버에서 반환된 오류 메시지를 파싱하여 사용자에게 전달
                                 let errorResponse = try JSONDecoder().decode(ApiResponse<EmailLoginData>.self, from: data)
                                 self.message = errorResponse.message ?? "알 수 없는 오류가 발생했습니다."
                             } catch {
-                                // JSON 디코딩 오류 처리
                                 self.message = "데이터 처리 중 오류가 발생했습니다: \(error.localizedDescription)"
                             }
                         } else {
-                            // 데이터가 없는 경우의 기본 메시지 설정
                             self.message = "네트워크 오류: \(error.localizedDescription)"
                         }
-                        self.isLoginShowing = true // 오류 메시지 표시를 위한 플래그 설정
+                        self.isLoginShowing = true
                     }
                 }
             }

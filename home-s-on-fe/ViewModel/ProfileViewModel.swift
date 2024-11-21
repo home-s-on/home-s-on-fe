@@ -15,16 +15,21 @@ class ProfileViewModel: ObservableObject {
     @Published var isProfileShowing = false
     var token: String?
     
-    func profileEdit(nickname:String, img_url: String) {
+    func profileEdit(nickname: String, img_url: String) {
         isLoading = true
         SVProgressHUD.show()
         
+        guard let token = token else { return }
+
         let url = "\(APIEndpoints.baseURL)/api/user"
-        let params: Parameters = ["nickname":nickname,"img_url":img_url]
+        let params: Parameters = ["nickname": nickname, "profile_img_url": img_url]
         let headers: HTTPHeaders = [
-                    "Authorization": "Bearer \(token)",
-                    "Content-Type": "application/json"
-                ]
+            "Authorization": "Bearer \(token)",
+            "Content-Type": "application/json"
+        ]
+        print("요청 URL:", url)
+        print("요청 파라미터:", params)
+        print("요청 헤더:", headers)
         
         AF.request(url, method: .put, parameters: params, headers: headers)
             .responseDecodable(of: ApiResponse<User>.self) { [weak self] response in
@@ -46,6 +51,8 @@ class ProfileViewModel: ObservableObject {
                                 let errorResponse = try JSONDecoder().decode(ApiResponse<User>.self, from: data)
                                 self?.message = errorResponse.message ?? "알 수 없는 오류가 발생했습니다."
                             } catch {
+                                // 디코딩 오류에 대한 상세 메시지 출력
+                                print("디코딩 오류:", error)
                                 self?.message = "데이터 처리 중 오류가 발생했습니다: \(error.localizedDescription)"
                             }
                         } else {
@@ -54,6 +61,5 @@ class ProfileViewModel: ObservableObject {
                     }
                 }
             }
-            SVProgressHUD.dismiss()
-        }
+    }
 }

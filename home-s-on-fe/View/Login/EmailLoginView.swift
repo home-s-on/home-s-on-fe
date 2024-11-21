@@ -42,7 +42,7 @@ struct EmailLoginView: View {
                     }
                 }
                 
-                NavigationLink("", destination: MainView(), isActive: $loginVM.isLoggedIn)
+                NavigationLink("", destination: ProfileEditView(), isActive: $loginVM.isLoggedIn)
             }
             .alert("로그인 실패", isPresented: $loginVM.isLoginShowing) {
                 Button("확인") {
