@@ -2,7 +2,9 @@ import SwiftUI
 
 struct LoginView: View {
     @EnvironmentObject var loginVM: LoginViewModel
+    @EnvironmentObject var profileVM: ProfileViewModel
     @State private var isEmailLoginActive = false
+    @State private var isProfileEditActive = false
     var body: some View {
         NavigationStack {
             VStack {
@@ -46,12 +48,19 @@ struct LoginView: View {
             .padding(20)
             .navigationDestination(isPresented: $isEmailLoginActive) {
                             EmailLoginView()
+            }
+            .navigationDestination(isPresented: $isProfileEditActive) {
+                            ProfileEditView()
                         }
+            NavigationLink(destination: EmailLoginView(), isActive: $loginVM.isNavigatingToLogin) {
+                            EmptyView()
+            }
         }
         .onChange(of: loginVM.isLoggedIn) { newValue in
             if newValue {
                 print("로그인 성공!")
-                ProfileEditView()
+                profileVM.token = loginVM.profileViewModel?.token // 로그인 후 프로필 ViewModel에 토큰 전달
+                isProfileEditActive = true
                 
             } else {
                 print("로그아웃됨")
@@ -62,5 +71,6 @@ struct LoginView: View {
 
 #Preview {
     let loginVM = LoginViewModel()
-    LoginView().environmentObject(loginVM)
+    let profileVM = ProfileViewModel()
+    LoginView().environmentObject(loginVM).environmentObject(profileVM)
 }

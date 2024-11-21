@@ -13,6 +13,7 @@ class ProfileViewModel: ObservableObject {
     @Published var message = ""
     @Published var isLoading = false
     @Published var isProfileShowing = false
+    var token: String?
     
     func profileEdit(nickname:String, img_url: String) {
         isLoading = true
@@ -20,8 +21,12 @@ class ProfileViewModel: ObservableObject {
         
         let url = "\(APIEndpoints.baseURL)/api/user"
         let params: Parameters = ["nickname":nickname,"img_url":img_url]
+        let headers: HTTPHeaders = [
+                    "Authorization": "Bearer \(token)",
+                    "Content-Type": "application/json"
+                ]
         
-        AF.request(url, method: .put, parameters: params)
+        AF.request(url, method: .put, parameters: params, headers: headers)
             .responseDecodable(of: ApiResponse<User>.self) { [weak self] response in
                 DispatchQueue.main.async {
                     self?.isProfileShowing = true
