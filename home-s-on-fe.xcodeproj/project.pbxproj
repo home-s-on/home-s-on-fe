@@ -7,17 +7,39 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+
+		64E8DC5F2CEE18520049E624 /* Config.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 64E8DC5E2CEE18520049E624 /* Config.xcconfig */; };
+		99A369F2BEF04590E52BF576 /* Pods_home_s_on_fe.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 82CF299C0F57910554B9CF0A /* Pods_home_s_on_fe.framework */; };
+
 		E432B86E2CED7D1A006C3689 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = E432B86D2CED7D1A006C3689 /* Alamofire */; };
 		E432B8712CED7E71006C3689 /* SVProgressHUD in Frameworks */ = {isa = PBXBuildFile; productRef = E432B8702CED7E71006C3689 /* SVProgressHUD */; };
+
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		64E8DC5E2CEE18520049E624 /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
+		82CF299C0F57910554B9CF0A /* Pods_home_s_on_fe.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_home_s_on_fe.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		BDBCBC1974C689F5B9234BB2 /* Pods-home-s-on-fe.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-home-s-on-fe.release.xcconfig"; path = "Target Support Files/Pods-home-s-on-fe/Pods-home-s-on-fe.release.xcconfig"; sourceTree = "<group>"; };
+		CE7E0D7960F03D46D4515D8D /* Pods-home-s-on-fe.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-home-s-on-fe.debug.xcconfig"; path = "Target Support Files/Pods-home-s-on-fe/Pods-home-s-on-fe.debug.xcconfig"; sourceTree = "<group>"; };
 		E48BFB342CEAD1FB00AC13FC /* home-s-on-fe.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "home-s-on-fe.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		648858D92CEDB88700563155 /* Exceptions for "home-s-on-fe" folder in "home-s-on-fe" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = E48BFB332CEAD1FB00AC13FC /* home-s-on-fe */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		E48BFB362CEAD1FB00AC13FC /* home-s-on-fe */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				648858D92CEDB88700563155 /* Exceptions for "home-s-on-fe" folder in "home-s-on-fe" target */,
+			);
 			path = "home-s-on-fe";
 			sourceTree = "<group>";
 		};
@@ -28,19 +50,35 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+
+				99A369F2BEF04590E52BF576 /* Pods_home_s_on_fe.framework in Frameworks */,
+
 				E432B8712CED7E71006C3689 /* SVProgressHUD in Frameworks */,
 				E432B86E2CED7D1A006C3689 /* Alamofire in Frameworks */,
+
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		BCA16CBC07BAF454B68A639F /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				CE7E0D7960F03D46D4515D8D /* Pods-home-s-on-fe.debug.xcconfig */,
+				BDBCBC1974C689F5B9234BB2 /* Pods-home-s-on-fe.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
 		E48BFB2B2CEAD1FB00AC13FC = {
 			isa = PBXGroup;
 			children = (
+				64E8DC5E2CEE18520049E624 /* Config.xcconfig */,
 				E48BFB362CEAD1FB00AC13FC /* home-s-on-fe */,
 				E48BFB352CEAD1FB00AC13FC /* Products */,
+				BCA16CBC07BAF454B68A639F /* Pods */,
+				EB0CF434363EF9073E86E158 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -52,6 +90,14 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		EB0CF434363EF9073E86E158 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				82CF299C0F57910554B9CF0A /* Pods_home_s_on_fe.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -59,9 +105,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = E48BFB422CEAD1FC00AC13FC /* Build configuration list for PBXNativeTarget "home-s-on-fe" */;
 			buildPhases = (
+				563BEF7E9A681C9154E32A76 /* [CP] Check Pods Manifest.lock */,
 				E48BFB302CEAD1FB00AC13FC /* Sources */,
 				E48BFB312CEAD1FB00AC13FC /* Frameworks */,
 				E48BFB322CEAD1FB00AC13FC /* Resources */,
+				D24D482E33E3425A7EA07B62 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -71,10 +119,13 @@
 				E48BFB362CEAD1FB00AC13FC /* home-s-on-fe */,
 			);
 			name = "home-s-on-fe";
+
+
 			packageProductDependencies = (
 				E432B86D2CED7D1A006C3689 /* Alamofire */,
 				E432B8702CED7E71006C3689 /* SVProgressHUD */,
 			);
+
 			productName = "home-s-on-fe";
 			productReference = E48BFB342CEAD1FB00AC13FC /* home-s-on-fe.app */;
 			productType = "com.apple.product-type.application";
@@ -122,10 +173,53 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				64E8DC5F2CEE18520049E624 /* Config.xcconfig in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		563BEF7E9A681C9154E32A76 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-home-s-on-fe-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		D24D482E33E3425A7EA07B62 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-home-s-on-fe/Pods-home-s-on-fe-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-home-s-on-fe/Pods-home-s-on-fe-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-home-s-on-fe/Pods-home-s-on-fe-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		E48BFB302CEAD1FB00AC13FC /* Sources */ = {
@@ -140,6 +234,7 @@
 /* Begin XCBuildConfiguration section */
 		E48BFB402CEAD1FC00AC13FC /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 64E8DC5E2CEE18520049E624 /* Config.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -175,7 +270,7 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
-				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -238,7 +333,7 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -259,14 +354,17 @@
 		};
 		E48BFB432CEAD1FC00AC13FC /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = CE7E0D7960F03D46D4515D8D /* Pods-home-s-on-fe.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"home-s-on-fe/Preview Content\"";
+				DEVELOPMENT_TEAM = X794J6F263;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "home-s-on-fe/Info.plist";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -287,14 +385,17 @@
 		};
 		E48BFB442CEAD1FC00AC13FC /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = BDBCBC1974C689F5B9234BB2 /* Pods-home-s-on-fe.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"home-s-on-fe/Preview Content\"";
+				DEVELOPMENT_TEAM = X794J6F263;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "home-s-on-fe/Info.plist";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
