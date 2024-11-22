@@ -15,6 +15,7 @@ class ProfileViewModel: ObservableObject {
     @Published var isProfileShowing = false
     var token: String?
     
+    
     func profileEdit(nickname: String, img_url: String) {
         isLoading = true
         SVProgressHUD.show()
@@ -31,8 +32,15 @@ class ProfileViewModel: ObservableObject {
         print("요청 파라미터:", params)
         print("요청 헤더:", headers)
         
-        AF.request(url, method: .put, parameters: params, headers: headers)
+        AF.request(url, method: .put, parameters: params, encoding: JSONEncoding.default, headers: headers)
             .responseDecodable(of: ApiResponse<User>.self) { [weak self] response in
+                if let statusCode = response.response?.statusCode {
+                            print("Status Code: \(statusCode)")
+                        }
+                        
+                        if let data = response.data, let responseString = String(data: data, encoding: .utf8) {
+                            print("Response Body: \(responseString)")
+                        }
                 DispatchQueue.main.async {
                     self?.isProfileShowing = true
                     self?.isLoading = false

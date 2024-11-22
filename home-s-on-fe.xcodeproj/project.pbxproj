@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		E432B86E2CED7D1A006C3689 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = E432B86D2CED7D1A006C3689 /* Alamofire */; };
 		E432B8712CED7E71006C3689 /* SVProgressHUD in Frameworks */ = {isa = PBXBuildFile; productRef = E432B8702CED7E71006C3689 /* SVProgressHUD */; };
+		E445DE0B2CF01993008F632E /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = E445DE0A2CF01993008F632E /* Kingfisher */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -28,6 +29,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E445DE0B2CF01993008F632E /* Kingfisher in Frameworks */,
 				E432B8712CED7E71006C3689 /* SVProgressHUD in Frameworks */,
 				E432B86E2CED7D1A006C3689 /* Alamofire in Frameworks */,
 			);
@@ -74,6 +76,7 @@
 			packageProductDependencies = (
 				E432B86D2CED7D1A006C3689 /* Alamofire */,
 				E432B8702CED7E71006C3689 /* SVProgressHUD */,
+				E445DE0A2CF01993008F632E /* Kingfisher */,
 			);
 			productName = "home-s-on-fe";
 			productReference = E48BFB342CEAD1FB00AC13FC /* home-s-on-fe.app */;
@@ -106,6 +109,7 @@
 			packageReferences = (
 				E432B86C2CED7D1A006C3689 /* XCRemoteSwiftPackageReference "Alamofire" */,
 				E432B86F2CED7E71006C3689 /* XCRemoteSwiftPackageReference "SVProgressHUD" */,
+				E445DE092CF01993008F632E /* XCRemoteSwiftPackageReference "Kingfisher" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = E48BFB352CEAD1FB00AC13FC /* Products */;
@@ -353,6 +357,14 @@
 				minimumVersion = 2.3.1;
 			};
 		};
+		E445DE092CF01993008F632E /* XCRemoteSwiftPackageReference "Kingfisher" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/onevcat/Kingfisher.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 8.1.1;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -365,6 +377,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = E432B86F2CED7E71006C3689 /* XCRemoteSwiftPackageReference "SVProgressHUD" */;
 			productName = SVProgressHUD;
+		};
+		E445DE0A2CF01993008F632E /* Kingfisher */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E445DE092CF01993008F632E /* XCRemoteSwiftPackageReference "Kingfisher" */;
+			productName = Kingfisher;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
