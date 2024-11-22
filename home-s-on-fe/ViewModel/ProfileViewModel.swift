@@ -13,27 +13,32 @@ class ProfileViewModel: ObservableObject {
     @Published var message = ""
     @Published var isLoading = false
     @Published var isProfileShowing = false
-    var token: String?
+    @AppStorage("token") var token:String?
     
     
-    func profileEdit(nickname: String, img_url: String) {
+    func profileEdit(nickname: String, photo: UIImage?) {
         isLoading = true
         SVProgressHUD.show()
+        
+        let formData = MultipartFormData()
+        if let imageData = photo?.jpegData(compressionQuality: 0.2) {
+                formData.append(imageData, withName: "photo", fileName: "photo.jpg", mimeType: "image/jpeg")
+            }
+        formData.append(nickname.data(using: .utf8)!, withName: "nickname")
         
         guard let token = token else { return }
 
         let url = "\(APIEndpoints.baseURL)/api/user"
-        let params: Parameters = ["nickname": nickname, "profile_img_url": img_url]
         let headers: HTTPHeaders = [
             "Authorization": "Bearer \(token)",
-            "Content-Type": "application/json"
+            "Content-Type": "multipart/form-data"
         ]
         print("요청 URL:", url)
-        print("요청 파라미터:", params)
-        print("요청 헤더:", headers)
+//        print("요청 헤더:", headers)
         
-        AF.request(url, method: .put, parameters: params, encoding: JSONEncoding.default, headers: headers)
+        AF.upload(multipartFormData: formData, to: url, method: .put, headers: headers)
             .responseDecodable(of: ApiResponse<User>.self) { [weak self] response in
+                print(response)
                 if let statusCode = response.response?.statusCode {
                             print("Status Code: \(statusCode)")
                         }

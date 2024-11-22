@@ -97,8 +97,14 @@ struct ProfileEditView: View {
     }
     
     private func updateProfile() {
-        let imageUrl = isUsingDefaultImage ? defaultImageName : "custom_image"
-        profileVM.profileEdit(nickname: nickname, img_url: imageUrl)
+        let photo: UIImage?
+           if isUsingDefaultImage {
+               photo = UIImage(named: defaultImageName)
+           } else {
+               photo = selectedImage
+           }
+
+           profileVM.profileEdit(nickname: nickname, photo: photo)
     }
 }
 
