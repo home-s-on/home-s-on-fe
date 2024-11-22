@@ -7,8 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+
 		64E8DC5F2CEE18520049E624 /* Config.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 64E8DC5E2CEE18520049E624 /* Config.xcconfig */; };
 		99A369F2BEF04590E52BF576 /* Pods_home_s_on_fe.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 82CF299C0F57910554B9CF0A /* Pods_home_s_on_fe.framework */; };
+
+		E432B86E2CED7D1A006C3689 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = E432B86D2CED7D1A006C3689 /* Alamofire */; };
+		E432B8712CED7E71006C3689 /* SVProgressHUD in Frameworks */ = {isa = PBXBuildFile; productRef = E432B8702CED7E71006C3689 /* SVProgressHUD */; };
+
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -45,7 +50,12 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+
 				99A369F2BEF04590E52BF576 /* Pods_home_s_on_fe.framework in Frameworks */,
+
+				E432B8712CED7E71006C3689 /* SVProgressHUD in Frameworks */,
+				E432B86E2CED7D1A006C3689 /* Alamofire in Frameworks */,
+
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -109,6 +119,13 @@
 				E48BFB362CEAD1FB00AC13FC /* home-s-on-fe */,
 			);
 			name = "home-s-on-fe";
+
+
+			packageProductDependencies = (
+				E432B86D2CED7D1A006C3689 /* Alamofire */,
+				E432B8702CED7E71006C3689 /* SVProgressHUD */,
+			);
+
 			productName = "home-s-on-fe";
 			productReference = E48BFB342CEAD1FB00AC13FC /* home-s-on-fe.app */;
 			productType = "com.apple.product-type.application";
@@ -137,6 +154,10 @@
 			);
 			mainGroup = E48BFB2B2CEAD1FB00AC13FC;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				E432B86C2CED7D1A006C3689 /* XCRemoteSwiftPackageReference "Alamofire" */,
+				E432B86F2CED7E71006C3689 /* XCRemoteSwiftPackageReference "SVProgressHUD" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = E48BFB352CEAD1FB00AC13FC /* Products */;
 			projectDirPath = "";
@@ -415,6 +436,38 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		E432B86C2CED7D1A006C3689 /* XCRemoteSwiftPackageReference "Alamofire" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Alamofire/Alamofire.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.10.1;
+			};
+		};
+		E432B86F2CED7E71006C3689 /* XCRemoteSwiftPackageReference "SVProgressHUD" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SVProgressHUD/SVProgressHUD.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.3.1;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		E432B86D2CED7D1A006C3689 /* Alamofire */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E432B86C2CED7D1A006C3689 /* XCRemoteSwiftPackageReference "Alamofire" */;
+			productName = Alamofire;
+		};
+		E432B8702CED7E71006C3689 /* SVProgressHUD */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E432B86F2CED7E71006C3689 /* XCRemoteSwiftPackageReference "SVProgressHUD" */;
+			productName = SVProgressHUD;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = E48BFB2C2CEAD1FB00AC13FC /* Project object */;
 }
