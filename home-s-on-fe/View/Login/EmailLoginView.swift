@@ -9,8 +9,8 @@ import SwiftUI
 
 struct EmailLoginView: View {
     @EnvironmentObject var loginVM: LoginViewModel
-    @State var email: String = ""
-    @State var password: String = ""
+    @State var email: String = "song@gmail.com"
+    @State var password: String = "1234"
     @State private var isEmailSignUpActive = false
     @State private var isLoginSuccessful = false // 로그인 성공 여부
 
@@ -42,7 +42,7 @@ struct EmailLoginView: View {
                     }
                 }
                 
-                NavigationLink("", destination: MainView(), isActive: $loginVM.isLoggedIn)
+                NavigationLink("", destination: ProfileEditView(), isActive: $loginVM.isLoggedIn)
             }
             .alert("로그인 실패", isPresented: $loginVM.isLoginShowing) {
                 Button("확인") {

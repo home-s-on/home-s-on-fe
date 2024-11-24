@@ -47,21 +47,23 @@ struct LoginView: View {
             }
             .padding(20)
             .navigationDestination(isPresented: $isEmailLoginActive) {
-                            EmailLoginView()
+                EmailLoginView()
             }
             .navigationDestination(isPresented: $isProfileEditActive) {
-                            ProfileEditView()
-                        }
-            NavigationLink(destination: EmailLoginView(), isActive: $loginVM.isNavigatingToLogin) {
-                            EmptyView()
+                ProfileEditView()
+                    .environmentObject(profileVM)
+            }
+
+            NavigationLink(destination: ProfileEditView(), isActive: $loginVM.isLoggedIn) {
+                EmptyView()
             }
         }
         .onChange(of: loginVM.isLoggedIn) { newValue in
+            print("로그인 상태 변화: \(newValue)")
             if newValue {
                 print("로그인 성공!")
                 profileVM.token = loginVM.profileViewModel?.token // 로그인 후 프로필 ViewModel에 토큰 전달
-                isProfileEditActive = true
-                
+                isProfileEditActive = true // 프로필 편집 화면으로 이동
             } else {
                 print("로그아웃됨")
             }

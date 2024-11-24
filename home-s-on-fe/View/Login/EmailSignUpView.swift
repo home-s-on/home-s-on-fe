@@ -26,10 +26,10 @@ struct EmailSignUpView: View {
                     }
                 }.padding(.bottom, 20)
 
-                // 회원가입 성공 시 로그인 화면으로 이동하는 NavigationLink 추가
-//                NavigationLink(destination: EmailLoginView(), isActive: $loginVM.isNavigatingToLogin) {
-//                    EmptyView()
-//                }
+                // 회원가입 성공 시 로그인 화면으로 이동
+                NavigationLink(destination: EmailLoginView(), isActive: $loginVM.isNavigatingToLogin) {
+                    EmptyView()
+                }
             }
             .alert("회원가입", isPresented: $loginVM.isJoinShowing) {
                 Button("확인") {
