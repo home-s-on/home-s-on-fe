@@ -7,13 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-
 		64E8DC5F2CEE18520049E624 /* Config.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 64E8DC5E2CEE18520049E624 /* Config.xcconfig */; };
 		99A369F2BEF04590E52BF576 /* Pods_home_s_on_fe.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 82CF299C0F57910554B9CF0A /* Pods_home_s_on_fe.framework */; };
-
-		E432B86E2CED7D1A006C3689 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = E432B86D2CED7D1A006C3689 /* Alamofire */; };
+		E432B86E2CED7D1A006C3689 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = E432B86D2CED7D1A006C3689 /* Alamofire */; settings = {ATTRIBUTES = (Required, ); }; };
 		E432B8712CED7E71006C3689 /* SVProgressHUD in Frameworks */ = {isa = PBXBuildFile; productRef = E432B8702CED7E71006C3689 /* SVProgressHUD */; };
 		E445DE0B2CF01993008F632E /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = E445DE0A2CF01993008F632E /* Kingfisher */; };
+
 
 /* End PBXBuildFile section */
 
@@ -26,7 +25,7 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		648858D92CEDB88700563155 /* Exceptions for "home-s-on-fe" folder in "home-s-on-fe" target */ = {
+		64A788D02CF2E62B006D60D3 /* Exceptions for "home-s-on-fe" folder in "home-s-on-fe" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Info.plist,
@@ -39,7 +38,7 @@
 		E48BFB362CEAD1FB00AC13FC /* home-s-on-fe */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
-				648858D92CEDB88700563155 /* Exceptions for "home-s-on-fe" folder in "home-s-on-fe" target */,
+				64A788D02CF2E62B006D60D3 /* Exceptions for "home-s-on-fe" folder in "home-s-on-fe" target */,
 			);
 			path = "home-s-on-fe";
 			sourceTree = "<group>";
@@ -55,7 +54,6 @@
 				99A369F2BEF04590E52BF576 /* Pods_home_s_on_fe.framework in Frameworks */,
 				E432B8712CED7E71006C3689 /* SVProgressHUD in Frameworks */,
 				E432B86E2CED7D1A006C3689 /* Alamofire in Frameworks */,
-
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -119,14 +117,11 @@
 				E48BFB362CEAD1FB00AC13FC /* home-s-on-fe */,
 			);
 			name = "home-s-on-fe";
-
-
 			packageProductDependencies = (
 				E432B86D2CED7D1A006C3689 /* Alamofire */,
 				E432B8702CED7E71006C3689 /* SVProgressHUD */,
 				E445DE0A2CF01993008F632E /* Kingfisher */,
 			);
-
 			productName = "home-s-on-fe";
 			productReference = E48BFB342CEAD1FB00AC13FC /* home-s-on-fe.app */;
 			productType = "com.apple.product-type.application";

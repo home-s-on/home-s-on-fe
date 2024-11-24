@@ -18,11 +18,6 @@ struct home_s_on_feApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
-//                .onOpenURL { url in
-//                if (AuthApi.isKakaoTalkLoginUrl(url)) {
-//                    AuthController.handleOpenUrl(url: url)
-//                }
-//            }
         }
     }
     
