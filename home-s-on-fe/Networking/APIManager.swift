@@ -6,7 +6,7 @@
 //
 
 enum APIEndpoints {
-    static let baseURL = "http://localhost:5001"
+    static let baseURL = "http://localhost:5001/api"
 //    static let getUserProfile = "/user/profile"
 //    static let updateUserProfile = "/user/updateProfile"
 }

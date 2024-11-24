@@ -36,7 +36,7 @@ class LoginViewModel: ObservableObject {
         isLoading = true
         SVProgressHUD.show()
         
-        let url = "\(APIEndpoints.baseURL)/api/auth/email"
+        let url = "\(APIEndpoints.baseURL)/auth/email"
         let params: Parameters = ["email": email, "password": password]
         
         AF.request(url, method: .post, parameters: params)
@@ -81,7 +81,7 @@ class LoginViewModel: ObservableObject {
     
     func emailJoin(email: String, password: String) {
         SVProgressHUD.show()
-        let url = "\(APIEndpoints.baseURL)/api/user"
+        let url = "\(APIEndpoints.baseURL)/user"
         let params: Parameters = ["email": email, "password": password]
         
         AF.request(url, method: .post, parameters: params)
@@ -121,3 +121,4 @@ class LoginViewModel: ObservableObject {
             }
     }
 }
+

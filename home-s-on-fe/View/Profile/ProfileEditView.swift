@@ -15,6 +15,7 @@ struct ProfileEditView: View {
     @State private var showActionSheet = false
     @State private var selectedImage: UIImage?
     @State private var isUsingDefaultImage: Bool = true
+    @State private var navigateToHouseEntryOptions = false
     
     let defaultImageName = "round-profile"
     
@@ -90,10 +91,15 @@ struct ProfileEditView: View {
         .alert("프로필 설정 확인", isPresented: $profileVM.isProfileShowing) {
             Button("확인") {
                 profileVM.isProfileShowing = false
+                navigateToHouseEntryOptions = true
             }
         } message: {
             Text(profileVM.message)
         }
+        
+        NavigationLink(destination: HouseEntryOptionsView(), isActive: $navigateToHouseEntryOptions) {
+                EmptyView()
+            }
     }
     
     private func updateProfile() {

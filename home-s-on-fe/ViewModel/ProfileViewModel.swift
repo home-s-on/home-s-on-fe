@@ -28,7 +28,7 @@ class ProfileViewModel: ObservableObject {
         
         guard let token = token else { return }
 
-        let url = "\(APIEndpoints.baseURL)/api/user"
+        let url = "\(APIEndpoints.baseURL)/user"
         let headers: HTTPHeaders = [
             "Authorization": "Bearer \(token)",
             "Content-Type": "multipart/form-data"
