@@ -6,12 +6,25 @@
 //
 
 import SwiftUI
+import KakaoSDKCommon
+import KakaoSDKAuth
 
 @main
 struct home_s_on_feApp: App {
+    init() {
+        let nativeAppKey = Bundle.main.infoDictionary?["KAKAO_NATIVE_APP_KEY"] ?? ""
+        KakaoSDK.initSDK(appKey: nativeAppKey as! String)
+    }
     var body: some Scene {
         WindowGroup {
             ContentView()
+//                .onOpenURL { url in
+//                if (AuthApi.isKakaoTalkLoginUrl(url)) {
+//                    AuthController.handleOpenUrl(url: url)
+//                }
+//            }
         }
     }
+    
+
 }
