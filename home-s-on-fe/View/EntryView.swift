@@ -8,20 +8,25 @@
 import SwiftUI
 
 struct EntryView: View {
-    @EnvironmentObject var loginVM:LoginViewModel
+    @StateObject private var loginVM = LoginViewModel(profileViewModel: ProfileViewModel())
+
     var body: some View {
-        VStack{
-            
+        VStack {
             if loginVM.isLoggedIn {
-                MainView()
+                ProfileEditView()
+                    .environmentObject(loginVM.profileViewModel!)
             } else {
                 LoginView()
+                    .environmentObject(loginVM)
+                    .environmentObject(loginVM.profileViewModel!)
             }
-        }.animation(.easeOut, value:loginVM.isLoggedIn)
+        }
+        .animation(.easeOut, value: loginVM.isLoggedIn)
     }
 }
 
 #Preview {
-    let loginVM = LoginViewModel()
+    let profileVM = ProfileViewModel()
+    let loginVM = LoginViewModel(profileViewModel: profileVM)
     EntryView().environmentObject(loginVM)
 }
