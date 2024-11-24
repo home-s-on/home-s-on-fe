@@ -5,11 +5,12 @@
 //  Created by 정송희 on 11/21/24.
 //
 
-import SwiftUI
 import Kingfisher
+import SwiftUI
 
 struct ProfileEditView: View {
     @EnvironmentObject var profileVM: ProfileViewModel
+    @EnvironmentObject var houseEntryOptionsVM: HouseEntryOptionsViewModel
     @State private var nickname: String = ""
     @State private var showImagePicker = false
     @State private var showActionSheet = false
@@ -87,30 +88,39 @@ struct ProfileEditView: View {
                     .cornerRadius(10)
             }
             .padding(.horizontal)
+            
+            NavigationLink(destination: HouseEntryOptionsView(), isActive: $profileVM.isProfiledIn) {
+                           EmptyView()
+                       }
+            .onChange(of: profileVM.isProfiledIn) { newValue in
+                            if newValue {
+                                print("onChange NavigationLink HouseEntryOptionsView")
+                                houseEntryOptionsVM.EntryOptions() 
+                            }
+                        }
+
         }
         .alert("프로필 설정 확인", isPresented: $profileVM.isProfileShowing) {
             Button("확인") {
                 profileVM.isProfileShowing = false
-                navigateToHouseEntryOptions = true
+
             }
         } message: {
             Text(profileVM.message)
         }
         
-        NavigationLink(destination: HouseEntryOptionsView(), isActive: $navigateToHouseEntryOptions) {
-                EmptyView()
-            }
     }
     
     private func updateProfile() {
         let photo: UIImage?
-           if isUsingDefaultImage {
-               photo = UIImage(named: defaultImageName)
-           } else {
-               photo = selectedImage
-           }
+        if isUsingDefaultImage {
+            photo = UIImage(named: defaultImageName)
+        } else {
+            photo = selectedImage
+        }
 
-           profileVM.profileEdit(nickname: nickname, photo: photo)
+        print("Profile edit started.")
+        profileVM.profileEdit(nickname: nickname, photo: photo)
     }
 }
 
@@ -136,7 +146,7 @@ struct ImagePicker: UIViewControllerRepresentable {
             self.parent = parent
         }
         
-        func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
             if let uiImage = info[.originalImage] as? UIImage {
                 parent.image = uiImage
             }
@@ -147,5 +157,8 @@ struct ImagePicker: UIViewControllerRepresentable {
 
 #Preview {
     let profileVM = ProfileViewModel()
-    ProfileEditView().environmentObject(profileVM)
+    let homeEntryOptionsVM = HouseEntryOptionsViewModel()
+    ProfileEditView()
+        .environmentObject(profileVM)
+        .environmentObject(homeEntryOptionsVM)
 }

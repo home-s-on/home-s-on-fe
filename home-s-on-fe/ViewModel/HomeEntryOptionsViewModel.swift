@@ -5,16 +5,16 @@
 //  Created by 정송희 on 11/22/24.
 //
 
-import SwiftUI
 import Alamofire
 import SVProgressHUD
+import SwiftUI
 
 class HouseEntryOptionsViewModel: ObservableObject {
     @Published var message = ""
     @Published var isLoading = false
     
     func EntryOptions() {
-        isLoading = true
+        self.isLoading = true
         SVProgressHUD.show()
         
         let url = "\(APIEndpoints.baseURL)/house/create"
@@ -40,11 +40,8 @@ class HouseEntryOptionsViewModel: ObservableObject {
                 case .success(let apiResponse):
                     if apiResponse.status == "success" {
                         if let entryOptionData = apiResponse.data {
-                            // entryOptionData를 사용하여 추가 작업 수행
-                            // 예를 들어, houseId, nickname, inviteCode 등을 사용할 수 있습니다.
-                            print("House ID: \(entryOptionData.houseId)")
-                            print("Nickname: \(entryOptionData.nickname)")
-                            print("Invite Code: \(entryOptionData.inviteCode)")
+                            print("EntryOptions \(apiResponse)")
+
                         }
                     } else {
                         self.message = apiResponse.message ?? "Unknown error occurred"

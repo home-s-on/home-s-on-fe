@@ -3,6 +3,7 @@ import SwiftUI
 struct LoginView: View {
     @EnvironmentObject var loginVM: LoginViewModel
     @EnvironmentObject var profileVM: ProfileViewModel
+    @EnvironmentObject var houseEntryOptionsVM: HouseEntryOptionsViewModel
     @State private var isEmailLoginActive = false
     @State private var isProfileEditActive = false
     var body: some View {
@@ -49,10 +50,10 @@ struct LoginView: View {
             .navigationDestination(isPresented: $isEmailLoginActive) {
                 EmailLoginView()
             }
-            .navigationDestination(isPresented: $isProfileEditActive) {
-                ProfileEditView()
-                    .environmentObject(profileVM)
-            }
+//            .navigationDestination(isPresented: $isProfileEditActive) {
+//                ProfileEditView()
+//                    .environmentObject(profileVM)
+//            }
 
             NavigationLink(destination: ProfileEditView(), isActive: $loginVM.isLoggedIn) {
                 EmptyView()
@@ -74,5 +75,7 @@ struct LoginView: View {
 #Preview {
     let loginVM = LoginViewModel()
     let profileVM = ProfileViewModel()
+    let houseEntryOptionsVM = HouseEntryOptionsViewModel()
     LoginView().environmentObject(loginVM).environmentObject(profileVM)
+        .environmentObject(houseEntryOptionsVM)
 }
