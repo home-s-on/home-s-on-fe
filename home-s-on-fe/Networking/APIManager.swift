@@ -6,7 +6,9 @@
 //
 
 enum APIEndpoints {
+    // 백엔드
     static let baseURL = "http://localhost:5001/api"
-//    static let getUserProfile = "/user/profile"
-//    static let updateUserProfile = "/user/updateProfile"
+    
+    // azure blob
+    static let blobURL = "https://stobserver.blob.core.windows.net/homeson"
 }

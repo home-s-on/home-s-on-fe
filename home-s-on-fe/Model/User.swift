@@ -27,7 +27,7 @@ struct User: Codable, Identifiable {
     let nickname: String?
     let profileImgUrl: String?
     let socialLoginType: String
-    
+
     enum CodingKeys: String, CodingKey {
         case id, email, nickname
         case profileImgUrl = "profile_img_url"

@@ -8,12 +8,12 @@
 import SwiftUI
 
 struct WideImageButton: View {
-    var icon:String
-    var title:String
-    var backgroundColor:Color
-    var borderColer:Color = .clear // 버튼 외곽 색, 기본값 안 보이게 clear로 설정
-    var textColor:Color = .white
-    var action:() -> Void
+    var icon: String
+    var title: String
+    var backgroundColor: Color
+    var borderColer: Color = .clear // 버튼 외곽 색, 기본값 안 보이게 clear로 설정
+    var textColor: Color = .white
+    var action: () -> Void
     var body: some View {
         Button {
             action()
@@ -34,6 +34,6 @@ struct WideImageButton: View {
 }
 
 #Preview {
-    WideImageButton(icon: "person.fill", title: "로그인", backgroundColor: .orange){}
-    WideImageButton(icon: "person.fill", title: "로그인",backgroundColor: .orange, borderColer:.gray, textColor: .black){}
+    WideImageButton(icon: "person.fill", title: "로그인", backgroundColor: .orange) {}
+    WideImageButton(icon: "person.fill", title: "로그인", backgroundColor: .orange, borderColer: .gray, textColor: .black) {}
 }

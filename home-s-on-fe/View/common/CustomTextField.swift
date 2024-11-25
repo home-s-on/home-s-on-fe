@@ -8,11 +8,11 @@
 import SwiftUI
 
 struct CustomTextField: View {
-    var icon:String
-    var placeholder:String
-    @Binding var text:String // 상위뷰에서 사용하기 때문에 binding
-    var isSecured:Bool = false
-    
+    var icon: String
+    var placeholder: String
+    @Binding var text: String // 상위뷰에서 사용하기 때문에 binding
+    var isSecured: Bool = false
+
     var body: some View {
         HStack {
             Image(systemName: icon)
@@ -21,7 +21,7 @@ struct CustomTextField: View {
                 TextField(placeholder, text: $text)
                     .autocapitalization(.none) // 첫문자 대문자 방지
                     .autocorrectionDisabled(true)
-            }else {
+            } else {
                 SecureField(placeholder, text: $text)
                     .autocapitalization(.none)
                     .autocorrectionDisabled(true)

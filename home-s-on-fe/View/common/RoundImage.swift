@@ -9,10 +9,10 @@ import SwiftUI
 
 struct RoundImage: View {
     let image: UIImage
-    @Binding var width:CGFloat
-    @Binding var height:CGFloat
-    var color:Color = .clear
-    
+    @Binding var width: CGFloat
+    @Binding var height: CGFloat
+    var color: Color = .clear
+
     var body: some View {
         Image(uiImage: image)
             .resizable()
@@ -22,7 +22,6 @@ struct RoundImage: View {
             .frame(width: width, height: height)
             .frame(maxWidth: .infinity)
             .padding(.vertical, 24.0)
-        
     }
 }
 

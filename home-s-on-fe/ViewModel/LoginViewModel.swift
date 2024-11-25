@@ -5,9 +5,9 @@
 //  Created by 정송희 on 11/20/24.
 //
 
-import SwiftUI
 import Alamofire
 import SVProgressHUD
+import SwiftUI
 
 class LoginViewModel: ObservableObject {
     @Published var message = ""
@@ -24,13 +24,13 @@ class LoginViewModel: ObservableObject {
 //    }
     
     init(profileViewModel: ProfileViewModel? = nil) {
-            self.profileViewModel = profileViewModel
+        self.profileViewModel = profileViewModel
             
 //            if let token = UserDefaults.standard.string(forKey: "token") {
 //                self.isLoggedIn = true
 //                self.profileViewModel?.token = token
 //            }
-        }
+    }
     
     func emailLogin(email: String, password: String) {
         isLoading = true
@@ -115,10 +115,7 @@ class LoginViewModel: ObservableObject {
                         }
                     }
                     SVProgressHUD.dismiss()
-                    print("Navigating to login:", self.isNavigatingToLogin)
                 }
-                
             }
     }
 }
-
