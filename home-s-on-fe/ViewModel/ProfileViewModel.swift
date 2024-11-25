@@ -15,6 +15,7 @@ class ProfileViewModel: ObservableObject {
     @Published var isProfileShowing = false
     @Published var isProfiledIn = false
     @Published var isProfiledError = false
+    @Published var isNavigatingToEntry = false
     var token: String {
         return UserDefaults.standard.string(forKey: "token") ?? "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzMyNDk5Njk1LCJleHAiOjE3MzI1ODYwOTV9.zocyZ255FOqr9esQ4o-kL9XZQLnWOm_1db-P2iEp7sw"
     }
@@ -48,6 +49,7 @@ class ProfileViewModel: ObservableObject {
                     switch response.result {
                     case .success(let apiResponse):
                         if apiResponse.status == "success" {
+                            self?.isProfiledError = false
                             self?.isProfileShowing = true
                             self?.message = "닉네임과 프로필이 성공적으로 등록되었습니다."
                         } else {

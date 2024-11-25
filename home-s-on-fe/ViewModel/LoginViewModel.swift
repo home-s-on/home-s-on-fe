@@ -96,12 +96,13 @@ class LoginViewModel: ObservableObject {
                         if apiResponse.status == "success" {
                             // 회원가입 성공 시 처리
                             self.message = "회원가입이 성공적으로 완료되었습니다."
-                            self.isJoinError = true
+                            self.isJoinError = false
+
 //                            self.isNavigatingToLogin = true // 로그인 화면으로 이동 플래그 설정
                         } else {
                             // API에서 반환한 실패 메시지 처리
                             self.message = apiResponse.message ?? "회원가입에 실패했습니다."
-                            self.isJoinError = false
+                            self.isJoinError = true
 //                            self.isNavigatingToLogin = false
                         }
                     case .failure(let error):

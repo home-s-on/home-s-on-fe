@@ -77,28 +77,34 @@ struct ProfileEditView: View {
                 }
                 .padding(.bottom, 260)
                 
-                Button(action: {
-                    updateProfile()
-                }) {
-                    Text("완료")
-                        .frame(maxWidth: .infinity)
-                        .padding()
-                        .background(Color.blue)
-                        .foregroundColor(.white)
-                        .cornerRadius(10)
+                NavigationLink(
+                    destination: HouseEntryOptionsView(),
+                    isActive: $profileVM.isNavigatingToEntry
+                ) {
+                    Button(action: {
+                        updateProfile()
+                    }) {
+                        Text("완료")
+                            .frame(maxWidth: .infinity)
+                            .padding()
+                            .background(Color.blue)
+                            .foregroundColor(.white)
+                            .cornerRadius(10)
+                    }
                 }
                 .padding(.horizontal)
-            }
-            .navigationDestination(isPresented: $profileVM.isProfiledIn) {
-                HouseEntryOptionsView()
             }
         }
         .alert("프로필 설정 확인", isPresented: $profileVM.isProfileShowing) {
             Button("확인") {
-                profileVM.isProfileShowing = false
-                if !profileVM.isProfiledError {
-                            profileVM.isProfiledIn = true
-                        }
+                print(profileVM.isProfiledError)
+                print(profileVM.isNavigatingToEntry)
+                DispatchQueue.main.async {
+                    if !profileVM.isProfiledError {
+                        profileVM.isNavigatingToEntry = true
+                    }
+                    profileVM.isProfileShowing = false
+                }
             }
         } message: {
             Text(profileVM.message)
