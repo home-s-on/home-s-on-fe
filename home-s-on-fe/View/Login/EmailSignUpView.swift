@@ -13,7 +13,7 @@ struct EmailSignUpView: View {
     @State var password: String = ""
 
     var body: some View {
-        NavigationView { // NavigationView로 감싸기
+        NavigationStack {
             VStack {
                 VStack {
                     CustomTextField(icon: "person.fill", placeholder: "ID를 입력하시오.", text: $email)
@@ -28,13 +28,17 @@ struct EmailSignUpView: View {
 
                 // 회원가입 성공 시 로그인 화면으로 이동
                 NavigationLink(destination: EmailLoginView(), isActive: $loginVM.isNavigatingToLogin) {
-                    EmptyView()
-                }
+                        EmptyView()
+                    }
             }
             .alert("회원가입", isPresented: $loginVM.isJoinShowing) {
                 Button("확인") {
-                    loginVM.isJoinShowing = false
-                    loginVM.isNavigatingToLogin = true
+                    DispatchQueue.main.async {
+                        if !loginVM.isJoinError {
+                            loginVM.isNavigatingToLogin = true
+                        }
+                        loginVM.isJoinShowing = false
+                    }
                 }
             } message: {
                 Text(loginVM.message)

@@ -7,25 +7,23 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		64E8DC5F2CEE18520049E624 /* Config.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 64E8DC5E2CEE18520049E624 /* Config.xcconfig */; };
 		99A369F2BEF04590E52BF576 /* Pods_home_s_on_fe.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 82CF299C0F57910554B9CF0A /* Pods_home_s_on_fe.framework */; };
 		E432B86E2CED7D1A006C3689 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = E432B86D2CED7D1A006C3689 /* Alamofire */; settings = {ATTRIBUTES = (Required, ); }; };
 		E432B8712CED7E71006C3689 /* SVProgressHUD in Frameworks */ = {isa = PBXBuildFile; productRef = E432B8702CED7E71006C3689 /* SVProgressHUD */; };
+		E43DD69C2CF40ADA00401D53 /* Config.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = E43DD69B2CF40ADA00401D53 /* Config.xcconfig */; };
 		E445DE0B2CF01993008F632E /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = E445DE0A2CF01993008F632E /* Kingfisher */; };
-
-
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		64E8DC5E2CEE18520049E624 /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
 		82CF299C0F57910554B9CF0A /* Pods_home_s_on_fe.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_home_s_on_fe.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BDBCBC1974C689F5B9234BB2 /* Pods-home-s-on-fe.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-home-s-on-fe.release.xcconfig"; path = "Target Support Files/Pods-home-s-on-fe/Pods-home-s-on-fe.release.xcconfig"; sourceTree = "<group>"; };
 		CE7E0D7960F03D46D4515D8D /* Pods-home-s-on-fe.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-home-s-on-fe.debug.xcconfig"; path = "Target Support Files/Pods-home-s-on-fe/Pods-home-s-on-fe.debug.xcconfig"; sourceTree = "<group>"; };
+		E43DD69B2CF40ADA00401D53 /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
 		E48BFB342CEAD1FB00AC13FC /* home-s-on-fe.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "home-s-on-fe.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		64A788D02CF2E62B006D60D3 /* Exceptions for "home-s-on-fe" folder in "home-s-on-fe" target */ = {
+		E43DD7492CF40D3600401D53 /* Exceptions for "home-s-on-fe" folder in "home-s-on-fe" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Info.plist,
@@ -38,7 +36,7 @@
 		E48BFB362CEAD1FB00AC13FC /* home-s-on-fe */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
-				64A788D02CF2E62B006D60D3 /* Exceptions for "home-s-on-fe" folder in "home-s-on-fe" target */,
+				E43DD7492CF40D3600401D53 /* Exceptions for "home-s-on-fe" folder in "home-s-on-fe" target */,
 			);
 			path = "home-s-on-fe";
 			sourceTree = "<group>";
@@ -72,7 +70,7 @@
 		E48BFB2B2CEAD1FB00AC13FC = {
 			isa = PBXGroup;
 			children = (
-				64E8DC5E2CEE18520049E624 /* Config.xcconfig */,
+				E43DD69B2CF40ADA00401D53 /* Config.xcconfig */,
 				E48BFB362CEAD1FB00AC13FC /* home-s-on-fe */,
 				E48BFB352CEAD1FB00AC13FC /* Products */,
 				BCA16CBC07BAF454B68A639F /* Pods */,
@@ -170,7 +168,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				64E8DC5F2CEE18520049E624 /* Config.xcconfig in Resources */,
+				E43DD69C2CF40ADA00401D53 /* Config.xcconfig in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -231,7 +229,7 @@
 /* Begin XCBuildConfiguration section */
 		E48BFB402CEAD1FC00AC13FC /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 64E8DC5E2CEE18520049E624 /* Config.xcconfig */;
+			baseConfigurationReference = E43DD69B2CF40ADA00401D53 /* Config.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;

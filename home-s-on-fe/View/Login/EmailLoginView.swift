@@ -48,7 +48,7 @@ struct EmailLoginView: View {
             }
             .alert("로그인 실패", isPresented: $loginVM.isLoginShowing) {
                 Button("확인") {
-                    loginVM.isLoginShowing = false
+                    loginVM.isLoginError = true
                 }
             } message: {
                 Text(loginVM.message)
