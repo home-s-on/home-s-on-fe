@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+// 사용할때 .padding(.horizontal) 와 같이 쓰기
 struct CustomTextField: View {
     var icon: String
     var placeholder: String
@@ -21,16 +22,18 @@ struct CustomTextField: View {
                 TextField(placeholder, text: $text)
                     .autocapitalization(.none) // 첫문자 대문자 방지
                     .autocorrectionDisabled(true)
+                    .keyboardType(.emailAddress)
             } else {
                 SecureField(placeholder, text: $text)
                     .autocapitalization(.none)
                     .autocorrectionDisabled(true)
             }
+            
         }.padding()
-            .background(.gray.opacity(0.2))
+            .background(Color(.systemGray6).opacity(0.5))
             .clipShape(RoundedRectangle(cornerRadius: 10))
             .overlay(RoundedRectangle(cornerRadius: 10).stroke(.gray.opacity(0.5), lineWidth: 1))
-            .padding(.horizontal)
+            
     }
 }
 

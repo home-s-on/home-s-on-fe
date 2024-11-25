@@ -9,17 +9,35 @@ import SwiftUI
 
 struct EmailLoginView: View {
     @EnvironmentObject var loginVM: LoginViewModel
-    @State var email: String = "song@gmail.com"
+    @State var email: String = ""
     @State var password: String = "1234"
     @State private var isEmailSignUpActive = false
 
     var body: some View {
         NavigationStack {
             VStack {
-                VStack {
-                    CustomTextField(icon: "person.fill", placeholder: "ID를 입력하시오.", text: $email)
-                    CustomTextField(icon: "lock.fill", placeholder: "비밀번호를 입력하시오.", text: $password, isSecured: true)
-                }.padding(.bottom, 20)
+                Text("로그인")
+                    .font(.largeTitle)
+                    .bold()
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(.horizontal)
+                
+                Group {
+                    VStack(alignment: .leading) {
+                        Text("이메일")
+                            .font(.headline)
+                        CustomTextField(icon: "person.fill", placeholder: "ID를 입력하시오.", text: $email)
+                    }
+                        
+                    VStack(alignment: .leading) {
+                        Text("비밀번호")
+                            .font(.headline)
+                        CustomTextField(icon: "lock.fill", placeholder: "비밀번호를 입력하시오.", text: $password, isSecured: true)
+                    
+                    }
+                    
+                }.padding(.horizontal)
+                    .padding(.top, 10)
 
                 VStack {
                     NavigationLink(destination: ProfileEditView(), isActive: $loginVM.isLoggedIn) {
@@ -29,7 +47,7 @@ struct EmailLoginView: View {
                     WideImageButton(icon: "person.badge.key", title: "로그인", backgroundColor: .blue) {
                         loginVM.emailLogin(email: email, password: password)
                     }
-                }.padding(.bottom, 20)
+                }.padding(.top, 30)
 
                 HStack {
                     Text("계정이 없으신가요?")
@@ -43,12 +61,13 @@ struct EmailLoginView: View {
                                 isEmailSignUpActive = true
                             }
                     }
-                }
+                }.padding(.top, 10)
 
             }
+            .padding(.bottom, 120)
             .alert("로그인 실패", isPresented: $loginVM.isLoginShowing) {
                 Button("확인") {
-                    loginVM.isLoginError = true
+                    loginVM.isLoginError = false
                 }
             } message: {
                 Text(loginVM.message)
