@@ -14,7 +14,10 @@ class ProfileViewModel: ObservableObject {
     @Published var isLoading = false
     @Published var isProfileShowing = false
     @Published var isProfiledIn = false
-    @AppStorage("token") var token: String?
+    @Published var isProfiledError = false
+    var token: String {
+        return UserDefaults.standard.string(forKey: "token") ?? "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzMyNDk5Njk1LCJleHAiOjE3MzI1ODYwOTV9.zocyZ255FOqr9esQ4o-kL9XZQLnWOm_1db-P2iEp7sw"
+    }
     
     func profileEdit(nickname: String, photo: UIImage?) {
         isLoading = true
@@ -26,7 +29,7 @@ class ProfileViewModel: ObservableObject {
         }
         formData.append(nickname.data(using: .utf8)!, withName: "nickname")
         
-        guard let token = token else { return }
+//        guard let token = token else { return }
 
         let url = "\(APIEndpoints.baseURL)/user"
         let headers: HTTPHeaders = [
@@ -45,12 +48,14 @@ class ProfileViewModel: ObservableObject {
                     switch response.result {
                     case .success(let apiResponse):
                         if apiResponse.status == "success" {
-                            self?.isProfiledIn = true
+                            self?.isProfileShowing = true
                             self?.message = "닉네임과 프로필이 성공적으로 등록되었습니다."
                         } else {
+                            self?.isProfiledError = true
                             self?.message = apiResponse.message ?? "등록에 실패했습니다."
                         }
                     case .failure(let error):
+                        self?.isProfiledError = true
                         if let data = response.data {
                             do {
                                 let errorResponse = try JSONDecoder().decode(ApiResponse<User>.self, from: data)

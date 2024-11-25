@@ -1,0 +1,14 @@
+//
+//  Config.xcconfig
+//  home-s-on-fe
+//
+//  Created by 정송희 on 11/25/24.
+//
+
+// Configuration settings file format documentation can be found at:
+// https://help.apple.com/xcode/#/dev745c5c974
+
+KAKAO_NATIVE_APP_KEY = af33629875b50565b2f88a5b2d9e9887
+
+END_POINT = http:/$()/localhost:5001
+GET_INVITE_CODE_PATH = /api/house/getInvitecode/

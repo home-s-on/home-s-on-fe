@@ -16,6 +16,7 @@ class LoginViewModel: ObservableObject {
     @Published var isLoggedIn = false
     @Published var isLoginShowing = false
     @Published var isJoinShowing = false
+    @Published var isJoinError = false
     @Published var isNavigatingToLogin = false
     var profileViewModel: ProfileViewModel?
     
@@ -53,15 +54,16 @@ class LoginViewModel: ObservableObject {
                                 self.isLoggedIn = true
                                 UserDefaults.standard.set(loginData.token, forKey: "token")
                                 UserDefaults.standard.set(loginData.user.email, forKey: "email")
-                                self.profileViewModel?.token = loginData.token
+//                                self.profileViewModel?.token = loginData.token
                                 print("로그인 성공! 토큰:", loginData.token)
                             }
                         } else {
+                            self.isLoginShowing = true
                             self.isLoginError = true
                             self.message = apiResponse.message ?? "알 수 없는 오류가 발생했습니다."
-                            self.isLoginShowing = true
                         }
                     case .failure(let error):
+                        self.isLoginShowing = true
                         self.isLoginError = true
                         if let data = response.data {
                             do {
@@ -73,7 +75,6 @@ class LoginViewModel: ObservableObject {
                         } else {
                             self.message = "네트워크 오류: \(error.localizedDescription)"
                         }
-                        self.isLoginShowing = true
                     }
                 }
             }
@@ -95,14 +96,17 @@ class LoginViewModel: ObservableObject {
                         if apiResponse.status == "success" {
                             // 회원가입 성공 시 처리
                             self.message = "회원가입이 성공적으로 완료되었습니다."
+                            self.isJoinError = true
 //                            self.isNavigatingToLogin = true // 로그인 화면으로 이동 플래그 설정
                         } else {
                             // API에서 반환한 실패 메시지 처리
                             self.message = apiResponse.message ?? "회원가입에 실패했습니다."
-                            self.isNavigatingToLogin = false
+                            self.isJoinError = false
+//                            self.isNavigatingToLogin = false
                         }
                     case .failure(let error):
-                        self.isLoginError = true
+                        self.isJoinError = false
+//                        self.isNavigatingToLogin = false
                         if let data = response.data {
                             do {
                                 let errorResponse = try JSONDecoder().decode(ApiResponse<SignUpData>.self, from: data)

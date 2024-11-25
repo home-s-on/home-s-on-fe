@@ -33,8 +33,12 @@ struct EmailSignUpView: View {
             }
             .alert("회원가입", isPresented: $loginVM.isJoinShowing) {
                 Button("확인") {
-                    loginVM.isJoinShowing = false
-                    loginVM.isNavigatingToLogin = true
+                    DispatchQueue.main.async {
+                        if loginVM.isJoinError {
+                            loginVM.isNavigatingToLogin = true
+                        }
+                        loginVM.isJoinShowing = false
+                    }
                 }
             } message: {
                 Text(loginVM.message)
