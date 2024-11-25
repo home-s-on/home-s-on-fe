@@ -16,9 +16,10 @@ class ProfileViewModel: ObservableObject {
     @Published var isProfiledIn = false
     @Published var isProfiledError = false
     @Published var isNavigatingToEntry = false
-    var token: String {
-        return UserDefaults.standard.string(forKey: "token") ?? "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzMyNDk5Njk1LCJleHAiOjE3MzI1ODYwOTV9.zocyZ255FOqr9esQ4o-kL9XZQLnWOm_1db-P2iEp7sw"
-    }
+    @AppStorage("token") var token: String?
+//    var token: String {
+//        return UserDefaults.standard.string(forKey: "token") ?? "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzMyNTQwMTM3LCJleHAiOjE3MzI2MjY1Mzd9.gqxfNNYLw46RBcLZNzfZScG4Y0lUBiPITaEKfL9yl-c"
+//    }
     
     func profileEdit(nickname: String, photo: UIImage?) {
         isLoading = true
@@ -30,7 +31,7 @@ class ProfileViewModel: ObservableObject {
         }
         formData.append(nickname.data(using: .utf8)!, withName: "nickname")
         
-//        guard let token = token else { return }
+        guard let token = token else { return }
 
         let url = "\(APIEndpoints.baseURL)/user"
         let headers: HTTPHeaders = [
@@ -39,8 +40,7 @@ class ProfileViewModel: ObservableObject {
         ]
         
         AF.upload(multipartFormData: formData, to: url, method: .put, headers: headers)
-            .responseDecodable(of: ApiResponse<User>.self) { [weak self] response in
-//                print(response)
+            .responseDecodable(of: ApiResponse<House>.self) { [weak self] response in
                 DispatchQueue.main.async {
                     self?.isProfileShowing = true
                     self?.isLoading = false
@@ -48,10 +48,13 @@ class ProfileViewModel: ObservableObject {
                     
                     switch response.result {
                     case .success(let apiResponse):
+                        print(apiResponse)
                         if apiResponse.status == "success" {
-                            self?.isProfiledError = false
-                            self?.isProfileShowing = true
-                            self?.message = "닉네임과 프로필이 성공적으로 등록되었습니다."
+                            if let profileData = apiResponse.data {
+                                self?.isProfiledError = false
+                                self?.isProfileShowing = true
+                                UserDefaults.standard.set(profileData.nickname, forKey: "nickname")
+                            }
                         } else {
                             self?.isProfiledError = true
                             self?.message = apiResponse.message ?? "등록에 실패했습니다."

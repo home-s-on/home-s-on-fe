@@ -8,21 +8,23 @@
 import SwiftUI
 
 struct EntryOptionButton:View {
+    var action: () -> Void
+    var imageName: String
+    var title: String
+    var subtitle: String
+    var backgroundColor: Color
+    
     var body: some View {
-        Button(action: {
-            // 멤버 초대 액션
-            print("멤버 초대 버튼 클릭")
-        }) {
+        Button(action: action) {
             HStack {
-                Image(systemName: "envelope")
+                Image(systemName: imageName)
                     .font(.system(size: 30))
                     .padding(.horizontal)
                     
-                
-                VStack (alignment: .leading) {
-                    Text("멤버초대")
+                VStack(alignment: .leading) {
+                    Text(title)
                         .fontWeight(.bold)
-                    Text("방에 참여할 멤버 초대하기")
+                    Text(subtitle)
                         .font(.footnote)
                         .fontWeight(.semibold)
                 }
@@ -31,12 +33,12 @@ struct EntryOptionButton:View {
             .frame(maxWidth: .infinity)
             .padding()
             .foregroundColor(Color(red: 51/255, green: 51/255, blue: 51/255))
-            .background(Color(red: 175/255, green: 200/255, blue: 250/255))
+            .background(backgroundColor)
             .cornerRadius(8)
         }
     }
 }
 
 #Preview {
-    EntryOptionButton()
+    EntryOptionButton(action: {print("방 입장하기 넣기")}, imageName: "envelope", title: "멤버 초대", subtitle: "방에 참여할 멤버 초대하기", backgroundColor: Color(red: 175/255, green: 200/255, blue: 250/255))
 }
