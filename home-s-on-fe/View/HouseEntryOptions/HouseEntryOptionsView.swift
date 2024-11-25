@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct HouseEntryOptionsView: View {
+    @AppStorage("nickname") var nickname: String = ""
     var body: some View {
         NavigationView {
             VStack(spacing: 20) {
@@ -15,7 +16,7 @@ struct HouseEntryOptionsView: View {
                 
                 // 제목
                 VStack(spacing: 8) {
-                    Text("누구누구 님,")
+                    Text("\(nickname ?? "사용자") 님,")
                         .font(.title)
                         .fontWeight(.bold)
                         .multilineTextAlignment(.center)
@@ -29,56 +30,25 @@ struct HouseEntryOptionsView: View {
                 Spacer()
                 
                 VStack(spacing: 16) {
-                    Button(action: {
-                        // 멤버 초대 액션
-                        print("멤버 초대 버튼 클릭")
-                    }) {
-                        HStack {
-                            Image(systemName: "envelope")
-                                .font(.system(size: 30))
-                                .padding(.horizontal)
-                                
-                            VStack(alignment: .leading) {
-                                Text("멤버초대")
-                                    .fontWeight(.bold)
-                                Text("방에 참여할 멤버 초대하기")
-                                    .font(.footnote)
-                                    .fontWeight(.semibold)
-                            }
-                            Spacer()
-                        }
-                        .frame(maxWidth: .infinity)
-                        .padding()
-                        .foregroundColor(Color(red: 51/255, green: 51/255, blue: 51/255))
-                        .background(Color(red: 175/255, green: 200/255, blue: 250/255))
-                        .cornerRadius(8)
-                    }
+                    EntryOptionButton(
+                        action: {
+                            print("멤버 초대 버튼 클릭")
+                        },
+                        imageName: "envelope",
+                        title: "멤버초대",
+                        subtitle: "방에 참여할 멤버 초대하기",
+                        backgroundColor: Color(red: 175/255, green: 200/255, blue: 250/255)
+                    )
                     
-                    Button(action: {
-                        // 집 입장하기 액션
-                        print("집 입장하기 버튼 클릭")
-                    }) {
-                        HStack {
-                            Image(systemName: "house.fill")
-                                .font(.system(size: 30))
-                                .padding(.horizontal)
-                            
-                            VStack(alignment: .leading) {
-                                Text("집 입장하기")
-                                    .fontWeight(.bold)
-                                
-                                Text("만들어진 참여코드로 입장하기")
-                                    .font(.footnote)
-                                    .fontWeight(.semibold)
-                            }
-                            Spacer()
-                        }
-                        .frame(maxWidth: .infinity)
-                        .padding()
-                        .foregroundColor(Color(red: 51/255, green: 51/255, blue: 51/255))
-                        .background(Color(red: 87/255, green: 138/255, blue: 243/255))
-                        .cornerRadius(8)
-                    }
+                    EntryOptionButton(
+                        action: {
+                            print("집 입장하기 버튼 클릭")
+                        },
+                        imageName: "house.fill",
+                        title: "집 입장하기",
+                        subtitle: "만들어진 참여코드로 입장하기",
+                        backgroundColor: Color(red: 87/255, green: 138/255, blue: 243/255))
+                    
                 }
                 .padding(.horizontal, 20)
                 

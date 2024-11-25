@@ -8,7 +8,7 @@ import Foundation
 
 
 struct House: Codable {
-    let houseId: Int
+    let houseId: Int?
     let nickname: String
     let inviteCode: String
 }
