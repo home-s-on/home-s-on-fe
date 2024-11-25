@@ -40,7 +40,7 @@ class ProfileViewModel: ObservableObject {
         ]
         
         AF.upload(multipartFormData: formData, to: url, method: .put, headers: headers)
-            .responseDecodable(of: ApiResponse<House>.self) { [weak self] response in
+            .responseDecodable(of: ApiResponse<User>.self) { [weak self] response in
                 DispatchQueue.main.async {
                     self?.isProfileShowing = true
                     self?.isLoading = false
@@ -50,11 +50,8 @@ class ProfileViewModel: ObservableObject {
                     case .success(let apiResponse):
                         print(apiResponse)
                         if apiResponse.status == "success" {
-                            if let profileData = apiResponse.data {
-                                self?.isProfiledError = false
-                                self?.isProfileShowing = true
-                                UserDefaults.standard.set(profileData.nickname, forKey: "nickname")
-                            }
+                            self?.isProfiledError = false
+                            self?.isProfileShowing = true
                         } else {
                             self?.isProfiledError = true
                             self?.message = apiResponse.message ?? "등록에 실패했습니다."

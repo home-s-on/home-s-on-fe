@@ -11,11 +11,12 @@ import SwiftUI
 struct ProfileEditView: View {
     @EnvironmentObject var profileVM: ProfileViewModel
     @EnvironmentObject var houseEntryOptionsVM: HouseEntryOptionsViewModel
-    @State private var nickname: String = ""
+    @State private var nickname: String = UserDefaults.standard.string(forKey: "nickname") ?? ""
     @State private var showImagePicker = false
     @State private var showActionSheet = false
     @State private var selectedImage: UIImage?
     @State private var isUsingDefaultImage: Bool = true
+    
     
     let defaultImageName = "round-profile"
     
@@ -29,7 +30,14 @@ struct ProfileEditView: View {
                             .scaledToFill()
                             .frame(width: 180, height: 180)
                             .clipShape(Circle())
-                    } else {
+                    } else if let photoURLString = UserDefaults.standard.string(forKey: "photo"),
+                              let photoURL = URL(string: "\(APIEndpoints.blobURL)/\(photoURLString)") {
+                        KFImage(photoURL)
+                            .resizable()
+                            .scaledToFill()
+                            .frame(width: 180, height: 180)
+                            .clipShape(Circle())
+                    }else {
                         Image(defaultImageName)
                             .resizable()
                             .scaledToFill()
