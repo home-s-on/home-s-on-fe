@@ -17,7 +17,7 @@ struct House: Codable {
         case nickname
         case inviteCode = "inviteCode"
     }
-
+}
 struct InviteCode: Codable {
     let status: String
     let inviteCode: String
