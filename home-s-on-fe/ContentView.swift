@@ -8,11 +8,30 @@
 import SwiftUI
 
 struct ContentView: View {
+    init() {
+        // UserDefaults 초기화
+        resetUserDefaults()
+        }
     var body: some View {
         VStack {
             EntryView()
         }
         .padding()
+    }
+    
+    private func resetUserDefaults() {
+        let defaults = UserDefaults.standard
+            
+        // 특정 키에 대한 값 삭제
+        defaults.removeObject(forKey: "token")
+        defaults.removeObject(forKey: "email")
+        defaults.removeObject(forKey: "nickname")
+        defaults.removeObject(forKey: "photo")
+        
+        // 모든 UserDefaults 데이터 삭제 (선택 사항)
+        // if let bundleID = Bundle.main.bundleIdentifier {
+        //     defaults.removePersistentDomain(forName: bundleID)
+        // }
     }
 }
 
