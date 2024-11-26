@@ -7,23 +7,27 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		648C6E5B2CF422A800C03BAD /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 648C6E5A2CF422A800C03BAD /* Alamofire */; };
+		64E8DC5F2CEE18520049E624 /* Config.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 64E8DC5E2CEE18520049E624 /* Config.xcconfig */; };
+		64ECCF732CF48AED00282D41 /* KakaoSDKCommon in Frameworks */ = {isa = PBXBuildFile; productRef = 648C6D822CF421D500C03BAD /* KakaoSDKCommon */; };
+		64ECCF742CF48AED00282D41 /* KakaoSDKShare in Frameworks */ = {isa = PBXBuildFile; productRef = 648C6DC92CF4221D00C03BAD /* KakaoSDKShare */; };
+		64ECCF752CF48AED00282D41 /* KakaoSDKTemplate in Frameworks */ = {isa = PBXBuildFile; productRef = 648C6DCB2CF4222B00C03BAD /* KakaoSDKTemplate */; };
+		64ECCF762CF48AED00282D41 /* KakaoSDKAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 648C6E122CF4224100C03BAD /* KakaoSDKAuth */; };
 		99A369F2BEF04590E52BF576 /* Pods_home_s_on_fe.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 82CF299C0F57910554B9CF0A /* Pods_home_s_on_fe.framework */; };
-		E432B86E2CED7D1A006C3689 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = E432B86D2CED7D1A006C3689 /* Alamofire */; settings = {ATTRIBUTES = (Required, ); }; };
 		E432B8712CED7E71006C3689 /* SVProgressHUD in Frameworks */ = {isa = PBXBuildFile; productRef = E432B8702CED7E71006C3689 /* SVProgressHUD */; };
-		E43DD69C2CF40ADA00401D53 /* Config.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = E43DD69B2CF40ADA00401D53 /* Config.xcconfig */; };
 		E445DE0B2CF01993008F632E /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = E445DE0A2CF01993008F632E /* Kingfisher */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		64E8DC5E2CEE18520049E624 /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
 		82CF299C0F57910554B9CF0A /* Pods_home_s_on_fe.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_home_s_on_fe.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BDBCBC1974C689F5B9234BB2 /* Pods-home-s-on-fe.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-home-s-on-fe.release.xcconfig"; path = "Target Support Files/Pods-home-s-on-fe/Pods-home-s-on-fe.release.xcconfig"; sourceTree = "<group>"; };
 		CE7E0D7960F03D46D4515D8D /* Pods-home-s-on-fe.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-home-s-on-fe.debug.xcconfig"; path = "Target Support Files/Pods-home-s-on-fe/Pods-home-s-on-fe.debug.xcconfig"; sourceTree = "<group>"; };
-		E43DD69B2CF40ADA00401D53 /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
 		E48BFB342CEAD1FB00AC13FC /* home-s-on-fe.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "home-s-on-fe.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		E43DD7492CF40D3600401D53 /* Exceptions for "home-s-on-fe" folder in "home-s-on-fe" target */ = {
+		64A788D02CF2E62B006D60D3 /* Exceptions for "home-s-on-fe" folder in "home-s-on-fe" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Info.plist,
@@ -36,7 +40,7 @@
 		E48BFB362CEAD1FB00AC13FC /* home-s-on-fe */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
-				E43DD7492CF40D3600401D53 /* Exceptions for "home-s-on-fe" folder in "home-s-on-fe" target */,
+				64A788D02CF2E62B006D60D3 /* Exceptions for "home-s-on-fe" folder in "home-s-on-fe" target */,
 			);
 			path = "home-s-on-fe";
 			sourceTree = "<group>";
@@ -48,10 +52,14 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				64ECCF762CF48AED00282D41 /* KakaoSDKAuth in Frameworks */,
+				64ECCF752CF48AED00282D41 /* KakaoSDKTemplate in Frameworks */,
+				64ECCF742CF48AED00282D41 /* KakaoSDKShare in Frameworks */,
+				64ECCF732CF48AED00282D41 /* KakaoSDKCommon in Frameworks */,
 				E445DE0B2CF01993008F632E /* Kingfisher in Frameworks */,
+				648C6E5B2CF422A800C03BAD /* Alamofire in Frameworks */,
 				99A369F2BEF04590E52BF576 /* Pods_home_s_on_fe.framework in Frameworks */,
 				E432B8712CED7E71006C3689 /* SVProgressHUD in Frameworks */,
-				E432B86E2CED7D1A006C3689 /* Alamofire in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -70,7 +78,7 @@
 		E48BFB2B2CEAD1FB00AC13FC = {
 			isa = PBXGroup;
 			children = (
-				E43DD69B2CF40ADA00401D53 /* Config.xcconfig */,
+				64E8DC5E2CEE18520049E624 /* Config.xcconfig */,
 				E48BFB362CEAD1FB00AC13FC /* home-s-on-fe */,
 				E48BFB352CEAD1FB00AC13FC /* Products */,
 				BCA16CBC07BAF454B68A639F /* Pods */,
@@ -116,9 +124,13 @@
 			);
 			name = "home-s-on-fe";
 			packageProductDependencies = (
-				E432B86D2CED7D1A006C3689 /* Alamofire */,
 				E432B8702CED7E71006C3689 /* SVProgressHUD */,
 				E445DE0A2CF01993008F632E /* Kingfisher */,
+				648C6D822CF421D500C03BAD /* KakaoSDKCommon */,
+				648C6DC92CF4221D00C03BAD /* KakaoSDKShare */,
+				648C6DCB2CF4222B00C03BAD /* KakaoSDKTemplate */,
+				648C6E122CF4224100C03BAD /* KakaoSDKAuth */,
+				648C6E5A2CF422A800C03BAD /* Alamofire */,
 			);
 			productName = "home-s-on-fe";
 			productReference = E48BFB342CEAD1FB00AC13FC /* home-s-on-fe.app */;
@@ -149,9 +161,10 @@
 			mainGroup = E48BFB2B2CEAD1FB00AC13FC;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
-				E432B86C2CED7D1A006C3689 /* XCRemoteSwiftPackageReference "Alamofire" */,
 				E432B86F2CED7E71006C3689 /* XCRemoteSwiftPackageReference "SVProgressHUD" */,
 				E445DE092CF01993008F632E /* XCRemoteSwiftPackageReference "Kingfisher" */,
+				648C6D812CF421D500C03BAD /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */,
+				648C6E592CF422A800C03BAD /* XCRemoteSwiftPackageReference "Alamofire" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = E48BFB352CEAD1FB00AC13FC /* Products */;
@@ -168,7 +181,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E43DD69C2CF40ADA00401D53 /* Config.xcconfig in Resources */,
+				64E8DC5F2CEE18520049E624 /* Config.xcconfig in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -229,7 +242,7 @@
 /* Begin XCBuildConfiguration section */
 		E48BFB402CEAD1FC00AC13FC /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = E43DD69B2CF40ADA00401D53 /* Config.xcconfig */;
+			baseConfigurationReference = 64E8DC5E2CEE18520049E624 /* Config.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -293,6 +306,7 @@
 		};
 		E48BFB412CEAD1FC00AC13FC /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 64E8DC5E2CEE18520049E624 /* Config.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -433,7 +447,15 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		E432B86C2CED7D1A006C3689 /* XCRemoteSwiftPackageReference "Alamofire" */ = {
+		648C6D812CF421D500C03BAD /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/kakao/kakao-ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.23.0;
+			};
+		};
+		648C6E592CF422A800C03BAD /* XCRemoteSwiftPackageReference "Alamofire" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/Alamofire/Alamofire.git";
 			requirement = {
@@ -460,9 +482,29 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		E432B86D2CED7D1A006C3689 /* Alamofire */ = {
+		648C6D822CF421D500C03BAD /* KakaoSDKCommon */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = E432B86C2CED7D1A006C3689 /* XCRemoteSwiftPackageReference "Alamofire" */;
+			package = 648C6D812CF421D500C03BAD /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */;
+			productName = KakaoSDKCommon;
+		};
+		648C6DC92CF4221D00C03BAD /* KakaoSDKShare */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 648C6D812CF421D500C03BAD /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */;
+			productName = KakaoSDKShare;
+		};
+		648C6DCB2CF4222B00C03BAD /* KakaoSDKTemplate */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 648C6D812CF421D500C03BAD /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */;
+			productName = KakaoSDKTemplate;
+		};
+		648C6E122CF4224100C03BAD /* KakaoSDKAuth */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 648C6D812CF421D500C03BAD /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */;
+			productName = KakaoSDKAuth;
+		};
+		648C6E5A2CF422A800C03BAD /* Alamofire */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 648C6E592CF422A800C03BAD /* XCRemoteSwiftPackageReference "Alamofire" */;
 			productName = Alamofire;
 		};
 		E432B8702CED7E71006C3689 /* SVProgressHUD */ = {
