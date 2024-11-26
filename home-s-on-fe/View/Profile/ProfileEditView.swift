@@ -103,7 +103,6 @@ struct ProfileEditView: View {
                 }
                 .padding(.horizontal)
             }
-            // Alert 설정
             .alert("프로필 설정 확인", isPresented: $profileVM.isProfileShowing) {
                 Button("확인") {
                     print(profileVM.isProfiledError)
@@ -117,13 +116,6 @@ struct ProfileEditView: View {
                 }
             } message: {
                 Text(profileVM.message)
-            }
-        }
-        // onAppear를 사용하여 로그 출력
-        .onAppear {
-            if let photoURLString = UserDefaults.standard.string(forKey: "photo") {
-                photoURL = URL(string: "\(APIEndpoints.blobURL)/\(photoURLString)")
-                print("Photo URL String on appear: \(photoURL)")
             }
         }
     }
