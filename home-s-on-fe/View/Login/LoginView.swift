@@ -4,6 +4,7 @@ struct LoginView: View {
     @EnvironmentObject var loginVM: LoginViewModel
     @EnvironmentObject var profileVM: ProfileViewModel
     @StateObject var appleLoginVM = AppleLoginViewModel()
+    @StateObject var kakaoLoginVM = KakaoLoginViewModel()
     
     @State private var isEmailLoginActive = false
     @State private var selectedLoginMethod: String? = nil
@@ -15,9 +16,13 @@ struct LoginView: View {
                 Spacer()
                 
                 VStack(alignment: .center, spacing: 15) {
-                    LoginButton(loginType: .kakao, text: "카카오로 시작하기") {
-                        selectedLoginMethod = "kakao"
-                    }
+                    KakaoLoginView()
+                        .environmentObject(kakaoLoginVM)
+                        .onChange(of: kakaoLoginVM.isKakaoLoggedIn) { newValue in
+                            if newValue {
+                                selectedLoginMethod = "kakao"
+                            }
+                        }
                     
                     LoginButton(loginType: .naver, text: "네이버로 시작하기") {
                         selectedLoginMethod = "naver"

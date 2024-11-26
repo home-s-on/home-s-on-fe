@@ -33,10 +33,7 @@ class AppleLoginViewModel: NSObject, ObservableObject {
     }
     
     private func sendToBackend(idToken: String) {
-        guard let url = URL(string: "\(APIEndpoints.baseURL)/auth/apple") else {
-            print("Invalid URL")
-            return
-        }
+        guard let url = URL(string: "\(APIEndpoints.baseURL)/auth/apple") else { return }
         
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
