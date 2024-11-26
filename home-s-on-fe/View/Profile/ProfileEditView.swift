@@ -1,10 +1,3 @@
-//
-//  ProfileEditView.swift
-//  home-s-on-fe
-//
-//  Created by 정송희 on 11/21/24.
-//
-
 import Kingfisher
 import SwiftUI
 
@@ -16,7 +9,7 @@ struct ProfileEditView: View {
     @State private var showActionSheet = false
     @State private var selectedImage: UIImage?
     @State private var isUsingDefaultImage: Bool = true
-    
+    @State private var photoURL: URL?
     
     let defaultImageName = "round-profile"
     
@@ -30,14 +23,22 @@ struct ProfileEditView: View {
                             .scaledToFill()
                             .frame(width: 180, height: 180)
                             .clipShape(Circle())
-                    } else if let photoURLString = UserDefaults.standard.string(forKey: "photo"),
-                              let photoURL = URL(string: "\(APIEndpoints.blobURL)/\(photoURLString)") {
-                        KFImage(photoURL)
-                            .resizable()
-                            .scaledToFill()
-                            .frame(width: 180, height: 180)
-                            .clipShape(Circle())
-                    }else {
+                    } else if let photoURLString = UserDefaults.standard.string(forKey: "photo") {
+                        // URL 생성
+                        if let photoURL = URL(string: "\(APIEndpoints.blobURL)/\(photoURLString)") {
+                            KFImage(photoURL)
+                                .resizable()
+                                .scaledToFill()
+                                .frame(width: 180, height: 180)
+                                .clipShape(Circle())
+                        } else {
+                            Image(defaultImageName)
+                                .resizable()
+                                .scaledToFill()
+                                .frame(width: 180, height: 180)
+                                .clipShape(Circle())
+                        }
+                    } else {
                         Image(defaultImageName)
                             .resizable()
                             .scaledToFill()
@@ -84,7 +85,7 @@ struct ProfileEditView: View {
                         .padding(.horizontal)
                 }
                 .padding(.bottom, 260)
-                
+
                 NavigationLink(
                     destination: HouseEntryOptionsView(),
                     isActive: $profileVM.isNavigatingToEntry
@@ -102,23 +103,31 @@ struct ProfileEditView: View {
                 }
                 .padding(.horizontal)
             }
-        }
-        .alert("프로필 설정 확인", isPresented: $profileVM.isProfileShowing) {
-            Button("확인") {
-                print(profileVM.isProfiledError)
-                print(profileVM.isNavigatingToEntry)
-                DispatchQueue.main.async {
-                    if !profileVM.isProfiledError {
-                        profileVM.isNavigatingToEntry = true
+            // Alert 설정
+            .alert("프로필 설정 확인", isPresented: $profileVM.isProfileShowing) {
+                Button("확인") {
+                    print(profileVM.isProfiledError)
+                    print(profileVM.isNavigatingToEntry)
+                    DispatchQueue.main.async {
+                        if !profileVM.isProfiledError {
+                            profileVM.isNavigatingToEntry = true
+                        }
+                        profileVM.isProfileShowing = false
                     }
-                    profileVM.isProfileShowing = false
                 }
+            } message: {
+                Text(profileVM.message)
             }
-        } message: {
-            Text(profileVM.message)
+        }
+        // onAppear를 사용하여 로그 출력
+        .onAppear {
+            if let photoURLString = UserDefaults.standard.string(forKey: "photo") {
+                photoURL = URL(string: "\(APIEndpoints.blobURL)/\(photoURLString)")
+                print("Photo URL String on appear: \(photoURL)")
+            }
         }
     }
-    
+
     private func updateProfile() {
         let photo: UIImage?
         if isUsingDefaultImage {
@@ -129,11 +138,8 @@ struct ProfileEditView: View {
 
         print("Profile edit started.")
         profileVM.profileEdit(nickname: nickname, photo: photo)
-
-        
     }
 }
-    
 
 struct ImagePicker: UIViewControllerRepresentable {
     @Binding var image: UIImage?
@@ -143,21 +149,21 @@ struct ImagePicker: UIViewControllerRepresentable {
         picker.delegate = context.coordinator
         return picker
     }
-    
+
     func updateUIViewController(_ uiViewController: UIImagePickerController, context: Context) {}
-    
+
     func makeCoordinator() -> Coordinator {
         Coordinator(self)
     }
-    
+
     class Coordinator: NSObject, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
         let parent: ImagePicker
         
         init(_ parent: ImagePicker) {
             self.parent = parent
         }
-        
-        func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
+
+        func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
             if let uiImage = info[.originalImage] as? UIImage {
                 parent.image = uiImage
             }
@@ -169,6 +175,7 @@ struct ImagePicker: UIViewControllerRepresentable {
 #Preview {
     let profileVM = ProfileViewModel()
     let homeEntryOptionsVM = HouseEntryOptionsViewModel()
+    
     ProfileEditView()
         .environmentObject(profileVM)
         .environmentObject(homeEntryOptionsVM)
