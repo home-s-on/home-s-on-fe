@@ -14,7 +14,7 @@ class TaskViewModel: ObservableObject {
         isLoading = true
         
         let url = "\(APIEndpoints.baseURL)/tasks/house/\(houseId)"
-        
+                
         AF.request(url, method: .get)
             .responseDecodable(of: TaskResponse<Task>.self) { response in
                 self.isLoading = false
