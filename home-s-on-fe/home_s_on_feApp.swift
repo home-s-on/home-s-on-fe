@@ -7,25 +7,33 @@
 
 import SwiftUI
 import KakaoSDKCommon
-import KakaoSDKAuth
+
 
 @main
 struct home_s_on_feApp: App {
-    init() {
-        // Kakao SDK 초기화
-        let nativeAppKey = Bundle.main.infoDictionary?["KAKAO_NATIVE_APP_KEY"] ?? ""
-        KakaoSDK.initSDK(appKey: nativeAppKey as! String)
-        
-        // UserDefaults 초기화
-        resetUserDefaults()
-    }
+
+    @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
+
     var body: some Scene {
         WindowGroup {
             ContentView()
         }
     }
-    
-    private func resetUserDefaults() {
+
+}
+
+//lifecycle 관리
+class AppDelegate: NSObject, UIApplicationDelegate {
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
+        let nativeAppKey = Bundle.main.infoDictionary?["KAKAO_NATIVE_APP_KEY"] ?? ""
+        KakaoSDK.initSDK(appKey: nativeAppKey as! String)
+      
+      // UserDefaults 초기화
+        resetUserDefaults()
+        return true
+    }
+  
+   private func resetUserDefaults() {
         let defaults = UserDefaults.standard
             
         // 특정 키에 대한 값 삭제
@@ -39,5 +47,4 @@ struct home_s_on_feApp: App {
         //     defaults.removePersistentDomain(forName: bundleID)
         // }
     }
-
 }
