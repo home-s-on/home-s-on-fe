@@ -3,64 +3,75 @@ import SwiftUI
 struct LoginView: View {
     @EnvironmentObject var loginVM: LoginViewModel
     @EnvironmentObject var profileVM: ProfileViewModel
-    @EnvironmentObject var houseEntryOptionsVM: HouseEntryOptionsViewModel
+    @StateObject var appleLoginVM = AppleLoginViewModel()
+    @StateObject var kakaoLoginVM = KakaoLoginViewModel()
+    
     @State private var isEmailLoginActive = false
+    @State private var selectedLoginMethod: String? = nil
+    @State private var navigateToProfileEdit = false
+
     var body: some View {
         NavigationStack {
             VStack {
                 Spacer()
                 
                 VStack(alignment: .center, spacing: 15) {
-                    LoginButton(loginType: .kakao, text: "카카오로 시작하기") {
-                        print("카카오")
-                    }
+                    KakaoLoginView()
+                        .environmentObject(kakaoLoginVM)
+                        .onChange(of: kakaoLoginVM.isKakaoLoggedIn) { newValue in
+                            if newValue {
+                                selectedLoginMethod = "kakao"
+                            }
+                        }
                     
                     LoginButton(loginType: .naver, text: "네이버로 시작하기") {
-                        print("네이버")
+                        selectedLoginMethod = "naver"
                     }
                     
                     LoginButton(loginType: .google, text: "Google로 시작하기") {
-                        print("구글")
+                        selectedLoginMethod = "google"
                     }
-                    
-                    LoginButton(loginType: .apple, text: "Apple로 시작하기") {
-                        print("애플")
-                    }
-                    
+
+                    AppleLoginView()
+                        .environmentObject(appleLoginVM)
+                        .onChange(of: appleLoginVM.isAppleLoggedIn) { newValue in
+                            if newValue {
+                                selectedLoginMethod = "apple"
+                            }
+                        }
+
                     HStack {
-                        Color.gray
-                            .frame(height: 0.5, alignment: .center)
-                        Text("또는")
-                            .foregroundColor(Color.gray)
-                            .font(.system(size: 12, weight: .regular))
-                        Color.gray
-                            .frame(height: 0.5, alignment: .center)
+                        Color.gray.frame(height: 0.5)
+                        Text("또는").foregroundColor(Color.gray).font(.system(size: 12))
+                        Color.gray.frame(height: 0.5)
                     }
-                    
+
                     LoginButton(loginType: .email, text: "email로 시작하기") {
-                        print("email")
                         isEmailLoginActive = true
                     }
                 }
-                
+
                 Spacer()
             }
             .padding(20)
             .navigationDestination(isPresented: $isEmailLoginActive) {
                 EmailLoginView()
             }
-
-            NavigationLink(destination: ProfileEditView(), isActive: $loginVM.isLoggedIn) {
-                EmptyView()
+            .navigationDestination(for: String.self) { method in
+                switch method {
+                case "kakao", "naver", "google", "apple":
+                    ProfileEditView()
+                default:
+                    EmptyView()
+                }
             }
-        }
-        .onChange(of: loginVM.isLoggedIn) { newValue in
-            print("로그인 상태 변화: \(newValue)")
-            if newValue {
-                print("로그인 성공!")
-//                profileVM.token = loginVM.profileViewModel?.token // 로그인 후 프로필 ViewModel에 토큰 전달
-            } else {
-                print("로그아웃됨")
+            .onChange(of: selectedLoginMethod) { newValue in
+                if let method = newValue {
+                    navigateToProfileEdit = true
+                }
+            }
+            .navigationDestination(isPresented: $navigateToProfileEdit) {
+                ProfileEditView()
             }
         }
     }
@@ -70,6 +81,8 @@ struct LoginView: View {
     let loginVM = LoginViewModel()
     let profileVM = ProfileViewModel()
     let houseEntryOptionsVM = HouseEntryOptionsViewModel()
+    let appleLoginVM = AppleLoginViewModel()
     LoginView().environmentObject(loginVM).environmentObject(profileVM)
         .environmentObject(houseEntryOptionsVM)
+        .environmentObject(appleLoginVM)
 }

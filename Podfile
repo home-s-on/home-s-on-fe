@@ -8,6 +8,8 @@ target 'home-s-on-fe' do
   # Pods for home-s-on-fe
   pod 'KakaoSDKShare'
   pod 'KakaoSDKTemplate'
+  pod 'KakaoSDKAuth'
+  pod 'KakaoSDKUser'
 
 
 end
