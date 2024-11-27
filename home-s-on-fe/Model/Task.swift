@@ -1,10 +1,5 @@
 import Foundation
 
-struct TaskResponse<T: Codable>: Codable {
-    let success: Bool
-    let data: [T]
-}
-
 struct Task: Identifiable, Codable {
     let id: Int
     let houseId: Int
@@ -21,7 +16,7 @@ struct Task: Identifiable, Codable {
     let houseRoom: HouseRoom?
     let assignees: [TaskUser]?
     
-    private enum CodingKeys: String, CodingKey {
+    enum CodingKeys: String, CodingKey {
         case id
         case houseId = "house_id"
         case houseRoomId = "house_room_id"
@@ -41,20 +36,11 @@ struct TaskUser: Codable {
     let nickname: String
     
     enum CodingKeys: String, CodingKey {
-        case id
-        case nickname
+        case id, nickname
     }
 }
 
-struct HouseRoom: Codable {
-    let id: Int
-    let roomName: String
-    
-    enum CodingKeys: String, CodingKey {
-        case id
-        case roomName = "room_name"
-    }
+struct TaskResponse<T: Codable>: Codable {
+    let success: Bool
+    let data: [T]
 }
-
-
-

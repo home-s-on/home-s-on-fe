@@ -31,7 +31,7 @@ struct AddTaskView: View {
                                    Text("구역 선택")
                                    Spacer()
                                    if let room = selectedRoom {
-                                       Text(room.roomName)
+                                       Text(room.room_name)
                                            .foregroundColor(.gray)
                                    }
                                }
