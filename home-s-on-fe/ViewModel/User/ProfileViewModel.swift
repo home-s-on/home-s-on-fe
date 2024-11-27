@@ -56,6 +56,7 @@ class ProfileViewModel: ObservableObject {
                         if apiResponse.status == "success" {
                             if let profileData = apiResponse.data {
                                 UserDefaults.standard.set(profileData.nickname, forKey: "nickname")
+                                UserDefaults.standard.set(profileData.photo, forKey: "photo")
                             }
                             self?.isProfiledError = false
                             self?.isProfileShowing = true

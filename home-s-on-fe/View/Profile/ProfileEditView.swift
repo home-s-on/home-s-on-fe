@@ -5,6 +5,7 @@ struct ProfileEditView: View {
     @EnvironmentObject var profileVM: ProfileViewModel
     @EnvironmentObject var houseEntryOptionsVM: HouseEntryOptionsViewModel
     @State private var nickname: String = UserDefaults.standard.string(forKey: "nickname") ?? ""
+    @State private var photo: String = UserDefaults.standard.string(forKey: "photo") ?? ""
     @State private var showImagePicker = false
     @State private var showActionSheet = false
     @State private var selectedImage: UIImage?
@@ -17,40 +18,20 @@ struct ProfileEditView: View {
         NavigationStack {
             VStack {
                 ZStack {
-                    if let image = selectedImage {
-                        Image(uiImage: image)
+                    let photoURLString = UserDefaults.standard.string(forKey: "photo") ?? ""
+                    if !photoURLString.isEmpty, let photoURL = URL(string: "\(APIEndpoints.blobURL)/\(photoURLString)") {
+                        KFImage(photoURL)
                             .resizable()
                             .scaledToFill()
                             .frame(width: 180, height: 180)
                             .clipShape(Circle())
-                    } else if let photoURLString = UserDefaults.standard.string(forKey: "photo") {
-                        // URL 생성
-                        if let photoURL = URL(string: "\(APIEndpoints.blobURL)/\(photoURLString)") {
-                            KFImage(photoURL)
-                                .resizable()
-                                .scaledToFill()
-                                .frame(width: 180, height: 180)
-                                .clipShape(Circle())
-                        } else {
-                            Image(defaultImageName)
-                                .resizable()
-                                .scaledToFill()
-                                .frame(width: 180, height: 180)
-                                .clipShape(Circle())
-                        }
+                        
                     } else {
-                        Image(defaultImageName)
-                            .resizable()
-                            .scaledToFill()
-                            .frame(width: 180, height: 180)
-                            .clipShape(Circle())
+                        RoundImage(image: UIImage(named: "round-profile")!, width: .constant(180.0), height: .constant(180.0))
                     }
                     
-                    Image(systemName: "pencil.circle")
-                        .resizable()
-                        .frame(width: 50, height: 50)
-                        .background(Circle().fill(Color(red: 33/255, green: 174/255, blue: 225/255)))
-                        .clipShape(Circle())
+                    RoundImage(image: UIImage(systemName: "pencil.circle")!, width: .constant(50.0), height: .constant(50.0))
+                        .background(Circle().fill(Color(red: 33/255, green: 174/255, blue: 225/255)).frame(width: 55, height: 55))
                         .offset(x: 60, y: 60)
                 }
                 .onTapGesture {
