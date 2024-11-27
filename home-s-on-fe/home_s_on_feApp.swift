@@ -41,8 +41,9 @@ class AppDelegate: NSObject, UIApplicationDelegate {
         defaults.removeObject(forKey: "email")
         defaults.removeObject(forKey: "nickname")
         defaults.removeObject(forKey: "photo")
+        defaults.removeObject(forKey: "inviteCode")
         
-        // 모든 UserDefaults 데이터 삭제 (선택 사항)
+        // 모든 UserDefaults 데이터 삭제
         // if let bundleID = Bundle.main.bundleIdentifier {
         //     defaults.removePersistentDomain(forName: bundleID)
         // }

@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct InviteMemberView: View {
-    
     //@EnvironmentObject var kakaoshareVM: KakaoShareViewModel
     @StateObject var kakaoshareVM = KakaoShareViewModel()
     @State private var inviteCode: String = UserDefaults.standard.string(forKey: "inviteCode") ?? ""
