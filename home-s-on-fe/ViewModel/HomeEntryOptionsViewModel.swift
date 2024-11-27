@@ -13,7 +13,7 @@ class HouseEntryOptionsViewModel: ObservableObject {
     @Published var message = ""
     @Published var isLoading = false
     
-    func EntryOptions() {
+    func createHouse() {
         self.isLoading = true
         SVProgressHUD.show()
         
@@ -39,9 +39,8 @@ class HouseEntryOptionsViewModel: ObservableObject {
                 switch response.result {
                 case .success(let apiResponse):
                     if apiResponse.status == "success" {
-                        if let entryOptionData = apiResponse.data {
-                            print("EntryOptions \(apiResponse)")
-
+                        if let createHouseData = apiResponse.data {
+                            UserDefaults.standard.set(createHouseData.inviteCode, forKey: "inviteCode")
                         }
                     } else {
                         self.message = apiResponse.message ?? "Unknown error occurred"

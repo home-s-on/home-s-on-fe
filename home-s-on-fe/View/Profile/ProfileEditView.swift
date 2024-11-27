@@ -67,6 +67,7 @@ struct ProfileEditView: View {
                 
                 Button(action: {
                     updateProfile()
+                    houseEntryOptionsVM.createHouse()
                 }) {
                     Text("완료")
                         .frame(maxWidth: .infinity)
