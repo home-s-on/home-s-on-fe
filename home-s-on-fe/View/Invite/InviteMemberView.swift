@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct InviteMemberView: View {
+    //@EnvironmentObject var kakaoshareVM: KakaoShareViewModel
     @StateObject var kakaoshareVM = KakaoShareViewModel()
     @State private var inviteCode: String = UserDefaults.standard.string(forKey: "inviteCode") ?? ""
     
@@ -37,7 +38,7 @@ struct InviteMemberView: View {
 
 
 #Preview {
-    let invite = InviteCodeViewModel()
+    
     let kakaoshare = KakaoShareViewModel()
-    InviteMemberView().environmentObject(invite).environmentObject(kakaoshare)
+    InviteMemberView().environmentObject(kakaoshare)
 }

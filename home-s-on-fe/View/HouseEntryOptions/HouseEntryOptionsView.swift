@@ -13,6 +13,7 @@ struct HouseEntryOptionsView: View {
     @State private var navigateToNewView = false
     @State private var showInviteMemberView = false
     @State private var showEnterInviteCodeView = false
+
         var body: some View {
             NavigationStack {
                 VStack(spacing: 20) {
