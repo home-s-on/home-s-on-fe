@@ -11,6 +11,7 @@ struct InviteMemberView: View {
     @EnvironmentObject var invitecodeVM: InviteCodeViewModel
     @EnvironmentObject var kakaoshareVM: KakaoShareViewModel
     @State private var invite_code: String = ""
+    
     var body: some View {
         VStack(alignment: .leading) {
             
@@ -26,11 +27,11 @@ struct InviteMemberView: View {
                 
                     
             }.padding(.bottom, 300)
-            .onAppear {
-                invitecodeVM.fetchInviteCode { code in
-                    self.invite_code = code
-                }
-            }
+//            .onAppear {
+//                invitecodeVM.fetchInviteCode { code in
+//                    self.invite_code = code
+//                }
+//            }
             
             
             VStack{
