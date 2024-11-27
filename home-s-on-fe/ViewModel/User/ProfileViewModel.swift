@@ -52,8 +52,12 @@ class ProfileViewModel: ObservableObject {
                     
                     switch response.result {
                     case .success(let apiResponse):
-                        print("API Response: \(apiResponse)") // API 응답 로그 추가
+                        print("API Response: \(apiResponse)")
                         if apiResponse.status == "success" {
+                            if let profileData = apiResponse.data {
+                                UserDefaults.standard.set(profileData.nickname, forKey: "nickname")
+                                UserDefaults.standard.set(profileData.photo, forKey: "photo")
+                            }
                             self?.isProfiledError = false
                             self?.isProfileShowing = true
                             print("Profile updated successfully.")

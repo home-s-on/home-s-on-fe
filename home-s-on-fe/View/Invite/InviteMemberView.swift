@@ -26,11 +26,11 @@ struct InviteMemberView: View {
                 
                     
             }.padding(.bottom, 300)
-            .onAppear {
-                invitecodeVM.fetchInviteCode { code in
-                    self.invite_code = code
-                }
-            }
+//            .onAppear {
+//                invitecodeVM.fetchInviteCode { code in
+//                    self.invite_code = code
+//                }
+//            }
             
             
             VStack{

@@ -24,10 +24,6 @@ struct LoginView: View {
                             }
                         }
                     
-                    LoginButton(loginType: .naver, text: "네이버로 시작하기") {
-                        selectedLoginMethod = "naver"
-                    }
-                    
                     LoginButton(loginType: .google, text: "Google로 시작하기") {
                         selectedLoginMethod = "google"
                     }
