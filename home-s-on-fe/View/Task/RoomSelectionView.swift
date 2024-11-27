@@ -10,79 +10,83 @@ import Alamofire
 
 struct RoomSelectionView: View {
     @Binding var selectedRoom: HouseRoom?
-    @Environment(\.dismiss) private var dismiss
-    @StateObject private var viewModel = HouseRoomViewModel()
-    @State private var isEditing = false
-    @State private var showingAddSheet = false
+       @Environment(\.dismiss) private var dismiss
+       @StateObject private var viewModel = HouseRoomViewModel()
+       @State private var isEditing = false
+       @State private var showingAddSheet = false
     
     var body: some View {
-        List {
-            if viewModel.isLoading {
-                ProgressView("로딩 중...")
-                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
-            } else {
-                ForEach(viewModel.rooms) { room in
-                    HStack {
-                        // 컬러 도트
-                        Circle()
-                            .fill(getColor(for: room.room_name))
-                            .frame(width: 10, height: 10)
-                        
-                        Text(room.room_name)
-                            .padding(.leading, 8)
-                        
-                        Spacer()
-                        
-                        if isEditing {
-                            Button("Delete") {
-                                viewModel.deleteRoom(id: room.id)
+            List {
+                if viewModel.isLoading {
+                    ProgressView("로딩 중...")
+                        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
+                } else {
+                    ForEach(viewModel.rooms) { room in
+                        HStack {
+                            Circle()
+                                .fill(getColor(for: room.room_name))
+                                .frame(width: 10, height: 10)
+                            
+                            Text(room.room_name)
+                                .padding(.leading, 8)
+                            
+                            Spacer()
+                            
+                            if isEditing {
+                                Button("Delete") {
+                                    viewModel.deleteRoom(id: room.id)
+                                }
+                                .foregroundColor(.red)
+                            } else if selectedRoom?.id == room.id {
+                                Image(systemName: "checkmark")
+                                    .foregroundColor(.blue)
                             }
-                            .foregroundColor(.red)
+                        }
+                        .contentShape(Rectangle())
+                        .onTapGesture {
+                            if !isEditing {
+                                selectedRoom = room
+                                dismiss()
+                            }
+                        }
+                        .background(selectedRoom?.id == room.id ? Color.blue.opacity(0.1) : Color.clear)
+                    }
+                }
+            }
+            .navigationTitle("구역 선택")
+            .navigationBarItems(
+                leading: Button("취소") {
+                    dismiss()
+                },
+                trailing: HStack {
+                    Button(isEditing ? "Done" : "Edit") {
+                        isEditing.toggle()
+                    }
+                    if !isEditing {
+                        Button(action: {
+                            showingAddSheet = true
+                        }) {
+                            Image(systemName: "plus")
                         }
                     }
-                    .contentShape(Rectangle())
-                    .onTapGesture {
-                        selectedRoom = room
-                        dismiss()
-                    }
+                }
+            )
+            .sheet(isPresented: $showingAddSheet) {
+                NavigationView {
+                    AddRoomView(viewModel: viewModel)
                 }
             }
-        }
-        .navigationTitle("구역 선택")
-        .navigationBarItems(
-            leading: Button("취소") {
-                dismiss()
-            },
-            trailing: HStack {
-                Button(isEditing ? "Done" : "Edit") {
-                    isEditing.toggle()
+            .onAppear {
+                viewModel.fetchRooms()
+            }
+            .alert("오류", isPresented: .constant(viewModel.errorMessage != nil)) {
+                Button("확인") {
+                    viewModel.errorMessage = nil
                 }
-                if !isEditing {
-                    Button(action: {
-                        showingAddSheet = true
-                    }) {
-                        Image(systemName: "plus")
-                    }
-                }
-            }
-        )
-        .sheet(isPresented: $showingAddSheet) {
-            NavigationView {
-                AddRoomView(viewModel: viewModel)
+            } message: {
+                Text(viewModel.errorMessage ?? "")
             }
         }
-        .onAppear {
-            print("View appeared, fetching rooms...")
-            viewModel.fetchRooms()
-        }
-        .alert("오류", isPresented: .constant(viewModel.errorMessage != nil)) {
-            Button("확인") {
-                viewModel.errorMessage = nil
-            }
-        } message: {
-            Text(viewModel.errorMessage ?? "")
-        }
-    }
     
     //추후 디자인 수정 예정
     private func getColor(for roomName: String) -> Color {
