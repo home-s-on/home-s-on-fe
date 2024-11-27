@@ -76,14 +76,11 @@ struct ProfileEditView: View {
                 VStack(alignment: .leading) {
                     Text("별명으로 사용할 이름을 입력하세요")
                         .foregroundColor(Color.gray)
-                        .font(.system(size: 15, weight: .regular))
                         .padding(.top)
-                        .padding(.horizontal)
-                    
-                    TextField("nickname", text: $nickname)
-                        .textFieldStyle(RoundedBorderTextFieldStyle())
-                        .padding(.horizontal)
+                        .font(.headline)
+                    CustomTextField(icon: "", placeholder: "nickname", text: $nickname)
                 }
+                .padding(.horizontal)
                 .padding(.bottom, 260)
 
                 NavigationLink(
