@@ -8,8 +8,9 @@
 import SwiftUI
 
 struct InviteMemberView: View {
-    @EnvironmentObject var invitecodeVM: InviteCodeViewModel
-    @EnvironmentObject var kakaoshareVM: KakaoShareViewModel
+    
+    //@EnvironmentObject var kakaoshareVM: KakaoShareViewModel
+    @StateObject var kakaoshareVM = KakaoShareViewModel()
     @State private var inviteCode: String = UserDefaults.standard.string(forKey: "inviteCode") ?? ""
     
     var body: some View {
@@ -29,7 +30,7 @@ struct InviteMemberView: View {
                 WideImageButton(icon: "", title: "초대 코드 보내기", backgroundColor: .blue)
                 {
                     print("초대 코드 보내기")
-                    kakaoshareVM.sendKakaoMessage(text: invitecodeVM.invitecode)
+                    kakaoshareVM.sendKakaoMessage(text: inviteCode)
                 }
             }
             
@@ -38,7 +39,7 @@ struct InviteMemberView: View {
 
 
 #Preview {
-    let invite = InviteCodeViewModel()
+    
     let kakaoshare = KakaoShareViewModel()
-    InviteMemberView().environmentObject(invite).environmentObject(kakaoshare)
+    InviteMemberView().environmentObject(kakaoshare)
 }
