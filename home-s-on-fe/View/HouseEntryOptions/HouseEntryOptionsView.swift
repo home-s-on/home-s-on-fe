@@ -9,10 +9,11 @@ import SwiftUI
 
 struct HouseEntryOptionsView: View {
     @AppStorage("nickname") var nickname: String = ""
-    @State private var navigationPath = NavigationPath()
+    @State private var showInviteMemberView = false
+    @State private var showEnterInviteCodeView = false
         
         var body: some View {
-            NavigationStack(path: $navigationPath) {
+            NavigationStack {
                 VStack(spacing: 20) {
                     Spacer()
                     
@@ -34,7 +35,7 @@ struct HouseEntryOptionsView: View {
                     VStack(spacing: 16) {
                         EntryOptionButton(
                             action: {
-                                navigationPath.append("InviteMember")
+                                showInviteMemberView = true
                             },
                             imageName: "envelope",
                             title: "멤버초대",
@@ -44,7 +45,7 @@ struct HouseEntryOptionsView: View {
                         
                         EntryOptionButton(
                             action: {
-                                print("집 입장하기 버튼 클릭")
+                                showEnterInviteCodeView = true
                             },
                             imageName: "house.fill",
                             title: "집 입장하기",
@@ -65,13 +66,12 @@ struct HouseEntryOptionsView: View {
                     Spacer()
                 }
                 .padding()
-                .navigationDestination(for: String.self) { destination in
-                    switch destination {
-                    case "InviteMember":
-                        InviteMemberView()
-                    default:
-                        EmptyView()
-                    }
+                .navigationDestination(isPresented: $showInviteMemberView) {
+                    InviteMemberView()
+                    
+                }
+                .navigationDestination(isPresented: $showEnterInviteCodeView) {
+                    EnterInviteCodeView()
                 }
             }
         }

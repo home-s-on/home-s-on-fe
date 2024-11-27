@@ -11,6 +11,7 @@ struct ProfileEditView: View {
     @State private var selectedImage: UIImage?
     @State private var isUsingDefaultImage: Bool = true
     @State private var photoURL: URL?
+    @State private var navigateToHouseEntry = false
     
     let defaultImageName = "round-profile"
     
@@ -63,53 +64,47 @@ struct ProfileEditView: View {
                 }
                 .padding(.horizontal)
                 .padding(.bottom, 260)
-
-                NavigationLink(
-                    destination: HouseEntryOptionsView(),
-                    isActive: $profileVM.isNavigatingToEntry
-                ) {
-                    Button(action: {
-                        updateProfile()
-                    }) {
-                        Text("완료")
-                            .frame(maxWidth: .infinity)
-                            .padding()
-                            .background(Color.blue)
-                            .foregroundColor(.white)
-                            .cornerRadius(10)
-                    }
+                
+                Button(action: {
+                    updateProfile()
+                }) {
+                    Text("완료")
+                        .frame(maxWidth: .infinity)
+                        .padding()
+                        .background(Color.blue)
+                        .foregroundColor(.white)
+                        .cornerRadius(10)
                 }
                 .padding(.horizontal)
             }
             .alert("프로필 설정 확인", isPresented: $profileVM.isProfileShowing) {
                 Button("확인") {
-                    print(profileVM.isProfiledError)
-                    print(profileVM.isNavigatingToEntry)
-                    DispatchQueue.main.async {
-                        if !profileVM.isProfiledError {
-                            profileVM.isNavigatingToEntry = true
-                        }
-                        profileVM.isProfileShowing = false
+                    if !profileVM.isProfiledError {
+                        navigateToHouseEntry = true
                     }
+                    profileVM.isProfileShowing = false
                 }
             } message: {
                 Text(profileVM.message)
             }
+            .fullScreenCover(isPresented: $navigateToHouseEntry, content: {
+                HouseEntryOptionsView()
+            })
         }
     }
 
-    private func updateProfile() {
-        let photo: UIImage?
-        if isUsingDefaultImage {
-            photo = UIImage(named: defaultImageName)
-        } else {
-            photo = selectedImage
-        }
+                    private func updateProfile() {
+                        let photo: UIImage?
+                        if isUsingDefaultImage {
+                            photo = UIImage(named: defaultImageName)
+                        } else {
+                            photo = selectedImage
+                        }
 
-        print("Profile edit started.")
-        profileVM.profileEdit(nickname: nickname, photo: photo)
-    }
-}
+                        print("Profile edit started.")
+                        profileVM.profileEdit(nickname: nickname, photo: photo)
+                    }
+                }
 
 struct ImagePicker: UIViewControllerRepresentable {
     @Binding var image: UIImage?
