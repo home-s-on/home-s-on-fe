@@ -54,7 +54,6 @@ class LoginViewModel: ObservableObject {
                                 self.isLoggedIn = true
                                 UserDefaults.standard.set(loginData.token, forKey: "token")
                                 UserDefaults.standard.set(loginData.user.email, forKey: "email")
-                                UserDefaults.standard.set(loginData.user.nickname, forKey: "nickname")
                                 UserDefaults.standard.set(loginData.user.photo, forKey: "photo")
 //                                self.profileViewModel?.token = loginData.token
                                 print("로그인 성공! 토큰:", loginData.token)
