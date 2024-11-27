@@ -9,13 +9,29 @@ import SwiftUI
 
 struct HouseEntryOptionsView: View {
     @AppStorage("nickname") var nickname: String = ""
+    @State private var showAlert = false
+    @State private var navigateToNewView = false
     @State private var showInviteMemberView = false
     @State private var showEnterInviteCodeView = false
+    var body: some View {
+        NavigationView {
+            VStack(spacing: 20) {
+                Spacer()
+                
+                // 제목
+                VStack(spacing: 8) {
+                    Text("\(nickname ?? "사용자") 님,")
+                        .font(.title)
+                        .fontWeight(.bold)
+                        .multilineTextAlignment(.center)
+
+    
         
         var body: some View {
             NavigationStack {
                 VStack(spacing: 20) {
                     Spacer()
+
                     
                     // 제목
                     VStack(spacing: 8) {
@@ -32,6 +48,7 @@ struct HouseEntryOptionsView: View {
                     
                     Spacer()
                     
+
                     VStack(spacing: 16) {
                         EntryOptionButton(
                             action: {
@@ -55,13 +72,30 @@ struct HouseEntryOptionsView: View {
                     .padding(.horizontal, 20)
                     
                     Spacer()
-                    
+              VStack {
                     Text("혼자 사용할래요!")
                         .font(.footnote)
                         .foregroundColor(.blue)
                         .onTapGesture {
                             print("혼자 사용하기 클릭")
+                            showAlert = true
                         }
+                    NavigationLink(destination: MainView(), isActive: $navigateToNewView) {
+                        EmptyView()
+                        
+                    }
+              }
+               .alert(isPresented: $showAlert) {
+                    Alert(
+                        title: Text("혼자 사용하기"),
+                        message: Text("멤버 없이 앱 사용하시겠습니까?\n나중에 멤버를 추가하려면 \n설정 창에서 연결 할 수 있습니다."),
+                        primaryButton: .cancel({
+                            Text("취소")
+                        }), secondaryButton: .default(Text("확인"), action: {
+                            print("확인")
+                            navigateToNewView = true
+                        }))
+                }
                     
                     Spacer()
                 }
@@ -73,6 +107,7 @@ struct HouseEntryOptionsView: View {
                 .navigationDestination(isPresented: $showEnterInviteCodeView) {
                     EnterInviteCodeView()
                 }
+
             }
         }
     }
