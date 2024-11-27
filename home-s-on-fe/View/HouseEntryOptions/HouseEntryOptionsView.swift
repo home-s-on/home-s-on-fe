@@ -9,6 +9,8 @@ import SwiftUI
 
 struct HouseEntryOptionsView: View {
     @AppStorage("nickname") var nickname: String = ""
+    @State private var showAlert = false
+    @State private var navigateToNewView = false
     var body: some View {
         NavigationView {
             VStack(spacing: 20) {
@@ -55,12 +57,30 @@ struct HouseEntryOptionsView: View {
                 Spacer()
                 
                 // 하단 텍스트
-                Text("혼자 사용할래요!")
-                    .font(.footnote)
-                    .foregroundColor(.blue)
-                    .onTapGesture {
-                        print("혼자 사용하기 클릭")
+                VStack {
+                    Text("혼자 사용할래요!")
+                        .font(.footnote)
+                        .foregroundColor(.blue)
+                        .onTapGesture {
+                            print("혼자 사용하기 클릭")
+                            showAlert = true
+                        }
+                    NavigationLink(destination: MainView(), isActive: $navigateToNewView) {
+                        EmptyView()
+                        
                     }
+                }
+                .alert(isPresented: $showAlert) {
+                    Alert(
+                        title: Text("혼자 사용하기"),
+                        message: Text("멤버 없이 앱 사용하시겠습니까?\n나중에 멤버를 추가하려면 \n설정 창에서 연결 할 수 있습니다."),
+                        primaryButton: .cancel({
+                            Text("취소")
+                        }), secondaryButton: .default(Text("확인"), action: {
+                            print("확인")
+                            navigateToNewView = true
+                        }))
+                }
                 
                 Spacer()
             }

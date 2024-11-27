@@ -24,6 +24,7 @@ struct MainView: View {
                 }
         }
         .environmentObject(taskVM)
+        .navigationBarBackButtonHidden(true)
     }
 }
 
