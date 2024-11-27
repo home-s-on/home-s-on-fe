@@ -13,20 +13,6 @@ struct HouseEntryOptionsView: View {
     @State private var navigateToNewView = false
     @State private var showInviteMemberView = false
     @State private var showEnterInviteCodeView = false
-    var body: some View {
-        NavigationView {
-            VStack(spacing: 20) {
-                Spacer()
-                
-                // 제목
-                VStack(spacing: 8) {
-                    Text("\(nickname ?? "사용자") 님,")
-                        .font(.title)
-                        .fontWeight(.bold)
-                        .multilineTextAlignment(.center)
-
-    
-        
         var body: some View {
             NavigationStack {
                 VStack(spacing: 20) {

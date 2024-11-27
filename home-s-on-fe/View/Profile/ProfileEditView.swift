@@ -3,7 +3,8 @@ import SwiftUI
 
 struct ProfileEditView: View {
     @EnvironmentObject var profileVM: ProfileViewModel
-    @EnvironmentObject var houseEntryOptionsVM: HouseEntryOptionsViewModel
+//    @EnvironmentObject var houseEntryOptionsVM: HouseEntryOptionsViewModel
+    @StateObject var houseEntryOptionsVM = HouseEntryOptionsViewModel()
     @State private var nickname: String = UserDefaults.standard.string(forKey: "nickname") ?? ""
     @State private var photo: String = UserDefaults.standard.string(forKey: "photo") ?? ""
     @State private var showImagePicker = false
@@ -19,7 +20,7 @@ struct ProfileEditView: View {
         NavigationStack {
             VStack {
                 ZStack {
-                    let photoURLString = UserDefaults.standard.string(forKey: "photo") ?? ""
+                    let photoURLString = photo
                     if !photoURLString.isEmpty, let photoURL = URL(string: "\(APIEndpoints.blobURL)/\(photoURLString)") {
                         KFImage(photoURL)
                             .resizable()
@@ -32,7 +33,7 @@ struct ProfileEditView: View {
                     }
                     
                     RoundImage(image: UIImage(systemName: "pencil.circle")!, width: .constant(50.0), height: .constant(50.0))
-                        .background(Circle().fill(Color(red: 33/255, green: 174/255, blue: 225/255)).frame(width: 55, height: 55))
+                        .background(Circle().fill(Color(red: 33/255, green: 174/255, blue: 225/255)).frame(width: 50, height: 55))
                         .offset(x: 60, y: 60)
                 }
                 .onTapGesture {
