@@ -12,6 +12,7 @@ struct InviteMemberView: View {
     @StateObject var kakaoshareVM = KakaoShareViewModel()
     @State private var inviteCode: String = UserDefaults.standard.string(forKey: "inviteCode") ?? ""
     @State private var navigateToView = false
+    var isFromSetting = false
     var body: some View {
         NavigationStack{
             VStack(alignment: .leading) {
@@ -24,7 +25,7 @@ struct InviteMemberView: View {
             
             
             VStack{
-                WideImageButton(icon: "", title: "집 입장하기", backgroundColor: .blue) {
+                WideImageButton(icon: "", title: "집 입장하기", backgroundColor: .blue, isHidden: isFromSetting) {
                     print("집 입장")
                     navigateToView = true
                 }
@@ -34,9 +35,9 @@ struct InviteMemberView: View {
                     kakaoshareVM.sendKakaoMessage(text: inviteCode)
                 }
             }
-            .navigationDestination(isPresented: $navigateToView) {
+            .fullScreenCover(isPresented: $navigateToView, content: {
                 MainView()
-            }
+            })
             
         }
     }
