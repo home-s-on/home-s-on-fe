@@ -363,7 +363,6 @@
 		E48BFB352CEAD1FB00AC13FC /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				E48BFB362CEAD1FB00AC13FC /* home-s-on-fe */,
 				E48BFB342CEAD1FB00AC13FC /* home-s-on-fe.app */,
 			);
 			name = Products;
