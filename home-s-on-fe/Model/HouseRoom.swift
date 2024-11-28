@@ -9,7 +9,7 @@ import Foundation
 
 struct HouseRoom: Codable, Identifiable {
     let id: Int
-    let house_id: Int
+    let house_id: Int?
     let room_name: String
 }
 
