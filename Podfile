@@ -10,5 +10,7 @@ target 'home-s-on-fe' do
   pod 'KakaoSDKShare'
   pod 'KakaoSDKTemplate'
   pod 'KakaoSDKAuth'
+  pod 'KakaoSDKUser'
+
 
 end

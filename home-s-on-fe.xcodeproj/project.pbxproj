@@ -7,23 +7,27 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		D4C260682CF40ADD0019D746 /* Config.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = D4C260672CF40ADD0019D746 /* Config.xcconfig */; };
-		D50637C5E989D46AB2D06A87 /* Pods_home_s_on_fe.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 124A3741E8639A686DD6D36D /* Pods_home_s_on_fe.framework */; };
-		E432B86E2CED7D1A006C3689 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = E432B86D2CED7D1A006C3689 /* Alamofire */; settings = {ATTRIBUTES = (Required, ); }; };
+		648C6E5B2CF422A800C03BAD /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 648C6E5A2CF422A800C03BAD /* Alamofire */; };
+		64E8DC5F2CEE18520049E624 /* Config.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 64E8DC5E2CEE18520049E624 /* Config.xcconfig */; };
+		64ECCF732CF48AED00282D41 /* KakaoSDKCommon in Frameworks */ = {isa = PBXBuildFile; productRef = 648C6D822CF421D500C03BAD /* KakaoSDKCommon */; };
+		64ECCF742CF48AED00282D41 /* KakaoSDKShare in Frameworks */ = {isa = PBXBuildFile; productRef = 648C6DC92CF4221D00C03BAD /* KakaoSDKShare */; };
+		64ECCF752CF48AED00282D41 /* KakaoSDKTemplate in Frameworks */ = {isa = PBXBuildFile; productRef = 648C6DCB2CF4222B00C03BAD /* KakaoSDKTemplate */; };
+		64ECCF762CF48AED00282D41 /* KakaoSDKAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 648C6E122CF4224100C03BAD /* KakaoSDKAuth */; };
+		99A369F2BEF04590E52BF576 /* Pods_home_s_on_fe.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 82CF299C0F57910554B9CF0A /* Pods_home_s_on_fe.framework */; };
 		E432B8712CED7E71006C3689 /* SVProgressHUD in Frameworks */ = {isa = PBXBuildFile; productRef = E432B8702CED7E71006C3689 /* SVProgressHUD */; };
 		E445DE0B2CF01993008F632E /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = E445DE0A2CF01993008F632E /* Kingfisher */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		124A3741E8639A686DD6D36D /* Pods_home_s_on_fe.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_home_s_on_fe.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		2279A13CAA2D851F14968D1C /* Pods-home-s-on-fe.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-home-s-on-fe.debug.xcconfig"; path = "Target Support Files/Pods-home-s-on-fe/Pods-home-s-on-fe.debug.xcconfig"; sourceTree = "<group>"; };
-		D4C260672CF40ADD0019D746 /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
-		D5EFB17784CE1C06EE03078E /* Pods-home-s-on-fe.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-home-s-on-fe.release.xcconfig"; path = "Target Support Files/Pods-home-s-on-fe/Pods-home-s-on-fe.release.xcconfig"; sourceTree = "<group>"; };
+		64E8DC5E2CEE18520049E624 /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
+		82CF299C0F57910554B9CF0A /* Pods_home_s_on_fe.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_home_s_on_fe.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		BDBCBC1974C689F5B9234BB2 /* Pods-home-s-on-fe.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-home-s-on-fe.release.xcconfig"; path = "Target Support Files/Pods-home-s-on-fe/Pods-home-s-on-fe.release.xcconfig"; sourceTree = "<group>"; };
+		CE7E0D7960F03D46D4515D8D /* Pods-home-s-on-fe.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-home-s-on-fe.debug.xcconfig"; path = "Target Support Files/Pods-home-s-on-fe/Pods-home-s-on-fe.debug.xcconfig"; sourceTree = "<group>"; };
 		E48BFB342CEAD1FB00AC13FC /* home-s-on-fe.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "home-s-on-fe.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		D4C2610F2CF40D510019D746 /* Exceptions for "home-s-on-fe" folder in "home-s-on-fe" target */ = {
+		64A788D02CF2E62B006D60D3 /* Exceptions for "home-s-on-fe" folder in "home-s-on-fe" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Info.plist,
@@ -36,7 +40,7 @@
 		E48BFB362CEAD1FB00AC13FC /* home-s-on-fe */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
-				D4C2610F2CF40D510019D746 /* Exceptions for "home-s-on-fe" folder in "home-s-on-fe" target */,
+				64A788D02CF2E62B006D60D3 /* Exceptions for "home-s-on-fe" folder in "home-s-on-fe" target */,
 			);
 			path = "home-s-on-fe";
 			sourceTree = "<group>";
@@ -48,29 +52,25 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				64ECCF762CF48AED00282D41 /* KakaoSDKAuth in Frameworks */,
+				64ECCF752CF48AED00282D41 /* KakaoSDKTemplate in Frameworks */,
+				64ECCF742CF48AED00282D41 /* KakaoSDKShare in Frameworks */,
+				64ECCF732CF48AED00282D41 /* KakaoSDKCommon in Frameworks */,
 				E445DE0B2CF01993008F632E /* Kingfisher in Frameworks */,
+				648C6E5B2CF422A800C03BAD /* Alamofire in Frameworks */,
+				99A369F2BEF04590E52BF576 /* Pods_home_s_on_fe.framework in Frameworks */,
 				E432B8712CED7E71006C3689 /* SVProgressHUD in Frameworks */,
-				E432B86E2CED7D1A006C3689 /* Alamofire in Frameworks */,
-				D50637C5E989D46AB2D06A87 /* Pods_home_s_on_fe.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		659A28EA42D2345B0AB2C35F /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				124A3741E8639A686DD6D36D /* Pods_home_s_on_fe.framework */,
-			);
-			name = Frameworks;
-			sourceTree = "<group>";
-		};
 		BCA16CBC07BAF454B68A639F /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				2279A13CAA2D851F14968D1C /* Pods-home-s-on-fe.debug.xcconfig */,
-				D5EFB17784CE1C06EE03078E /* Pods-home-s-on-fe.release.xcconfig */,
+				CE7E0D7960F03D46D4515D8D /* Pods-home-s-on-fe.debug.xcconfig */,
+				BDBCBC1974C689F5B9234BB2 /* Pods-home-s-on-fe.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -78,20 +78,28 @@
 		E48BFB2B2CEAD1FB00AC13FC = {
 			isa = PBXGroup;
 			children = (
-				D4C260672CF40ADD0019D746 /* Config.xcconfig */,
-				E48BFB362CEAD1FB00AC13FC /* home-s-on-fe */,
+				64E8DC5E2CEE18520049E624 /* Config.xcconfig */,
 				E48BFB352CEAD1FB00AC13FC /* Products */,
 				BCA16CBC07BAF454B68A639F /* Pods */,
-				659A28EA42D2345B0AB2C35F /* Frameworks */,
+				EB0CF434363EF9073E86E158 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
 		E48BFB352CEAD1FB00AC13FC /* Products */ = {
 			isa = PBXGroup;
 			children = (
+				E48BFB362CEAD1FB00AC13FC /* home-s-on-fe */,
 				E48BFB342CEAD1FB00AC13FC /* home-s-on-fe.app */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		EB0CF434363EF9073E86E158 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				82CF299C0F57910554B9CF0A /* Pods_home_s_on_fe.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -101,11 +109,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = E48BFB422CEAD1FC00AC13FC /* Build configuration list for PBXNativeTarget "home-s-on-fe" */;
 			buildPhases = (
-				609F89B2A323F7AC4A968BD0 /* [CP] Check Pods Manifest.lock */,
+				563BEF7E9A681C9154E32A76 /* [CP] Check Pods Manifest.lock */,
 				E48BFB302CEAD1FB00AC13FC /* Sources */,
 				E48BFB312CEAD1FB00AC13FC /* Frameworks */,
 				E48BFB322CEAD1FB00AC13FC /* Resources */,
-				C0EED8204E9C1D06DDA0747D /* [CP] Embed Pods Frameworks */,
+				D24D482E33E3425A7EA07B62 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -116,9 +124,13 @@
 			);
 			name = "home-s-on-fe";
 			packageProductDependencies = (
-				E432B86D2CED7D1A006C3689 /* Alamofire */,
 				E432B8702CED7E71006C3689 /* SVProgressHUD */,
 				E445DE0A2CF01993008F632E /* Kingfisher */,
+				648C6D822CF421D500C03BAD /* KakaoSDKCommon */,
+				648C6DC92CF4221D00C03BAD /* KakaoSDKShare */,
+				648C6DCB2CF4222B00C03BAD /* KakaoSDKTemplate */,
+				648C6E122CF4224100C03BAD /* KakaoSDKAuth */,
+				648C6E5A2CF422A800C03BAD /* Alamofire */,
 			);
 			productName = "home-s-on-fe";
 			productReference = E48BFB342CEAD1FB00AC13FC /* home-s-on-fe.app */;
@@ -149,9 +161,10 @@
 			mainGroup = E48BFB2B2CEAD1FB00AC13FC;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
-				E432B86C2CED7D1A006C3689 /* XCRemoteSwiftPackageReference "Alamofire" */,
 				E432B86F2CED7E71006C3689 /* XCRemoteSwiftPackageReference "SVProgressHUD" */,
 				E445DE092CF01993008F632E /* XCRemoteSwiftPackageReference "Kingfisher" */,
+				648C6D812CF421D500C03BAD /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */,
+				648C6E592CF422A800C03BAD /* XCRemoteSwiftPackageReference "Alamofire" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = E48BFB352CEAD1FB00AC13FC /* Products */;
@@ -168,14 +181,14 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D4C260682CF40ADD0019D746 /* Config.xcconfig in Resources */,
+				64E8DC5F2CEE18520049E624 /* Config.xcconfig in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		609F89B2A323F7AC4A968BD0 /* [CP] Check Pods Manifest.lock */ = {
+		563BEF7E9A681C9154E32A76 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -197,7 +210,7 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		C0EED8204E9C1D06DDA0747D /* [CP] Embed Pods Frameworks */ = {
+		D24D482E33E3425A7EA07B62 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -229,7 +242,7 @@
 /* Begin XCBuildConfiguration section */
 		E48BFB402CEAD1FC00AC13FC /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = D4C260672CF40ADD0019D746 /* Config.xcconfig */;
+			baseConfigurationReference = 64E8DC5E2CEE18520049E624 /* Config.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -293,6 +306,7 @@
 		};
 		E48BFB412CEAD1FC00AC13FC /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 64E8DC5E2CEE18520049E624 /* Config.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -349,14 +363,15 @@
 		};
 		E48BFB432CEAD1FC00AC13FC /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 2279A13CAA2D851F14968D1C /* Pods-home-s-on-fe.debug.xcconfig */;
+			baseConfigurationReference = CE7E0D7960F03D46D4515D8D /* Pods-home-s-on-fe.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = "home-s-on-fe/home-s-on-fe.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"home-s-on-fe/Preview Content\"";
-				DEVELOPMENT_TEAM = X794J6F263;
+				DEVELOPMENT_TEAM = 8YXQMG6LKS;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "home-s-on-fe/Info.plist";
@@ -370,7 +385,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "kr.or.womanup.nambu.song.home-s-on-fe";
+				PRODUCT_BUNDLE_IDENTIFIER = kr.or.womanup.nambu.song.homesonfe;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -380,14 +395,15 @@
 		};
 		E48BFB442CEAD1FC00AC13FC /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = D5EFB17784CE1C06EE03078E /* Pods-home-s-on-fe.release.xcconfig */;
+			baseConfigurationReference = BDBCBC1974C689F5B9234BB2 /* Pods-home-s-on-fe.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = "home-s-on-fe/home-s-on-fe.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"home-s-on-fe/Preview Content\"";
-				DEVELOPMENT_TEAM = X794J6F263;
+				DEVELOPMENT_TEAM = 8YXQMG6LKS;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "home-s-on-fe/Info.plist";
@@ -401,7 +417,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "kr.or.womanup.nambu.song.home-s-on-fe";
+				PRODUCT_BUNDLE_IDENTIFIER = kr.or.womanup.nambu.song.homesonfe;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -433,7 +449,15 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		E432B86C2CED7D1A006C3689 /* XCRemoteSwiftPackageReference "Alamofire" */ = {
+		648C6D812CF421D500C03BAD /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/kakao/kakao-ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.23.0;
+			};
+		};
+		648C6E592CF422A800C03BAD /* XCRemoteSwiftPackageReference "Alamofire" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/Alamofire/Alamofire.git";
 			requirement = {
@@ -460,9 +484,29 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		E432B86D2CED7D1A006C3689 /* Alamofire */ = {
+		648C6D822CF421D500C03BAD /* KakaoSDKCommon */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = E432B86C2CED7D1A006C3689 /* XCRemoteSwiftPackageReference "Alamofire" */;
+			package = 648C6D812CF421D500C03BAD /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */;
+			productName = KakaoSDKCommon;
+		};
+		648C6DC92CF4221D00C03BAD /* KakaoSDKShare */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 648C6D812CF421D500C03BAD /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */;
+			productName = KakaoSDKShare;
+		};
+		648C6DCB2CF4222B00C03BAD /* KakaoSDKTemplate */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 648C6D812CF421D500C03BAD /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */;
+			productName = KakaoSDKTemplate;
+		};
+		648C6E122CF4224100C03BAD /* KakaoSDKAuth */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 648C6D812CF421D500C03BAD /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */;
+			productName = KakaoSDKAuth;
+		};
+		648C6E5A2CF422A800C03BAD /* Alamofire */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 648C6E592CF422A800C03BAD /* XCRemoteSwiftPackageReference "Alamofire" */;
 			productName = Alamofire;
 		};
 		E432B8702CED7E71006C3689 /* SVProgressHUD */ = {

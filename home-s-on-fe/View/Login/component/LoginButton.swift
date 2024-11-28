@@ -35,7 +35,7 @@ struct LoginButton: View {
                     }
                 )
                 .cornerRadius(10)
-                
+
                 loginType.logoImage
                     .foregroundColor(loginType.textColor)
                     .offset(x: 10)

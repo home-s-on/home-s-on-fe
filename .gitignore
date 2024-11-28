@@ -2,5 +2,5 @@
 Pods/
 *.xcworkspace
 Info.plist
-Config.xcconfig
-.DS_store
+*.xcconfig
+.DS_Store

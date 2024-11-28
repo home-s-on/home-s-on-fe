@@ -8,7 +8,7 @@ import Foundation
 
 
 struct House: Codable {
-    let houseId: Int
+    let houseId: Int?
     let nickname: String
     let inviteCode: String
     
@@ -18,6 +18,7 @@ struct House: Codable {
         case inviteCode = "inviteCode"
     }
 }
+
 struct InviteCode: Codable {
     let status: String
     let inviteCode: String
