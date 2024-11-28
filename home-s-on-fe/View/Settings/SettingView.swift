@@ -10,7 +10,7 @@ import SwiftUI
 struct SettingView: View {
     var body: some View {
         
-        VStack (spacing: 30){
+        VStack (spacing: 40){
             
             WideImageButton(icon: "", title: "멤버 확인하기", backgroundColor: .white, borderColer: .gray, textColor: .black) {
                 
@@ -21,6 +21,14 @@ struct SettingView: View {
             WideImageButton(icon: "", title: "초대 코드", backgroundColor: .white, borderColer: .gray, textColor: .black) {
                 
             }
+            .padding(.bottom, 300)
+            Text("탈퇴할래요!")
+                .font(.footnote)
+                .foregroundColor(.blue)
+                .onTapGesture {
+                    print("혼자 사용하기 클릭")
+                    
+                }
             
         }
         
