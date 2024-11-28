@@ -67,10 +67,7 @@ struct HouseEntryOptionsView: View {
                             print("혼자 사용하기 클릭")
                             showAlert = true
                         }
-                    NavigationLink(destination: MainView(), isActive: $navigateToNewView) {
-                        EmptyView()
-                        
-                    }
+                    
               }
                .alert(isPresented: $showAlert) {
                     Alert(
@@ -93,6 +90,9 @@ struct HouseEntryOptionsView: View {
                 }
                 .navigationDestination(isPresented: $showEnterInviteCodeView) {
                     EnterInviteCodeView()
+                }
+                .navigationDestination(isPresented: $navigateToNewView) {
+                    MainView()
                 }
 
             }
