@@ -352,7 +352,6 @@
 		E48BFB2B2CEAD1FB00AC13FC = {
 			isa = PBXGroup;
 			children = (
-
 				640290BE2CF858AE001F5545 /* Config.xcconfig */,
 				E48BFB362CEAD1FB00AC13FC /* home-s-on-fe */,
 				E48BFB352CEAD1FB00AC13FC /* Products */,
@@ -456,9 +455,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-
 				640290BF2CF858AE001F5545 /* Config.xcconfig in Resources */,
-
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
