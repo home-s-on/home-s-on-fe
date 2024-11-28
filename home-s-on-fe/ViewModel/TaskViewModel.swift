@@ -99,4 +99,44 @@ class TaskViewModel: ObservableObject {
                 }
             }
     }
-}
+    
+    // 지난 할일 가져오기
+        func fetchPastTasks() {
+            guard !isLoading else { return }
+            isLoading = true
+            
+            guard let token = UserDefaults.standard.string(forKey: "token") else {
+                isLoading = false
+                isFetchError = true
+                message = "로그인이 필요합니다"
+                return
+            }
+            
+            let headers: HTTPHeaders = [
+                "Authorization": "Bearer \(token)",
+                "Content-Type": "application/json"
+            ]
+            
+            AF.request("\(APIEndpoints.baseURL)/tasks/pasttasks",
+                      method: .get,
+                      headers: headers)
+                .validate()
+                .responseDecodable(of: TaskResponse<Task>.self) { [weak self] response in
+                    self?.isLoading = false
+                    
+                    switch response.result {
+                    case .success(let taskResponse):
+                        self?.tasks = taskResponse.data
+                        if self?.tasks.isEmpty ?? true {
+                            self?.isFetchError = true
+                            self?.message = "지난 할일이 없습니다"
+                        }
+                    case .failure(let error):
+                        print("Error:", error)
+                        self?.isFetchError = true
+                        self?.message = "지난 할일을 불러올 수 없습니다"
+                    }
+                }
+        }
+    }
+
