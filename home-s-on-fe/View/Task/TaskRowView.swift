@@ -6,6 +6,7 @@
 //
 import SwiftUI
 
+
 struct TaskRowView: View {
     let task: Task
     
@@ -29,7 +30,7 @@ struct TaskRowView: View {
             }
             
             if let houseRoom = task.houseRoom {
-                Text(houseRoom.roomName)
+                Text(houseRoom.room_name)
                     .font(.system(size: 12))
                     .foregroundColor(.blue)
             }
@@ -54,10 +55,16 @@ struct TaskRowView: View {
         complete: true,
         createdAt: "2024-11-22",
         updatedAt: "2024-11-22",
-        houseRoom: HouseRoom(id: 1, roomName: "거실")
+        houseRoom: HouseRoom(id: 1,house_id: 1,room_name: "거실"),
+        assignees: [
+            TaskUser(
+                id: 1,
+                nickname: "Park"
+            )
+        ]
     )
     
-    return TaskRowView(task: sampleTask)
+    TaskRowView(task: sampleTask)
         .padding()
         .background(Color(.systemBackground))
 }

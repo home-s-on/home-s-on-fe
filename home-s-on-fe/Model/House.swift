@@ -11,6 +11,12 @@ struct House: Codable {
     let houseId: Int?
     let nickname: String
     let inviteCode: String
+    
+    enum CodingKeys: String, CodingKey {
+        case houseId = "houseId"
+        case nickname
+        case inviteCode = "inviteCode"
+    }
 }
 
 struct InviteCode: Codable {

@@ -79,7 +79,6 @@
 			isa = PBXGroup;
 			children = (
 				64E8DC5E2CEE18520049E624 /* Config.xcconfig */,
-				E48BFB362CEAD1FB00AC13FC /* home-s-on-fe */,
 				E48BFB352CEAD1FB00AC13FC /* Products */,
 				BCA16CBC07BAF454B68A639F /* Pods */,
 				EB0CF434363EF9073E86E158 /* Frameworks */,
@@ -89,6 +88,7 @@
 		E48BFB352CEAD1FB00AC13FC /* Products */ = {
 			isa = PBXGroup;
 			children = (
+				E48BFB362CEAD1FB00AC13FC /* home-s-on-fe */,
 				E48BFB342CEAD1FB00AC13FC /* home-s-on-fe.app */,
 			);
 			name = Products;

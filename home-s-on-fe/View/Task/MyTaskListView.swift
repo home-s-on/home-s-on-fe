@@ -56,7 +56,7 @@ struct MyTaskListView: View {
                 }
             }
             .onAppear {
-                            viewModel.fetchMyTasks(userId: userId)
+                viewModel.fetchMyTasks(userId: userId)
                         }
                         .overlay(
                             VStack {
