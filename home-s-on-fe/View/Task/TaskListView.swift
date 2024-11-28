@@ -11,16 +11,17 @@ import Kingfisher
 struct TaskListView: View {
     @StateObject private var viewModel = TaskViewModel()
     @State private var photoURL: URL?
+    @State private var errorMessage: String?
     let houseId: Int
     @State private var nickname: String = UserDefaults.standard.string(forKey: "nickname") ?? ""
     @State private var photo: String = UserDefaults.standard.string(forKey: "photo") ?? ""
     
     var body: some View {
         NavigationView {
-            VStack {
-                //프로필 영역
-                HStack(spacing: 12) {
-                if let photoURL = URL(string: "\(APIEndpoints.blobURL)/\(photo)") {
+            ZStack {  // ZStack -> AddTaskButton 맨위에 오도록
+                VStack {
+                    //프로필 영역
+                    if let photoURL = URL(string: "\(APIEndpoints.blobURL)/\(photo)") {
                         KFImage(photoURL)
                             .resizable()
                             .scaledToFill()
@@ -35,48 +36,39 @@ struct TaskListView: View {
                     
                     Text(nickname)
                         .font(.system(size: 18, weight: .medium))
-                    
-                    Spacer()
-                }
-                .padding()
-                
-                // 할일 목록
-                ScrollView {
-                    LazyVStack(spacing: 12) {
-                        ForEach(viewModel.tasks) { task in
-                            TaskRowView(task: task)
-                                .padding(.horizontal)
-                        }
-                    }
-                }
-            }
-            .overlay(
-                VStack {
-                    Spacer()
-                    HStack {
+                        
                         Spacer()
-                        Button(action: {
-                        // 할일 추가
-                        }) {
-                            Image(systemName: "plus")
-                                .font(.title2)
-                                .foregroundColor(.white)
-                                .frame(width: 50, height: 50)
-                                .background(Color.blue)
-                                .clipShape(Circle())
-                                .shadow(radius: 4)
+                    }
+                    .padding()
+                    
+                    // 할일 목록
+                    ScrollView {
+                        LazyVStack(spacing: 12) {
+                            ForEach(viewModel.tasks) { task in
+                                TaskRowView(task: task)
+                                    .padding(.horizontal)
+                            }
                         }
-                        .padding()
                     }
                 }
-            )
-            .onAppear {
-                viewModel.fetchTasks(houseId: houseId)
+                .onAppear {
+                    viewModel.fetchTasks(houseId: houseId)
+                }
+                .alert("오류", isPresented: .constant(errorMessage != nil)) {
+                    Button("확인") {
+                        errorMessage = nil
+                    }
+                } message: {
+                    Text(errorMessage ?? "")
+                }
+                
+                AddTaskButton()
             }
         }
     }
 }
 
 #Preview {
-    TaskListView(houseId: 1)
+    let _ = UserDefaults.standard.set("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzMyNzIyMzc1LCJleHAiOjE3MzI4MDg3NzV9.6gcH_Dwa5gGi9hYDIAvsKosJBoij93Na9oxjfGlAb8g", forKey: "token")
+    return TaskListView(houseId: 1)
 }
