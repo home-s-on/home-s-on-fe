@@ -6,23 +6,35 @@
 //
 
 import SwiftUI
+import Kingfisher
 
 struct MyTaskListView: View {
     @StateObject private var viewModel = TaskViewModel()
     @State private var isShowingAddTask = false
     let userId: Int
+    @State private var nickname: String = UserDefaults.standard.string(forKey: "nickname") ?? ""
+    @State private var photo: String = UserDefaults.standard.string(forKey: "photo") ?? ""
+
     
     var body: some View {
         NavigationView {
             VStack {
                 //프로필 영역
                 HStack(spacing: 12) {
-                    Image(systemName: "person.circle.fill")
-                        .resizable()
-                        .frame(width: 40, height: 40)
-                        .foregroundColor(.gray)
+                if let photoURL = URL(string: "\(APIEndpoints.blobURL)/\(photo)") {
+                        KFImage(photoURL)
+                            .resizable()
+                            .scaledToFill()
+                            .frame(width: 40, height: 40)
+                            .clipShape(Circle())
+                    } else {
+                        Image(systemName: "person.circle.fill")
+                            .resizable()
+                            .frame(width: 40, height: 40)
+                            .foregroundColor(.gray)
+                    }
                     
-                    Text("ahn")
+                    Text(nickname)
                         .font(.system(size: 18, weight: .medium))
                     
                     Spacer()
