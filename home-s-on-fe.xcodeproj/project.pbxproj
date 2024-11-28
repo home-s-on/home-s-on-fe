@@ -14,6 +14,51 @@
 		64ECCF752CF48AED00282D41 /* KakaoSDKTemplate in Frameworks */ = {isa = PBXBuildFile; productRef = 648C6DCB2CF4222B00C03BAD /* KakaoSDKTemplate */; };
 		64ECCF762CF48AED00282D41 /* KakaoSDKAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 648C6E122CF4224100C03BAD /* KakaoSDKAuth */; };
 		99A369F2BEF04590E52BF576 /* Pods_home_s_on_fe.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 82CF299C0F57910554B9CF0A /* Pods_home_s_on_fe.framework */; };
+		D49395532CF8176E003F0521 /* AppleLoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D49395422CF8176E003F0521 /* AppleLoginViewModel.swift */; };
+		D49395542CF8176E003F0521 /* TaskRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D493953D2CF8176E003F0521 /* TaskRowView.swift */; };
+		D49395552CF8176E003F0521 /* EmailLoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D49395312CF8176E003F0521 /* EmailLoginView.swift */; };
+		D49395562CF8176E003F0521 /* Task.swift in Sources */ = {isa = PBXBuildFile; fileRef = D49395172CF8176E003F0521 /* Task.swift */; };
+		D49395572CF8176E003F0521 /* HouseRoom.swift in Sources */ = {isa = PBXBuildFile; fileRef = D49395152CF8176E003F0521 /* HouseRoom.swift */; };
+		D49395582CF8176E003F0521 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D49395332CF8176E003F0521 /* LoginView.swift */; };
+		D49395592CF8176E003F0521 /* ProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D49395452CF8176E003F0521 /* ProfileViewModel.swift */; };
+		D493955A2CF8176E003F0521 /* KakaoLoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D49395432CF8176E003F0521 /* KakaoLoginViewModel.swift */; };
+		D493955B2CF8176E003F0521 /* EmailSignUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D49395322CF8176E003F0521 /* EmailSignUpView.swift */; };
+		D493955C2CF8176E003F0521 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D493954E2CF8176E003F0521 /* ContentView.swift */; };
+		D493955D2CF8176E003F0521 /* KakaoShareViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D493954A2CF8176E003F0521 /* KakaoShareViewModel.swift */; };
+		D493955E2CF8176E003F0521 /* DateSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D49395392CF8176E003F0521 /* DateSelectionView.swift */; };
+		D493955F2CF8176E003F0521 /* AssigneeSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D49395382CF8176E003F0521 /* AssigneeSelectionView.swift */; };
+		D49395602CF8176E003F0521 /* EntryOptionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D49395242CF8176E003F0521 /* EntryOptionButton.swift */; };
+		D49395612CF8176E003F0521 /* CustomActionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D493951E2CF8176E003F0521 /* CustomActionButton.swift */; };
+		D49395622CF8176E003F0521 /* KakaoLoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D493952F2CF8176E003F0521 /* KakaoLoginView.swift */; };
+		D49395632CF8176E003F0521 /* MyTaskListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D493953A2CF8176E003F0521 /* MyTaskListView.swift */; };
+		D49395642CF8176E003F0521 /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D49395442CF8176E003F0521 /* LoginViewModel.swift */; };
+		D49395652CF8176E003F0521 /* LoginType.swift in Sources */ = {isa = PBXBuildFile; fileRef = D49395162CF8176E003F0521 /* LoginType.swift */; };
+		D49395662CF8176E003F0521 /* WideImageButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D49395222CF8176E003F0521 /* WideImageButton.swift */; };
+		D49395672CF8176E003F0521 /* RoundImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = D49395212CF8176E003F0521 /* RoundImage.swift */; };
+		D49395682CF8176E003F0521 /* InviteMemberView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D49395292CF8176E003F0521 /* InviteMemberView.swift */; };
+		D49395692CF8176E003F0521 /* EnterInviteCodeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D49395262CF8176E003F0521 /* EnterInviteCodeView.swift */; };
+		D493956A2CF8176E003F0521 /* AppleLoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D493952B2CF8176E003F0521 /* AppleLoginView.swift */; };
+		D493956B2CF8176E003F0521 /* InviteCodeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D49395492CF8176E003F0521 /* InviteCodeViewModel.swift */; };
+		D493956C2CF8176E003F0521 /* APIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D493951A2CF8176E003F0521 /* APIManager.swift */; };
+		D493956D2CF8176E003F0521 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D49395402CF8176E003F0521 /* MainView.swift */; };
+		D493956E2CF8176E003F0521 /* RoomSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D493953B2CF8176E003F0521 /* RoomSelectionView.swift */; };
+		D493956F2CF8176E003F0521 /* AddTaskView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D49395372CF8176E003F0521 /* AddTaskView.swift */; };
+		D49395702CF8176E003F0521 /* TaskViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D493954B2CF8176E003F0521 /* TaskViewModel.swift */; };
+		D49395712CF8176E003F0521 /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = D49395202CF8176E003F0521 /* ImagePicker.swift */; };
+		D49395722CF8176E003F0521 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = D49395182CF8176E003F0521 /* User.swift */; };
+		D49395732CF8176E003F0521 /* TaskListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D493953C2CF8176E003F0521 /* TaskListView.swift */; };
+		D49395742CF8176E003F0521 /* House.swift in Sources */ = {isa = PBXBuildFile; fileRef = D49395142CF8176E003F0521 /* House.swift */; };
+		D49395752CF8176E003F0521 /* EntryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D493953F2CF8176E003F0521 /* EntryView.swift */; };
+		D49395762CF8176E003F0521 /* ProfileEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D49395352CF8176E003F0521 /* ProfileEditView.swift */; };
+		D49395772CF8176E003F0521 /* HouseRoomViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D49395482CF8176E003F0521 /* HouseRoomViewModel.swift */; };
+		D49395782CF8176E003F0521 /* CustomTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = D493951F2CF8176E003F0521 /* CustomTextField.swift */; };
+		D49395792CF8176E003F0521 /* LoginButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D493952D2CF8176E003F0521 /* LoginButton.swift */; };
+		D493957A2CF8176E003F0521 /* HomeEntryOptionsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D49395472CF8176E003F0521 /* HomeEntryOptionsViewModel.swift */; };
+		D493957B2CF8176E003F0521 /* home_s_on_feApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = D493954F2CF8176E003F0521 /* home_s_on_feApp.swift */; };
+		D493957C2CF8176E003F0521 /* HouseEntryOptionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D49395272CF8176E003F0521 /* HouseEntryOptionsView.swift */; };
+		D493957D2CF8176E003F0521 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D493954D2CF8176E003F0521 /* Assets.xcassets */; };
+		D493957E2CF8176E003F0521 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D493951C2CF8176E003F0521 /* Preview Assets.xcassets */; };
+		D49397992CF83DE2003F0521 /* AddTaskButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D49397982CF83DE2003F0521 /* AddTaskButton.swift */; };
 		E432B8712CED7E71006C3689 /* SVProgressHUD in Frameworks */ = {isa = PBXBuildFile; productRef = E432B8702CED7E71006C3689 /* SVProgressHUD */; };
 		E445DE0B2CF01993008F632E /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = E445DE0A2CF01993008F632E /* Kingfisher */; };
 /* End PBXBuildFile section */
@@ -23,11 +68,58 @@
 		82CF299C0F57910554B9CF0A /* Pods_home_s_on_fe.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_home_s_on_fe.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BDBCBC1974C689F5B9234BB2 /* Pods-home-s-on-fe.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-home-s-on-fe.release.xcconfig"; path = "Target Support Files/Pods-home-s-on-fe/Pods-home-s-on-fe.release.xcconfig"; sourceTree = "<group>"; };
 		CE7E0D7960F03D46D4515D8D /* Pods-home-s-on-fe.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-home-s-on-fe.debug.xcconfig"; path = "Target Support Files/Pods-home-s-on-fe/Pods-home-s-on-fe.debug.xcconfig"; sourceTree = "<group>"; };
+		D49395142CF8176E003F0521 /* House.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = House.swift; sourceTree = "<group>"; };
+		D49395152CF8176E003F0521 /* HouseRoom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HouseRoom.swift; sourceTree = "<group>"; };
+		D49395162CF8176E003F0521 /* LoginType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginType.swift; sourceTree = "<group>"; };
+		D49395172CF8176E003F0521 /* Task.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Task.swift; sourceTree = "<group>"; };
+		D49395182CF8176E003F0521 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		D493951A2CF8176E003F0521 /* APIManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIManager.swift; sourceTree = "<group>"; };
+		D493951C2CF8176E003F0521 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		D493951E2CF8176E003F0521 /* CustomActionButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomActionButton.swift; sourceTree = "<group>"; };
+		D493951F2CF8176E003F0521 /* CustomTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTextField.swift; sourceTree = "<group>"; };
+		D49395202CF8176E003F0521 /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
+		D49395212CF8176E003F0521 /* RoundImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundImage.swift; sourceTree = "<group>"; };
+		D49395222CF8176E003F0521 /* WideImageButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WideImageButton.swift; sourceTree = "<group>"; };
+		D49395242CF8176E003F0521 /* EntryOptionButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntryOptionButton.swift; sourceTree = "<group>"; };
+		D49395262CF8176E003F0521 /* EnterInviteCodeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnterInviteCodeView.swift; sourceTree = "<group>"; };
+		D49395272CF8176E003F0521 /* HouseEntryOptionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HouseEntryOptionsView.swift; sourceTree = "<group>"; };
+		D49395292CF8176E003F0521 /* InviteMemberView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InviteMemberView.swift; sourceTree = "<group>"; };
+		D493952B2CF8176E003F0521 /* AppleLoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleLoginView.swift; sourceTree = "<group>"; };
+		D493952D2CF8176E003F0521 /* LoginButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginButton.swift; sourceTree = "<group>"; };
+		D493952F2CF8176E003F0521 /* KakaoLoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KakaoLoginView.swift; sourceTree = "<group>"; };
+		D49395312CF8176E003F0521 /* EmailLoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailLoginView.swift; sourceTree = "<group>"; };
+		D49395322CF8176E003F0521 /* EmailSignUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailSignUpView.swift; sourceTree = "<group>"; };
+		D49395332CF8176E003F0521 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
+		D49395352CF8176E003F0521 /* ProfileEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileEditView.swift; sourceTree = "<group>"; };
+		D49395372CF8176E003F0521 /* AddTaskView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTaskView.swift; sourceTree = "<group>"; };
+		D49395382CF8176E003F0521 /* AssigneeSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssigneeSelectionView.swift; sourceTree = "<group>"; };
+		D49395392CF8176E003F0521 /* DateSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateSelectionView.swift; sourceTree = "<group>"; };
+		D493953A2CF8176E003F0521 /* MyTaskListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyTaskListView.swift; sourceTree = "<group>"; };
+		D493953B2CF8176E003F0521 /* RoomSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomSelectionView.swift; sourceTree = "<group>"; };
+		D493953C2CF8176E003F0521 /* TaskListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskListView.swift; sourceTree = "<group>"; };
+		D493953D2CF8176E003F0521 /* TaskRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskRowView.swift; sourceTree = "<group>"; };
+		D493953F2CF8176E003F0521 /* EntryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntryView.swift; sourceTree = "<group>"; };
+		D49395402CF8176E003F0521 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
+		D49395422CF8176E003F0521 /* AppleLoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleLoginViewModel.swift; sourceTree = "<group>"; };
+		D49395432CF8176E003F0521 /* KakaoLoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KakaoLoginViewModel.swift; sourceTree = "<group>"; };
+		D49395442CF8176E003F0521 /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
+		D49395452CF8176E003F0521 /* ProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewModel.swift; sourceTree = "<group>"; };
+		D49395472CF8176E003F0521 /* HomeEntryOptionsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeEntryOptionsViewModel.swift; sourceTree = "<group>"; };
+		D49395482CF8176E003F0521 /* HouseRoomViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HouseRoomViewModel.swift; sourceTree = "<group>"; };
+		D49395492CF8176E003F0521 /* InviteCodeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InviteCodeViewModel.swift; sourceTree = "<group>"; };
+		D493954A2CF8176E003F0521 /* KakaoShareViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KakaoShareViewModel.swift; sourceTree = "<group>"; };
+		D493954B2CF8176E003F0521 /* TaskViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskViewModel.swift; sourceTree = "<group>"; };
+		D493954D2CF8176E003F0521 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		D493954E2CF8176E003F0521 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		D493954F2CF8176E003F0521 /* home_s_on_feApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = home_s_on_feApp.swift; sourceTree = "<group>"; };
+		D49395502CF8176E003F0521 /* home-s-on-fe.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "home-s-on-fe.entitlements"; sourceTree = "<group>"; };
+		D49395512CF8176E003F0521 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		D49397982CF83DE2003F0521 /* AddTaskButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTaskButton.swift; sourceTree = "<group>"; };
 		E48BFB342CEAD1FB00AC13FC /* home-s-on-fe.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "home-s-on-fe.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		64A788D02CF2E62B006D60D3 /* Exceptions for "home-s-on-fe" folder in "home-s-on-fe" target */ = {
+		D493972C2CF8382D003F0521 /* Exceptions for "home-s-on-fe" folder in "home-s-on-fe" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Info.plist,
@@ -40,7 +132,7 @@
 		E48BFB362CEAD1FB00AC13FC /* home-s-on-fe */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
-				64A788D02CF2E62B006D60D3 /* Exceptions for "home-s-on-fe" folder in "home-s-on-fe" target */,
+				D493972C2CF8382D003F0521 /* Exceptions for "home-s-on-fe" folder in "home-s-on-fe" target */,
 			);
 			path = "home-s-on-fe";
 			sourceTree = "<group>";
@@ -75,9 +167,192 @@
 			path = Pods;
 			sourceTree = "<group>";
 		};
+		D49395192CF8176E003F0521 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				D49395142CF8176E003F0521 /* House.swift */,
+				D49395152CF8176E003F0521 /* HouseRoom.swift */,
+				D49395162CF8176E003F0521 /* LoginType.swift */,
+				D49395172CF8176E003F0521 /* Task.swift */,
+				D49395182CF8176E003F0521 /* User.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		D493951B2CF8176E003F0521 /* Networking */ = {
+			isa = PBXGroup;
+			children = (
+				D493951A2CF8176E003F0521 /* APIManager.swift */,
+			);
+			path = Networking;
+			sourceTree = "<group>";
+		};
+		D493951D2CF8176E003F0521 /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				D493951C2CF8176E003F0521 /* Preview Assets.xcassets */,
+			);
+			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		D49395232CF8176E003F0521 /* common */ = {
+			isa = PBXGroup;
+			children = (
+				D493951E2CF8176E003F0521 /* CustomActionButton.swift */,
+				D493951F2CF8176E003F0521 /* CustomTextField.swift */,
+				D49395202CF8176E003F0521 /* ImagePicker.swift */,
+				D49395212CF8176E003F0521 /* RoundImage.swift */,
+				D49395222CF8176E003F0521 /* WideImageButton.swift */,
+				D49397982CF83DE2003F0521 /* AddTaskButton.swift */,
+			);
+			path = common;
+			sourceTree = "<group>";
+		};
+		D49395252CF8176E003F0521 /* component */ = {
+			isa = PBXGroup;
+			children = (
+				D49395242CF8176E003F0521 /* EntryOptionButton.swift */,
+			);
+			path = component;
+			sourceTree = "<group>";
+		};
+		D49395282CF8176E003F0521 /* HouseEntryOptions */ = {
+			isa = PBXGroup;
+			children = (
+				D49395252CF8176E003F0521 /* component */,
+				D49395262CF8176E003F0521 /* EnterInviteCodeView.swift */,
+				D49395272CF8176E003F0521 /* HouseEntryOptionsView.swift */,
+			);
+			path = HouseEntryOptions;
+			sourceTree = "<group>";
+		};
+		D493952A2CF8176E003F0521 /* Invite */ = {
+			isa = PBXGroup;
+			children = (
+				D49395292CF8176E003F0521 /* InviteMemberView.swift */,
+			);
+			path = Invite;
+			sourceTree = "<group>";
+		};
+		D493952C2CF8176E003F0521 /* AppleLogin */ = {
+			isa = PBXGroup;
+			children = (
+				D493952B2CF8176E003F0521 /* AppleLoginView.swift */,
+			);
+			path = AppleLogin;
+			sourceTree = "<group>";
+		};
+		D493952E2CF8176E003F0521 /* component */ = {
+			isa = PBXGroup;
+			children = (
+				D493952D2CF8176E003F0521 /* LoginButton.swift */,
+			);
+			path = component;
+			sourceTree = "<group>";
+		};
+		D49395302CF8176E003F0521 /* KakaoLogin */ = {
+			isa = PBXGroup;
+			children = (
+				D493952F2CF8176E003F0521 /* KakaoLoginView.swift */,
+			);
+			path = KakaoLogin;
+			sourceTree = "<group>";
+		};
+		D49395342CF8176E003F0521 /* Login */ = {
+			isa = PBXGroup;
+			children = (
+				D493952C2CF8176E003F0521 /* AppleLogin */,
+				D493952E2CF8176E003F0521 /* component */,
+				D49395302CF8176E003F0521 /* KakaoLogin */,
+				D49395312CF8176E003F0521 /* EmailLoginView.swift */,
+				D49395322CF8176E003F0521 /* EmailSignUpView.swift */,
+				D49395332CF8176E003F0521 /* LoginView.swift */,
+			);
+			path = Login;
+			sourceTree = "<group>";
+		};
+		D49395362CF8176E003F0521 /* Profile */ = {
+			isa = PBXGroup;
+			children = (
+				D49395352CF8176E003F0521 /* ProfileEditView.swift */,
+			);
+			path = Profile;
+			sourceTree = "<group>";
+		};
+		D493953E2CF8176E003F0521 /* Task */ = {
+			isa = PBXGroup;
+			children = (
+				D49395372CF8176E003F0521 /* AddTaskView.swift */,
+				D49395382CF8176E003F0521 /* AssigneeSelectionView.swift */,
+				D49395392CF8176E003F0521 /* DateSelectionView.swift */,
+				D493953A2CF8176E003F0521 /* MyTaskListView.swift */,
+				D493953B2CF8176E003F0521 /* RoomSelectionView.swift */,
+				D493953C2CF8176E003F0521 /* TaskListView.swift */,
+				D493953D2CF8176E003F0521 /* TaskRowView.swift */,
+			);
+			path = Task;
+			sourceTree = "<group>";
+		};
+		D49395412CF8176E003F0521 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				D49395232CF8176E003F0521 /* common */,
+				D49395282CF8176E003F0521 /* HouseEntryOptions */,
+				D493952A2CF8176E003F0521 /* Invite */,
+				D49395342CF8176E003F0521 /* Login */,
+				D49395362CF8176E003F0521 /* Profile */,
+				D493953E2CF8176E003F0521 /* Task */,
+				D493953F2CF8176E003F0521 /* EntryView.swift */,
+				D49395402CF8176E003F0521 /* MainView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		D49395462CF8176E003F0521 /* User */ = {
+			isa = PBXGroup;
+			children = (
+				D49395422CF8176E003F0521 /* AppleLoginViewModel.swift */,
+				D49395432CF8176E003F0521 /* KakaoLoginViewModel.swift */,
+				D49395442CF8176E003F0521 /* LoginViewModel.swift */,
+				D49395452CF8176E003F0521 /* ProfileViewModel.swift */,
+			);
+			path = User;
+			sourceTree = "<group>";
+		};
+		D493954C2CF8176E003F0521 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				D49395462CF8176E003F0521 /* User */,
+				D49395472CF8176E003F0521 /* HomeEntryOptionsViewModel.swift */,
+				D49395482CF8176E003F0521 /* HouseRoomViewModel.swift */,
+				D49395492CF8176E003F0521 /* InviteCodeViewModel.swift */,
+				D493954A2CF8176E003F0521 /* KakaoShareViewModel.swift */,
+				D493954B2CF8176E003F0521 /* TaskViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		D49395522CF8176E003F0521 /* home-s-on-fe */ = {
+			isa = PBXGroup;
+			children = (
+				D49395192CF8176E003F0521 /* Model */,
+				D493951B2CF8176E003F0521 /* Networking */,
+				D493951D2CF8176E003F0521 /* Preview Content */,
+				D49395412CF8176E003F0521 /* View */,
+				D493954C2CF8176E003F0521 /* ViewModel */,
+				D493954D2CF8176E003F0521 /* Assets.xcassets */,
+				D493954E2CF8176E003F0521 /* ContentView.swift */,
+				D493954F2CF8176E003F0521 /* home_s_on_feApp.swift */,
+				D49395502CF8176E003F0521 /* home-s-on-fe.entitlements */,
+				D49395512CF8176E003F0521 /* Info.plist */,
+			);
+			path = "home-s-on-fe";
+			sourceTree = "<group>";
+		};
 		E48BFB2B2CEAD1FB00AC13FC = {
 			isa = PBXGroup;
 			children = (
+
 				640290BE2CF858AE001F5545 /* Config.xcconfig */,
 				E48BFB362CEAD1FB00AC13FC /* home-s-on-fe */,
 				E48BFB352CEAD1FB00AC13FC /* Products */,
@@ -181,7 +456,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+
 				640290BF2CF858AE001F5545 /* Config.xcconfig in Resources */,
+
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -234,6 +511,49 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D49395532CF8176E003F0521 /* AppleLoginViewModel.swift in Sources */,
+				D49395542CF8176E003F0521 /* TaskRowView.swift in Sources */,
+				D49395552CF8176E003F0521 /* EmailLoginView.swift in Sources */,
+				D49395562CF8176E003F0521 /* Task.swift in Sources */,
+				D49395572CF8176E003F0521 /* HouseRoom.swift in Sources */,
+				D49395582CF8176E003F0521 /* LoginView.swift in Sources */,
+				D49395592CF8176E003F0521 /* ProfileViewModel.swift in Sources */,
+				D493955A2CF8176E003F0521 /* KakaoLoginViewModel.swift in Sources */,
+				D493955B2CF8176E003F0521 /* EmailSignUpView.swift in Sources */,
+				D493955C2CF8176E003F0521 /* ContentView.swift in Sources */,
+				D493955D2CF8176E003F0521 /* KakaoShareViewModel.swift in Sources */,
+				D493955E2CF8176E003F0521 /* DateSelectionView.swift in Sources */,
+				D493955F2CF8176E003F0521 /* AssigneeSelectionView.swift in Sources */,
+				D49395602CF8176E003F0521 /* EntryOptionButton.swift in Sources */,
+				D49397992CF83DE2003F0521 /* AddTaskButton.swift in Sources */,
+				D49395612CF8176E003F0521 /* CustomActionButton.swift in Sources */,
+				D49395622CF8176E003F0521 /* KakaoLoginView.swift in Sources */,
+				D49395632CF8176E003F0521 /* MyTaskListView.swift in Sources */,
+				D49395642CF8176E003F0521 /* LoginViewModel.swift in Sources */,
+				D49395652CF8176E003F0521 /* LoginType.swift in Sources */,
+				D49395662CF8176E003F0521 /* WideImageButton.swift in Sources */,
+				D49395672CF8176E003F0521 /* RoundImage.swift in Sources */,
+				D49395682CF8176E003F0521 /* InviteMemberView.swift in Sources */,
+				D49395692CF8176E003F0521 /* EnterInviteCodeView.swift in Sources */,
+				D493956A2CF8176E003F0521 /* AppleLoginView.swift in Sources */,
+				D493956B2CF8176E003F0521 /* InviteCodeViewModel.swift in Sources */,
+				D493956C2CF8176E003F0521 /* APIManager.swift in Sources */,
+				D493956D2CF8176E003F0521 /* MainView.swift in Sources */,
+				D493956E2CF8176E003F0521 /* RoomSelectionView.swift in Sources */,
+				D493956F2CF8176E003F0521 /* AddTaskView.swift in Sources */,
+				D49395702CF8176E003F0521 /* TaskViewModel.swift in Sources */,
+				D49395712CF8176E003F0521 /* ImagePicker.swift in Sources */,
+				D49395722CF8176E003F0521 /* User.swift in Sources */,
+				D49395732CF8176E003F0521 /* TaskListView.swift in Sources */,
+				D49395742CF8176E003F0521 /* House.swift in Sources */,
+				D49395752CF8176E003F0521 /* EntryView.swift in Sources */,
+				D49395762CF8176E003F0521 /* ProfileEditView.swift in Sources */,
+				D49395772CF8176E003F0521 /* HouseRoomViewModel.swift in Sources */,
+				D49395782CF8176E003F0521 /* CustomTextField.swift in Sources */,
+				D49395792CF8176E003F0521 /* LoginButton.swift in Sources */,
+				D493957A2CF8176E003F0521 /* HomeEntryOptionsViewModel.swift in Sources */,
+				D493957B2CF8176E003F0521 /* home_s_on_feApp.swift in Sources */,
+				D493957C2CF8176E003F0521 /* HouseEntryOptionsView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
