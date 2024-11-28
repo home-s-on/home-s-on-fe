@@ -17,7 +17,7 @@ struct MainView: View {
                     Text("나의 할일")
                 }
                 
-            Text("설정")
+            SettingView()
                 .tabItem {
                     Image(systemName: "gearshape")
                     Text("설정")
