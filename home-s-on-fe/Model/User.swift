@@ -33,3 +33,16 @@ struct User: Codable, Identifiable {
         case socialLoginType = "social_login_type"
     }
 }
+
+struct UserHouse: Codable {
+    let houseId: Int
+    let userId:Int
+    let isOwner:Bool
+    
+    enum CodingKeys: String, CodingKey {
+        case houseId = "house_id"
+        case userId = "user_id"
+        case isOwner = "is_owner"
+    }
+    
+}

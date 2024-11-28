@@ -80,7 +80,7 @@ struct ProfileEditView: View {
                 .padding(.horizontal)
             }
             .alert("프로필 설정 확인", isPresented: $profileVM.isProfileShowing) {
-                Button("확인") {
+                Button("확인") { 
                     if !profileVM.isProfiledError {
                         navigateToHouseEntry = true
                     }
