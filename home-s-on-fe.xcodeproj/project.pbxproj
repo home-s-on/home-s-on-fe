@@ -7,8 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		640290BF2CF858AE001F5545 /* Config.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 640290BE2CF858AE001F5545 /* Config.xcconfig */; };
 		648C6E5B2CF422A800C03BAD /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 648C6E5A2CF422A800C03BAD /* Alamofire */; };
-		64E8DC5F2CEE18520049E624 /* Config.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 64E8DC5E2CEE18520049E624 /* Config.xcconfig */; };
 		64ECCF732CF48AED00282D41 /* KakaoSDKCommon in Frameworks */ = {isa = PBXBuildFile; productRef = 648C6D822CF421D500C03BAD /* KakaoSDKCommon */; };
 		64ECCF742CF48AED00282D41 /* KakaoSDKShare in Frameworks */ = {isa = PBXBuildFile; productRef = 648C6DC92CF4221D00C03BAD /* KakaoSDKShare */; };
 		64ECCF752CF48AED00282D41 /* KakaoSDKTemplate in Frameworks */ = {isa = PBXBuildFile; productRef = 648C6DCB2CF4222B00C03BAD /* KakaoSDKTemplate */; };
@@ -64,7 +64,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		64E8DC5E2CEE18520049E624 /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
+		640290BE2CF858AE001F5545 /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
 		82CF299C0F57910554B9CF0A /* Pods_home_s_on_fe.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_home_s_on_fe.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BDBCBC1974C689F5B9234BB2 /* Pods-home-s-on-fe.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-home-s-on-fe.release.xcconfig"; path = "Target Support Files/Pods-home-s-on-fe/Pods-home-s-on-fe.release.xcconfig"; sourceTree = "<group>"; };
 		CE7E0D7960F03D46D4515D8D /* Pods-home-s-on-fe.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-home-s-on-fe.debug.xcconfig"; path = "Target Support Files/Pods-home-s-on-fe/Pods-home-s-on-fe.debug.xcconfig"; sourceTree = "<group>"; };
@@ -352,8 +352,9 @@
 		E48BFB2B2CEAD1FB00AC13FC = {
 			isa = PBXGroup;
 			children = (
-				D49395522CF8176E003F0521 /* home-s-on-fe */,
-				64E8DC5E2CEE18520049E624 /* Config.xcconfig */,
+
+				640290BE2CF858AE001F5545 /* Config.xcconfig */,
+				E48BFB362CEAD1FB00AC13FC /* home-s-on-fe */,
 				E48BFB352CEAD1FB00AC13FC /* Products */,
 				BCA16CBC07BAF454B68A639F /* Pods */,
 				EB0CF434363EF9073E86E158 /* Frameworks */,
@@ -455,9 +456,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D493957D2CF8176E003F0521 /* Assets.xcassets in Resources */,
-				D493957E2CF8176E003F0521 /* Preview Assets.xcassets in Resources */,
-				64E8DC5F2CEE18520049E624 /* Config.xcconfig in Resources */,
+
+				640290BF2CF858AE001F5545 /* Config.xcconfig in Resources */,
+
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -561,7 +562,6 @@
 /* Begin XCBuildConfiguration section */
 		E48BFB402CEAD1FC00AC13FC /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 64E8DC5E2CEE18520049E624 /* Config.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -625,7 +625,6 @@
 		};
 		E48BFB412CEAD1FC00AC13FC /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 64E8DC5E2CEE18520049E624 /* Config.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
