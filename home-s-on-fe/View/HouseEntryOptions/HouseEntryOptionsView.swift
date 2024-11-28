@@ -13,6 +13,7 @@ struct HouseEntryOptionsView: View {
     @State private var navigateToNewView = false
     @State private var showInviteMemberView = false
     @State private var showEnterInviteCodeView = false
+    @StateObject var joinToHouseVM = JoinToHouseViewModel()
 
         var body: some View {
             NavigationStack {
@@ -90,7 +91,8 @@ struct HouseEntryOptionsView: View {
                 }
                 .navigationDestination(isPresented: $showEnterInviteCodeView) {
                     EnterInviteCodeView()
-                }
+                        .environmentObject(joinToHouseVM) 
+                            }
                 .navigationDestination(isPresented: $navigateToNewView) {
                     MainView()
                 }
@@ -101,5 +103,6 @@ struct HouseEntryOptionsView: View {
 
 
 #Preview {
-    HouseEntryOptionsView()
+    let joinToHouseVM = JoinToHouseViewModel()
+    HouseEntryOptionsView().environmentObject(joinToHouseVM)
 }
