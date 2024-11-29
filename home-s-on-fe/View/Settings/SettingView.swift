@@ -9,6 +9,7 @@ import SwiftUI
 
 struct SettingView: View {
     @State private var isShowInviteCode = false
+    @State private var isShowPastTasks = false
     var body: some View {
         NavigationStack{
             VStack (spacing: 40){
@@ -17,6 +18,7 @@ struct SettingView: View {
                     
                 }
                 WideImageButton(icon: "", title: "지난 할 일", backgroundColor: .white, borderColer: .gray, textColor: .black) {
+                    isShowPastTasks = true
                     
                 }
                 WideImageButton(icon: "", title: "초대 코드", backgroundColor: .white, borderColer: .gray, textColor: .black) {
@@ -34,6 +36,9 @@ struct SettingView: View {
             }
             .navigationDestination(isPresented: $isShowInviteCode) {
                 InviteMemberView(isFromSetting: true)
+            }
+            .navigationDestination(isPresented: $isShowPastTasks) {
+                PastTaskListView()
             }
         }
     }
