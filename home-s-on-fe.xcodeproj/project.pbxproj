@@ -8,21 +8,18 @@
 
 /* Begin PBXBuildFile section */
 		648C6E5B2CF422A800C03BAD /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 648C6E5A2CF422A800C03BAD /* Alamofire */; };
+		649037432CF9860000B744D3 /* KakaoSDKUser in Frameworks */ = {isa = PBXBuildFile; productRef = 649037422CF9860000B744D3 /* KakaoSDKUser */; };
 		64E8DC5F2CEE18520049E624 /* Config.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 64E8DC5E2CEE18520049E624 /* Config.xcconfig */; };
 		64ECCF732CF48AED00282D41 /* KakaoSDKCommon in Frameworks */ = {isa = PBXBuildFile; productRef = 648C6D822CF421D500C03BAD /* KakaoSDKCommon */; };
 		64ECCF742CF48AED00282D41 /* KakaoSDKShare in Frameworks */ = {isa = PBXBuildFile; productRef = 648C6DC92CF4221D00C03BAD /* KakaoSDKShare */; };
 		64ECCF752CF48AED00282D41 /* KakaoSDKTemplate in Frameworks */ = {isa = PBXBuildFile; productRef = 648C6DCB2CF4222B00C03BAD /* KakaoSDKTemplate */; };
 		64ECCF762CF48AED00282D41 /* KakaoSDKAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 648C6E122CF4224100C03BAD /* KakaoSDKAuth */; };
-		99A369F2BEF04590E52BF576 /* Pods_home_s_on_fe.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 82CF299C0F57910554B9CF0A /* Pods_home_s_on_fe.framework */; };
 		E432B8712CED7E71006C3689 /* SVProgressHUD in Frameworks */ = {isa = PBXBuildFile; productRef = E432B8702CED7E71006C3689 /* SVProgressHUD */; };
 		E445DE0B2CF01993008F632E /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = E445DE0A2CF01993008F632E /* Kingfisher */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		64E8DC5E2CEE18520049E624 /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
-		82CF299C0F57910554B9CF0A /* Pods_home_s_on_fe.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_home_s_on_fe.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		BDBCBC1974C689F5B9234BB2 /* Pods-home-s-on-fe.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-home-s-on-fe.release.xcconfig"; path = "Target Support Files/Pods-home-s-on-fe/Pods-home-s-on-fe.release.xcconfig"; sourceTree = "<group>"; };
-		CE7E0D7960F03D46D4515D8D /* Pods-home-s-on-fe.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-home-s-on-fe.debug.xcconfig"; path = "Target Support Files/Pods-home-s-on-fe/Pods-home-s-on-fe.debug.xcconfig"; sourceTree = "<group>"; };
 		E48BFB342CEAD1FB00AC13FC /* home-s-on-fe.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "home-s-on-fe.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -58,31 +55,20 @@
 				64ECCF732CF48AED00282D41 /* KakaoSDKCommon in Frameworks */,
 				E445DE0B2CF01993008F632E /* Kingfisher in Frameworks */,
 				648C6E5B2CF422A800C03BAD /* Alamofire in Frameworks */,
-				99A369F2BEF04590E52BF576 /* Pods_home_s_on_fe.framework in Frameworks */,
 				E432B8712CED7E71006C3689 /* SVProgressHUD in Frameworks */,
+				649037432CF9860000B744D3 /* KakaoSDKUser in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		BCA16CBC07BAF454B68A639F /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				CE7E0D7960F03D46D4515D8D /* Pods-home-s-on-fe.debug.xcconfig */,
-				BDBCBC1974C689F5B9234BB2 /* Pods-home-s-on-fe.release.xcconfig */,
-			);
-			path = Pods;
-			sourceTree = "<group>";
-		};
 		E48BFB2B2CEAD1FB00AC13FC = {
 			isa = PBXGroup;
 			children = (
 				E48BFB362CEAD1FB00AC13FC /* home-s-on-fe */,
 				64E8DC5E2CEE18520049E624 /* Config.xcconfig */,
 				E48BFB352CEAD1FB00AC13FC /* Products */,
-				BCA16CBC07BAF454B68A639F /* Pods */,
-				EB0CF434363EF9073E86E158 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -94,14 +80,6 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		EB0CF434363EF9073E86E158 /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				82CF299C0F57910554B9CF0A /* Pods_home_s_on_fe.framework */,
-			);
-			name = Frameworks;
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -109,11 +87,9 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = E48BFB422CEAD1FC00AC13FC /* Build configuration list for PBXNativeTarget "home-s-on-fe" */;
 			buildPhases = (
-				563BEF7E9A681C9154E32A76 /* [CP] Check Pods Manifest.lock */,
 				E48BFB302CEAD1FB00AC13FC /* Sources */,
 				E48BFB312CEAD1FB00AC13FC /* Frameworks */,
 				E48BFB322CEAD1FB00AC13FC /* Resources */,
-				D24D482E33E3425A7EA07B62 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -131,6 +107,7 @@
 				648C6DCB2CF4222B00C03BAD /* KakaoSDKTemplate */,
 				648C6E122CF4224100C03BAD /* KakaoSDKAuth */,
 				648C6E5A2CF422A800C03BAD /* Alamofire */,
+				649037422CF9860000B744D3 /* KakaoSDKUser */,
 			);
 			productName = "home-s-on-fe";
 			productReference = E48BFB342CEAD1FB00AC13FC /* home-s-on-fe.app */;
@@ -186,48 +163,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
-
-/* Begin PBXShellScriptBuildPhase section */
-		563BEF7E9A681C9154E32A76 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-home-s-on-fe-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		D24D482E33E3425A7EA07B62 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-home-s-on-fe/Pods-home-s-on-fe-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-home-s-on-fe/Pods-home-s-on-fe-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-home-s-on-fe/Pods-home-s-on-fe-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		E48BFB302CEAD1FB00AC13FC /* Sources */ = {
@@ -363,7 +298,6 @@
 		};
 		E48BFB432CEAD1FC00AC13FC /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = CE7E0D7960F03D46D4515D8D /* Pods-home-s-on-fe.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -395,7 +329,6 @@
 		};
 		E48BFB442CEAD1FC00AC13FC /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = BDBCBC1974C689F5B9234BB2 /* Pods-home-s-on-fe.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -508,6 +441,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 648C6E592CF422A800C03BAD /* XCRemoteSwiftPackageReference "Alamofire" */;
 			productName = Alamofire;
+		};
+		649037422CF9860000B744D3 /* KakaoSDKUser */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 648C6D812CF421D500C03BAD /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */;
+			productName = KakaoSDKUser;
 		};
 		E432B8702CED7E71006C3689 /* SVProgressHUD */ = {
 			isa = XCSwiftPackageProductDependency;
