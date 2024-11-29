@@ -7,12 +7,13 @@
 
 import SwiftUI
 import KakaoSDKCommon
-
+import KakaoSDKAuth
 
 @main
 struct home_s_on_feApp: App {
 
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
+    
 
     var body: some Scene {
         WindowGroup {
@@ -25,13 +26,27 @@ struct home_s_on_feApp: App {
 //lifecycle 관리
 class AppDelegate: NSObject, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
-        let nativeAppKey = Bundle.main.infoDictionary?["KAKAO_NATIVE_APP_KEY"] ?? ""
-        KakaoSDK.initSDK(appKey: nativeAppKey as! String)
+        let nativeAppKey = Bundle.main.infoDictionary?["KAKAO_NATIVE_APP_KEY"] as? String ?? ""
+        KakaoSDK.initSDK(appKey: nativeAppKey)
       
       // UserDefaults 초기화
         resetUserDefaults()
         return true
     }
+    
+    func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
+           if (AuthApi.isKakaoTalkLoginUrl(url)) {
+               return AuthController.handleOpenUrl(url: url)
+           }
+
+           return false
+   }
+    
+    func application(_ application: UIApplication, configurationForConnecting connectingSceneSession: UISceneSession, options: UIScene.ConnectionOptions) -> UISceneConfiguration {
+            let sceneConfig = UISceneConfiguration(name: "Default Configuration", sessionRole: connectingSceneSession.role)
+            sceneConfig.delegateClass = SceneDelegate.self
+            return sceneConfig
+        }
   
    private func resetUserDefaults() {
         let defaults = UserDefaults.standard
@@ -50,4 +65,18 @@ class AppDelegate: NSObject, UIApplicationDelegate {
         //     defaults.removePersistentDomain(forName: bundleID)
         // }
     }
+}
+
+
+class SceneDelegate: NSObject, UIWindowSceneDelegate {
+   
+    func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
+        if let url = URLContexts.first?.url {
+            if (AuthApi.isKakaoTalkLoginUrl(url)) {
+                _ = AuthController.handleOpenUrl(url: url)
+            }
+        }
+    }
+    
+    
 }
