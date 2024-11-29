@@ -13,6 +13,7 @@ class KakaoLoginViewModel: ObservableObject {
     @Published var userId: String?
     @Published var email: String?
     @Published var isKakaoLoggedIn: Bool = false
+    let BASE_URL = Bundle.main.infoDictionary?["BASE_URL"] ?? ""
 
     func kakaoLogin() {
         if UserApi.isKakaoTalkLoginAvailable() {
@@ -37,7 +38,7 @@ class KakaoLoginViewModel: ObservableObject {
     }
 
     private func sendTokenToBackend(token: String) {
-        guard let url = URL(string: "\(APIEndpoints.baseURL)/auth/kakao") else { return }
+        guard let url = URL(string: "\(BASE_URL)/auth/kakao") else { return }
 
         var request = URLRequest(url: url)
         request.httpMethod = "POST"

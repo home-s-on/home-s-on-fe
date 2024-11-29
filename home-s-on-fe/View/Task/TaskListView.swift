@@ -15,6 +15,7 @@ struct TaskListView: View {
     let houseId: Int
     @State private var nickname: String = UserDefaults.standard.string(forKey: "nickname") ?? ""
     @State private var photo: String = UserDefaults.standard.string(forKey: "photo") ?? ""
+    let BLOB_URL = Bundle.main.infoDictionary?["BLOB_URL"] ?? ""
     
     var body: some View {
         NavigationView {
@@ -22,21 +23,23 @@ struct TaskListView: View {
                 VStack {
                     //프로필 영역
                     HStack(spacing: 12) {  // HStack 추가
-                        if let photoURL = URL(string: "\(APIEndpoints.blobURL)/\(photo)") {
-                            KFImage(photoURL)
-                                .resizable()
-                                .scaledToFill()
-                                .frame(width: 40, height: 40)
-                                .clipShape(Circle())
-                        } else {
-                            Image(systemName: "person.circle.fill")
-                                .resizable()
-                                .frame(width: 40, height: 40)
-                                .foregroundColor(.gray)
-                        }
-                        
-                        Text(nickname)
-                            .font(.system(size: 18, weight: .medium))
+
+                    if let photoURL = URL(string: "\(BLOB_URL)/\(photo)") {
+                        KFImage(photoURL)
+                            .resizable()
+                            .scaledToFill()
+                            .frame(width: 40, height: 40)
+                            .clipShape(Circle())
+                    } else {
+                        Image(systemName: "person.circle.fill")
+                            .resizable()
+                            .frame(width: 40, height: 40)
+                            .foregroundColor(.gray)
+                    }
+                    
+                    Text(nickname)
+                        .font(.system(size: 18, weight: .medium))
+
                         
                         Spacer()
                     }

@@ -12,6 +12,7 @@ class HouseRoomViewModel: ObservableObject {
     @Published var rooms: [HouseRoom] = []
     @Published var isLoading = false
     @Published var errorMessage: String?
+    let BASE_URL = Bundle.main.infoDictionary?["BASE_URL"] ?? ""
     
     func fetchRooms() {
         isLoading = true
@@ -30,9 +31,9 @@ class HouseRoomViewModel: ObservableObject {
         ]
         
         print("Using token:", token)
-        print("Request URL:", "\(APIEndpoints.baseURL)/rooms")
+        print("Request URL:", "\(BASE_URL)/rooms")
         
-        AF.request("\(APIEndpoints.baseURL)/rooms",
+        AF.request("\(BASE_URL)/rooms",
                   method: .get,
                   headers: headers)
             .validate(statusCode: 200..<300)
@@ -70,7 +71,7 @@ class HouseRoomViewModel: ObservableObject {
         
         let parameters: Parameters = ["room_name": name]
         
-        AF.request("\(APIEndpoints.baseURL)/rooms",
+        AF.request("\(BASE_URL)/rooms",
                   method: .post,
                   parameters: parameters,
                   encoding: JSONEncoding.default,
@@ -104,7 +105,7 @@ class HouseRoomViewModel: ObservableObject {
             "Content-Type": "application/json"
         ]
         
-        AF.request("\(APIEndpoints.baseURL)/rooms/\(id)",
+        AF.request("\(BASE_URL)/rooms/\(id)",
                   method: .delete,
                   headers: headers)
             .validate(statusCode: 200..<300)

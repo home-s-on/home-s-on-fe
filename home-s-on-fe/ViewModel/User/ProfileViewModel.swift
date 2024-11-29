@@ -17,9 +17,7 @@ class ProfileViewModel: ObservableObject {
     @Published var isProfiledError = false
     @Published var isNavigatingToEntry = false
     @AppStorage("token") var token: String?
-//    var token: String {
-//        return UserDefaults.standard.string(forKey: "token") ?? "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzMyNTQwMTM3LCJleHAiOjE3MzI2MjY1Mzd9.gqxfNNYLw46RBcLZNzfZScG4Y0lUBiPITaEKfL9yl-c"
-//    }
+    let BASE_URL = Bundle.main.infoDictionary?["BASE_URL"] ?? ""
     
     func profileEdit(nickname: String, photo: UIImage?) {
         isLoading = true
@@ -36,7 +34,7 @@ class ProfileViewModel: ObservableObject {
             return
         }
 
-        let url = "\(APIEndpoints.baseURL)/user"
+        let url = "\(BASE_URL)/user"
         let headers: HTTPHeaders = [
             "Authorization": "Bearer \(token)",
             "Content-Type": "multipart/form-data"

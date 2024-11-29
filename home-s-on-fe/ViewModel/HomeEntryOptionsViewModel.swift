@@ -12,12 +12,13 @@ import SwiftUI
 class HouseEntryOptionsViewModel: ObservableObject {
     @Published var message = ""
     @Published var isLoading = false
+    let BASE_URL = Bundle.main.infoDictionary?["BASE_URL"] ?? ""
     
     func createHouse() {
         self.isLoading = true
         SVProgressHUD.show()
         
-        let url = "\(APIEndpoints.baseURL)/house/create"
+        let url = "\(BASE_URL)/house/create"
         
         // UserDefaults에서 토큰 가져오기
         guard let token = UserDefaults.standard.string(forKey: "token") else {

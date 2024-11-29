@@ -13,6 +13,7 @@ class AppleLoginViewModel: NSObject, ObservableObject {
     @Published var email: String?
     @Published var fullName: PersonNameComponents?
     @Published var isAppleLoggedIn: Bool = false
+    let BASE_URL = Bundle.main.infoDictionary?["BASE_URL"] ?? ""
     
     func handleAppleSignInResult(_ result: Result<ASAuthorization, Error>) {
         switch result {
@@ -33,7 +34,7 @@ class AppleLoginViewModel: NSObject, ObservableObject {
     }
     
     private func sendToBackend(idToken: String) {
-        guard let url = URL(string: "\(APIEndpoints.baseURL)/auth/apple") else { return }
+        guard let url = URL(string: "\(BASE_URL)/auth/apple") else { return }
         
         var request = URLRequest(url: url)
         request.httpMethod = "POST"

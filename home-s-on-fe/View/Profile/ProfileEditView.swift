@@ -13,6 +13,7 @@ struct ProfileEditView: View {
     @State private var isUsingDefaultImage: Bool = true
     @State private var photoURL: URL?
     @State private var navigateToHouseEntry = false
+    let BLOB_URL = Bundle.main.infoDictionary?["BLOB_URL"] ?? ""
     
     let defaultImageName = "round-profile"
     
@@ -21,7 +22,7 @@ struct ProfileEditView: View {
             VStack {
                 ZStack {
                     let photoURLString = photo
-                    if !photoURLString.isEmpty, let photoURL = URL(string: "\(APIEndpoints.blobURL)/\(photoURLString)") {
+                    if !photoURLString.isEmpty, let photoURL = URL(string: "\(BLOB_URL)/\(photoURLString)") {
                         KFImage(photoURL)
                             .resizable()
                             .scaledToFill()

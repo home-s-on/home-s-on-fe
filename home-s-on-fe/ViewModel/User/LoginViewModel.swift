@@ -19,6 +19,8 @@ class LoginViewModel: ObservableObject {
     @Published var isJoinError = false
     @Published var isNavigatingToLogin = false
     var profileViewModel: ProfileViewModel?
+    let BASE_URL = Bundle.main.infoDictionary?["BASE_URL"] ?? ""
+    
     
 //    init(){ // 이렇게 하면 처음 로그인화면 안 보여줌
 //        self.isLoggedIn = UserDefaults.standard.bool(forKey: "isLoggedIn")
@@ -37,7 +39,7 @@ class LoginViewModel: ObservableObject {
         isLoading = true
         SVProgressHUD.show()
         
-        let url = "\(APIEndpoints.baseURL)/auth/email"
+        let url = "\(BASE_URL)/auth/email"
         let params: Parameters = ["email": email, "password": password]
         
         AF.request(url, method: .post, parameters: params)
@@ -83,7 +85,7 @@ class LoginViewModel: ObservableObject {
     
     func emailJoin(email: String, password: String) {
         SVProgressHUD.show()
-        let url = "\(APIEndpoints.baseURL)/user"
+        let url = "\(BASE_URL)/user"
         let params: Parameters = ["email": email, "password": password]
         
         AF.request(url, method: .post, parameters: params)
