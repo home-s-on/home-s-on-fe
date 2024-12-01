@@ -3,7 +3,7 @@ import SwiftUI
 
 struct ProfileEditView: View {
     @EnvironmentObject var profileVM: ProfileViewModel
-//    @EnvironmentObject var houseEntryOptionsVM: HouseEntryOptionsViewModel
+    //    @EnvironmentObject var houseEntryOptionsVM: HouseEntryOptionsViewModel
     @StateObject var houseEntryOptionsVM = HouseEntryOptionsViewModel()
     @State private var nickname: String = UserDefaults.standard.string(forKey: "nickname") ?? ""
     @State private var photo: String = UserDefaults.standard.string(forKey: "photo") ?? ""
@@ -68,8 +68,9 @@ struct ProfileEditView: View {
                 .padding(.bottom, 260)
                 
                 Button(action: {
-                    updateProfile()
-                    houseEntryOptionsVM.createHouse()
+                    updateProfile {
+                        houseEntryOptionsVM.createHouse()
+                    }
                 }) {
                     Text("완료")
                         .frame(maxWidth: .infinity)
@@ -81,7 +82,7 @@ struct ProfileEditView: View {
                 .padding(.horizontal)
             }
             .alert("프로필 설정 확인", isPresented: $profileVM.isProfileShowing) {
-                Button("확인") { 
+                Button("확인") {
                     if !profileVM.isProfiledError {
                         navigateToHouseEntry = true
                     }
@@ -95,47 +96,52 @@ struct ProfileEditView: View {
             })
         }
     }
-
-                    private func updateProfile() {
-                        let photo: UIImage?
-                        if isUsingDefaultImage {
-                            photo = UIImage(named: defaultImageName)
-                        } else {
-                            photo = selectedImage
-                        }
-
-                        print("Profile edit started.")
-                        profileVM.profileEdit(nickname: nickname, photo: photo)
-                    }
-                }
-
-struct ImagePicker: UIViewControllerRepresentable {
-    @Binding var image: UIImage?
     
-    func makeUIViewController(context: Context) -> UIImagePickerController {
-        let picker = UIImagePickerController()
-        picker.delegate = context.coordinator
-        return picker
-    }
-
-    func updateUIViewController(_ uiViewController: UIImagePickerController, context: Context) {}
-
-    func makeCoordinator() -> Coordinator {
-        Coordinator(self)
-    }
-
-    class Coordinator: NSObject, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
-        let parent: ImagePicker
-        
-        init(_ parent: ImagePicker) {
-            self.parent = parent
+    private func updateProfile(completion: @escaping () -> Void) {
+        let photo: UIImage?
+        if isUsingDefaultImage {
+            photo = UIImage(named: defaultImageName)
+        } else {
+            photo = selectedImage
         }
-
-        func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-            if let uiImage = info[.originalImage] as? UIImage {
-                parent.image = uiImage
+        
+        profileVM.profileEdit(nickname: nickname, photo: photo) { success in
+            if success {
+                completion()
+            } else {
+                print("Profile update failed.") 
             }
-            picker.dismiss(animated: true)
+        }
+    }
+    
+    struct ImagePicker: UIViewControllerRepresentable {
+        @Binding var image: UIImage?
+        
+        func makeUIViewController(context: Context) -> UIImagePickerController {
+            let picker = UIImagePickerController()
+            picker.delegate = context.coordinator
+            return picker
+        }
+        
+        func updateUIViewController(_ uiViewController: UIImagePickerController, context: Context) {}
+        
+        func makeCoordinator() -> Coordinator {
+            Coordinator(self)
+        }
+        
+        class Coordinator: NSObject, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+            let parent: ImagePicker
+            
+            init(_ parent: ImagePicker) {
+                self.parent = parent
+            }
+            
+            func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+                if let uiImage = info[.originalImage] as? UIImage {
+                    parent.image = uiImage
+                }
+                picker.dismiss(animated: true)
+            }
         }
     }
 }
