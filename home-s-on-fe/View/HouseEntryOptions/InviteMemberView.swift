@@ -8,10 +8,11 @@
 import SwiftUI
 
 struct InviteMemberView: View {
-    //@EnvironmentObject var kakaoshareVM: KakaoShareViewModel
+    @StateObject var joinMemberVM = JoinMemberViewModel()
     @StateObject var kakaoshareVM = KakaoShareViewModel()
     @State private var inviteCode: String = UserDefaults.standard.string(forKey: "inviteCode") ?? ""
     @State private var navigateToView = false
+    @AppStorage("houseId") var houseId: Int?
     var isFromSetting = false
     var body: some View {
         NavigationStack{
@@ -27,6 +28,11 @@ struct InviteMemberView: View {
             VStack{
                 WideImageButton(icon: "", title: "집 입장하기", backgroundColor: .blue, isHidden: isFromSetting) {
                     print("집 입장")
+                    if let id = houseId {
+                        joinMemberVM.joinMember(houseId: id)
+                    } else {
+                        print("houseId 에러로 인한 집 입장 실패")
+                    }
                     navigateToView = true
                 }
                 WideImageButton(icon: "", title: "초대 코드 보내기", backgroundColor: .blue)

@@ -14,6 +14,8 @@ struct HouseEntryOptionsView: View {
     @State private var showInviteMemberView = false
     @State private var showEnterInviteCodeView = false
     @StateObject var joinToHouseVM = JoinToHouseViewModel()
+    @StateObject var joinMemberVM = JoinMemberViewModel()
+    @StateObject var getHouseIdVM = GetHouseIdViewModel()
 
         var body: some View {
             NavigationStack {
@@ -86,13 +88,15 @@ struct HouseEntryOptionsView: View {
                 }
                 .padding()
                 .navigationDestination(isPresented: $showInviteMemberView) {
-                    InviteMemberView()
+                    InviteMemberView().environmentObject(joinMemberVM)
                     
                 }
                 .navigationDestination(isPresented: $showEnterInviteCodeView) {
                     EnterInviteCodeView()
-                        .environmentObject(joinToHouseVM) 
-                            }
+                        .environmentObject(joinToHouseVM)
+                        .environmentObject(getHouseIdVM)
+                        .environmentObject(joinMemberVM)
+                }
                 .navigationDestination(isPresented: $navigateToNewView) {
                     MainView()
                 }

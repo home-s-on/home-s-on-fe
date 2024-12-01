@@ -2,7 +2,10 @@ import SwiftUI
 
 struct EnterInviteCodeView: View {
     @EnvironmentObject var joinToHouseVM: JoinToHouseViewModel
+    @EnvironmentObject var getHouseIdVM: GetHouseIdViewModel
+    @StateObject var joinMemberVM = JoinMemberViewModel()
     @State private var inviteCode = ""
+    @AppStorage("houseId") var houseId: Int?
 
     var body: some View {
         VStack {
@@ -16,7 +19,15 @@ struct EnterInviteCodeView: View {
                 .padding(.bottom, 400)
             
             WideImageButton(icon: "", title: "확인", backgroundColor: .blue) {
-                joinToHouseVM.joinToHouse(inviteCode: inviteCode)
+                getHouseIdVM.getHouseId(inviteCode: inviteCode) { houseId in
+                    print("WideImageButton \(String(describing: houseId))")
+                    if let id = houseId {
+                        joinMemberVM.joinMember(houseId: id) // 멤버로 등록
+                        joinToHouseVM.joinToHouse(inviteCode: inviteCode) // 집에 가입 (필요한 경우)
+                    } else {
+                        print("houseId 에러로 인한 집 입장 실패")
+                    }
+                }
             }
             
             NavigationLink(destination: MainView(), isActive: $joinToHouseVM.isNavigatingToMain) {
