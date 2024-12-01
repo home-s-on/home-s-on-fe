@@ -8,7 +8,6 @@ class JoinToHouseViewModel : ObservableObject {
     @Published var isJoinToHouseShowing = false
     @Published var isJoinToHouseError = false
     @Published var isNavigatingToMain = false
-    let BASE_URL = Bundle.main.infoDictionary?["BASE_URL"] ?? ""
     
     func joinToHouse(inviteCode: String) {
         isLoading = true
@@ -21,7 +20,7 @@ class JoinToHouseViewModel : ObservableObject {
             return
         }
         
-        let url = "\(BASE_URL)/house/join"
+        let url = "\(APIEndpoints.baseURL)/house/join"
         let params: Parameters = ["inviteCode": inviteCode]
         let headers: HTTPHeaders = ["Authorization": "Bearer \(token)"]
         

@@ -6,7 +6,6 @@ class TaskViewModel: ObservableObject {
     @Published var message = ""
     @Published var isFetchError = false
     @Published var isLoading = false
-    let BASE_URL = Bundle.main.infoDictionary?["BASE_URL"] ?? ""
     
     // 모든 할일
     func fetchTasks(houseId: Int) {
@@ -22,14 +21,14 @@ class TaskViewModel: ObservableObject {
         }
         
         print("Using token:", token)
-        print("Request URL:", "\(BASE_URL)/tasks/house")
+        print("Request URL:", "\(APIEndpoints.baseURL)/tasks/house")
         
         let headers: HTTPHeaders = [
             "Authorization": "Bearer \(token)",
             "Content-Type": "application/json"
         ]
         
-        AF.request("\(BASE_URL)/tasks/house",
+        AF.request("\(APIEndpoints.baseURL)/tasks/house",
                   method: .get,
                   headers: headers)
             .validate()
@@ -79,7 +78,7 @@ class TaskViewModel: ObservableObject {
             "Content-Type": "application/json"
         ]
         
-        AF.request("\(BASE_URL)/tasks/mytasks",
+        AF.request("\(APIEndpoints.baseURL)/tasks/mytasks",
                   method: .get,
                   headers: headers)
             .validate()
@@ -118,7 +117,7 @@ class TaskViewModel: ObservableObject {
                 "Content-Type": "application/json"
             ]
             
-            AF.request("\(BASE_URL)/tasks/pasttasks",
+            AF.request("\(APIEndpoints.baseURL)/tasks/pasttasks",
                       method: .get,
                       headers: headers)
                 .validate()

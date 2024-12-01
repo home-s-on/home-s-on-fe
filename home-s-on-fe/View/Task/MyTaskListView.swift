@@ -13,7 +13,6 @@ struct MyTaskListView: View {
     let userId: Int
     @State private var nickname: String = UserDefaults.standard.string(forKey: "nickname") ?? ""
     @State private var photo: String = UserDefaults.standard.string(forKey: "photo") ?? ""
-    let BLOB_URL = Bundle.main.infoDictionary?["BLOB_URL"] ?? ""
 
     
     var body: some View {
@@ -21,7 +20,7 @@ struct MyTaskListView: View {
             ZStack {  // ZStack -> AddTaskButton 맨 위에 오도록
                 VStack {
                     HStack(spacing: 12) {
-                        if let photoURL = URL(string: "\(BLOB_URL)/\(photo)") {
+                        if let photoURL = URL(string: "\(APIEndpoints.blobURL)/\(photo)") {
                         KFImage(photoURL)
                             .resizable()
                             .scaledToFill()
