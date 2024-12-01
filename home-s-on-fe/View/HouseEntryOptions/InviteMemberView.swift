@@ -18,8 +18,12 @@ struct InviteMemberView: View {
         NavigationStack{
             VStack(alignment: .leading) {
                 VStack(alignment: .leading) {
-                    Text("초대 코드를 입력해 주세요").font(.title3).fontWeight(.bold).padding()
-                    CustomTextField(icon: "", placeholder: "", text: $inviteCode)
+                    Text("멤버 초대 코드").font(.title).fontWeight(.bold).padding()
+                    VStack(alignment: .leading) {
+                        Text("구성원들을 초대해주세요!")
+                            .font(.headline)
+                        CustomTextField(icon: "", placeholder: "", text: $inviteCode)
+                    }.padding(.horizontal)
                 }
             }.padding(.horizontal)
                 .padding(.bottom, 300)

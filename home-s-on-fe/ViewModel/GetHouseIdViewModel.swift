@@ -17,7 +17,7 @@ class GetHouseIdViewModel: ObservableObject {
             self.message = "토큰이 존재하지 않습니다."
             self.isLoading = false
             SVProgressHUD.dismiss()
-            completion(nil) // 실패 시 nil 반환
+            completion(nil)
             return
         }
         
@@ -27,7 +27,6 @@ class GetHouseIdViewModel: ObservableObject {
         
         AF.request(url, method: .post, parameters: params, headers: headers)
             .responseDecodable(of: ApiResponse<HouseId>.self) { [weak self] response in
-                print("getHouseId \(response)") // 응답 내용 출력
                 guard let self = self else { return }
                 DispatchQueue.main.async {
                     self.isLoading = false
@@ -37,19 +36,19 @@ class GetHouseIdViewModel: ObservableObject {
                     case .success(let apiResponse):
                         if apiResponse.status == "success" {
                             if let getHouseIdData = apiResponse.data {
-                                UserDefaults.standard.set(getHouseIdData.id, forKey: "houseId") // houseId 저장
-                                print("Found houseId: \(getHouseIdData.id)") // 찾은 houseId 출력
-                                completion(getHouseIdData.id) // houseId 반환
+                                UserDefaults.standard.set(getHouseIdData.id, forKey: "houseId")
+                                print("Found houseId: \(getHouseIdData.id)")
+                                completion(getHouseIdData.id)
                             } else {
-                                print("No house data found") // 데이터가 없으면 로그 출력
+                                print("No house data found")
                                 completion(nil)
                             }
                         } else {
                             self.isJoinToHouseShowing = true
                             self.isJoinToHouseError = true
                             self.message = apiResponse.message ?? "알 수 없는 오류가 발생했습니다."
-                            print("API Error Message: \(self.message)") // 오류 메시지 로그 출력
-                            completion(nil) // 실패 시 nil 반환
+                            print("API Error Message: \(self.message)")
+                            completion(nil)
                         }
                     case .failure(let error):
                         self.isJoinToHouseShowing = true
@@ -64,7 +63,7 @@ class GetHouseIdViewModel: ObservableObject {
                         } else {
                             self.message = "네트워크 오류: \(error.localizedDescription)"
                         }
-                        print("Network Error Message: \(self.message)") // 네트워크 오류 로그 출력
+                        print("Network Error Message: \(self.message)") 
                         completion(nil)
                     }
                 }

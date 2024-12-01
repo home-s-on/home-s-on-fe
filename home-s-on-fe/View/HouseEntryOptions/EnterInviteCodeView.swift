@@ -20,10 +20,9 @@ struct EnterInviteCodeView: View {
             
             WideImageButton(icon: "", title: "확인", backgroundColor: .blue) {
                 getHouseIdVM.getHouseId(inviteCode: inviteCode) { houseId in
-                    print("WideImageButton \(String(describing: houseId))")
                     if let id = houseId {
-                        joinMemberVM.joinMember(houseId: id) // 멤버로 등록
-                        joinToHouseVM.joinToHouse(inviteCode: inviteCode) // 집에 가입 (필요한 경우)
+                        joinMemberVM.joinMember(houseId: id)
+                        joinToHouseVM.joinToHouse(inviteCode: inviteCode)
                     } else {
                         print("houseId 에러로 인한 집 입장 실패")
                     }
