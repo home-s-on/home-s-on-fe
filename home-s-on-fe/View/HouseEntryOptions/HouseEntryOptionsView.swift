@@ -14,6 +14,9 @@ struct HouseEntryOptionsView: View {
     @State private var showInviteMemberView = false
     @State private var showEnterInviteCodeView = false
     @StateObject var joinToHouseVM = JoinToHouseViewModel()
+    @StateObject var joinMemberVM = JoinMemberViewModel()
+    @StateObject var getHouseIdVM = GetHouseIdViewModel()
+    @AppStorage("houseId") var houseId: Int?
 
         var body: some View {
             NavigationStack {
@@ -78,6 +81,11 @@ struct HouseEntryOptionsView: View {
                             Text("취소")
                         }), secondaryButton: .default(Text("확인"), action: {
                             print("확인")
+                            if let id = houseId {
+                                joinMemberVM.joinMember(houseId: id)
+                            } else {
+                                print("houseId 에러로 인한 집 입장 실패")
+                            }
                             navigateToNewView = true
                         }))
                 }
@@ -87,14 +95,18 @@ struct HouseEntryOptionsView: View {
                 .padding()
                 .navigationDestination(isPresented: $showInviteMemberView) {
                     InviteMemberView()
+                        .environmentObject(joinMemberVM)
                     
                 }
                 .navigationDestination(isPresented: $showEnterInviteCodeView) {
                     EnterInviteCodeView()
-                        .environmentObject(joinToHouseVM) 
-                            }
+                        .environmentObject(joinToHouseVM)
+                        .environmentObject(getHouseIdVM)
+                        .environmentObject(joinMemberVM)
+                }
                 .navigationDestination(isPresented: $navigateToNewView) {
                     MainView()
+                        .environmentObject(joinMemberVM)
                 }
 
             }

@@ -23,3 +23,13 @@ struct InviteCode: Codable {
     let status: String
     let inviteCode: String
 }
+
+struct HouseId : Codable {
+    let id: Int
+    let inviteCode: String
+    
+    enum CodingKeys: String, CodingKey {
+            case id
+            case inviteCode = "invite_code"
+        }
+}
