@@ -1,19 +1,13 @@
-//
-//  Untitled.swift
-//  home-s-on-fe
-//
-//  Created by 정송희 on 11/22/24.
-//
-
 import Alamofire
 import SVProgressHUD
 import SwiftUI
 
 class HouseEntryOptionsViewModel: ObservableObject {
+    @Published var inviteCode: String = ""
     @Published var message = ""
     @Published var isLoading = false
     let BASE_URL = Bundle.main.infoDictionary?["BASE_URL"] ?? ""
-    
+
     func createHouse() {
         self.isLoading = true
         SVProgressHUD.show()
@@ -34,15 +28,17 @@ class HouseEntryOptionsViewModel: ObservableObject {
         
         AF.request(url, method: .post, headers: headers)
             .responseDecodable(of: ApiResponse<House>.self) { [weak self] response in
+                print(response)
                 guard let self = self else { return }
                 SVProgressHUD.dismiss()
                 
                 switch response.result {
                 case .success(let apiResponse):
-                    print("HouseEntryOptionsViewModel\(apiResponse)")
                     if apiResponse.status == "success" {
                         if let createHouseData = apiResponse.data {
+                            self.inviteCode = createHouseData.inviteCode
                             UserDefaults.standard.set(createHouseData.inviteCode, forKey: "inviteCode")
+                            print(createHouseData)
                         }
                     } else {
                         self.message = apiResponse.message ?? "Unknown error occurred"
@@ -53,3 +49,5 @@ class HouseEntryOptionsViewModel: ObservableObject {
             }
     }
 }
+
+

@@ -1,10 +1,3 @@
-//
-//  ProfileViewModel.swift
-//  home-s-on-fe
-//
-//  Created by 정송희 on 11/21/24.
-//
-
 import Alamofire
 import SVProgressHUD
 import SwiftUI
@@ -19,7 +12,7 @@ class ProfileViewModel: ObservableObject {
     @AppStorage("token") var token: String?
     let BASE_URL = Bundle.main.infoDictionary?["BASE_URL"] ?? ""
     
-    func profileEdit(nickname: String, photo: UIImage?) {
+    func profileEdit(nickname: String, photo: UIImage?, completion: @escaping (Bool) -> Void) {
         isLoading = true
         SVProgressHUD.show()
         
@@ -30,18 +23,19 @@ class ProfileViewModel: ObservableObject {
         formData.append(nickname.data(using: .utf8)!, withName: "nickname")
         
         guard let token = token else {
-            print("Token is nil") // 토큰이 nil인 경우 로그 추가
+            print("Token is nil")
+            isLoading = false
+            SVProgressHUD.dismiss()
+            completion(false) // 실패 상태 전달
             return
         }
-
+        
         let url = "\(BASE_URL)/user"
         let headers: HTTPHeaders = [
             "Authorization": "Bearer \(token)",
             "Content-Type": "multipart/form-data"
         ]
         
-        print("Uploading to URL: \(url)") // 업로드할 URL 로그 추가
-
         AF.upload(multipartFormData: formData, to: url, method: .put, headers: headers)
             .responseDecodable(of: ApiResponse<User>.self) { [weak self] response in
                 DispatchQueue.main.async {
@@ -50,7 +44,6 @@ class ProfileViewModel: ObservableObject {
                     
                     switch response.result {
                     case .success(let apiResponse):
-                        print("API Response: \(apiResponse)")
                         if apiResponse.status == "success" {
                             if let profileData = apiResponse.data {
                                 UserDefaults.standard.set(profileData.nickname, forKey: "nickname")
@@ -58,24 +51,16 @@ class ProfileViewModel: ObservableObject {
                             }
                             self?.isProfiledError = false
                             self?.isProfileShowing = true
-                            print("Profile updated successfully.")
+                            completion(true) // 성공 상태 전달
                         } else {
                             self?.isProfiledError = true
                             self?.message = apiResponse.message ?? "등록에 실패했습니다."
+                            completion(false) // 실패 상태 전달
                         }
-                    case .failure(let error):
+                    case .failure:
                         self?.isProfiledError = true
-                        print("API 호출 실패: \(error.localizedDescription)") // 에러 로그 추가
-                        if let data = response.data {
-                            do {
-                                let errorResponse = try JSONDecoder().decode(ApiResponse<User>.self, from: data)
-                                self?.message = errorResponse.message ?? "알 수 없는 오류가 발생했습니다."
-                            } catch {
-                                self?.message = "데이터 처리 중 오류가 발생했습니다: \(error.localizedDescription)"
-                            }
-                        } else {
-                            self?.message = "네트워크 오류: \(error.localizedDescription)"
-                        }
+                        self?.message = "네트워크 오류: \(response.error?.localizedDescription ?? "알 수 없는 오류")"
+                        completion(false) // 실패 상태 전달
                     }
                 }
             }
