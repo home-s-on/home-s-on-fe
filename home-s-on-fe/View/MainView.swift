@@ -2,6 +2,7 @@ import SwiftUI
 
 struct MainView: View {
     let taskVM = TaskViewModel()
+    @StateObject private var getHouseInMemberVM = GetMembersInHouseViewModel()
     
     var body: some View {
         TabView {
@@ -24,6 +25,7 @@ struct MainView: View {
                 }
         }
         .environmentObject(taskVM)
+        .environmentObject(getHouseInMemberVM)
         .navigationBarBackButtonHidden(true)
     }
 }
