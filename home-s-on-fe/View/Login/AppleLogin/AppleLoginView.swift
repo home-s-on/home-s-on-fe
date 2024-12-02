@@ -17,7 +17,7 @@ struct AppleLoginView: View {
             onRequest: configureAppleSignIn,
             onCompletion: appleLoginVM.handleAppleSignInResult
         )
-        .frame(height: 50)
+        .frame(height: 45)
         .padding()
     }
     
