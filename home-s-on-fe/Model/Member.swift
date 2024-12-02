@@ -26,4 +26,3 @@ struct HouseInMember: Codable {
     let nickname: String
     let isOwner: Bool
 }
-
