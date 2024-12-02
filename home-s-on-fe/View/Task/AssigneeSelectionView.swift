@@ -9,11 +9,40 @@ import SwiftUI
 
 
 struct AssigneeSelectionView: View {
+    @StateObject private var viewModel = AssigneeViewModel()
+    @Binding var selectedAssignees: [Int]
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        List {
+            ForEach(viewModel.houseMembers, id: \.userId) { member in
+                HStack {
+                    Text(member.nickname)
+                    Spacer()
+                    Image(systemName: "checkmark")
+                        .foregroundColor(.blue)
+                        .opacity(selectedAssignees.contains(member.userId) ? 1 : 0)
+                }
+                .onTapGesture {
+                    toggleSelection(member.userId)
+                }
+            }
+        }
+        .onAppear {
+            viewModel.fetchHouseMembers()
+        }
+        .navigationTitle("담당자 지정")
+    }
+    
+    private func toggleSelection(_ userId: Int) {
+        if selectedAssignees.contains(userId) {
+            selectedAssignees.removeAll { $0 == userId }
+        } else {
+            selectedAssignees.append(userId)
+        }
     }
 }
-
 #Preview {
-    AssigneeSelectionView()
+    NavigationView {
+        AssigneeSelectionView(selectedAssignees: .constant([]))
+    }
 }
