@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Kingfisher
+import Alamofire
 
 struct MyTaskListView: View {
     @StateObject private var viewModel = TaskViewModel()
@@ -84,7 +85,7 @@ struct MyTaskListView: View {
     }
 }
 
-            #Preview {
-                let _ = UserDefaults.standard.set("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzMyNzIyMzc1LCJleHAiOjE3MzI4MDg3NzV9.6gcH_Dwa5gGi9hYDIAvsKosJBoij93Na9oxjfGlAb8g", forKey: "token")
-                MyTaskListView(userId: 1)
+#Preview {
+                let _ = UserDefaults.standard.set("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTYsImlhdCI6MTczMzA1NjE2NiwiZXhwIjoxNzM1NjQ4MTY2fQ.kEMlNTg7gpvn1NMPhNgtTtJGGFU9LIwz6P78zBuGiXA", forKey: "token")
+                MyTaskListView(userId: 16)
             }

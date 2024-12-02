@@ -15,18 +15,24 @@ struct LoginView: View {
             VStack {
                 Spacer()
                 
-                VStack(alignment: .center, spacing: 15) {
-                    KakaoLoginView()
-                        .environmentObject(kakaoLoginVM)
-                        .onChange(of: kakaoLoginVM.isKakaoLoggedIn) { newValue in
-                            if newValue {
-                                selectedLoginMethod = "kakao"
-                            }
-                        }
+                VStack(alignment: .center, spacing: 10) {
                     
-                    LoginButton(loginType: .google, text: "Google로 시작하기") {
-                        selectedLoginMethod = "google"
+                    Text("HOME'S ON")
+                        .font(.title)
+                        .underline()
+                        .fontWeight(.bold)
+                        .padding(.bottom, 130)
+                        
+                    
+                    
+                    LoginButton(loginType: .kakao, text: "kakao로 로그인") {
+                        kakaoLoginVM.kakaoLogin()
+                    }.onChange(of: kakaoLoginVM.isKakaoLoggedIn) { newValue in
+                        if newValue {
+                            selectedLoginMethod = "kakao"
+                        }
                     }
+                    
 
                     AppleLoginView()
                         .environmentObject(appleLoginVM)
@@ -34,7 +40,7 @@ struct LoginView: View {
                             if newValue {
                                 selectedLoginMethod = "apple"
                             }
-                        }
+                        }.padding(.horizontal,-17)
 
                     HStack {
                         Color.gray.frame(height: 0.5)
@@ -42,12 +48,20 @@ struct LoginView: View {
                         Color.gray.frame(height: 0.5)
                     }
 
-                    LoginButton(loginType: .email, text: "email로 시작하기") {
+                    LoginButton(loginType: .email, text: "email로 로그인") {
                         isEmailLoginActive = true
                     }
+                    .padding(.vertical, 10)
+                    
+//                    Text("HOME'S ON을 계속 진행하면 서비스 약관에 동의하고\n 개인정보 보호정책을 읽은것으로 간주됩니다.")
+//                        .font(.footnote)
+//                        .padding(.top, 100)
                 }
 
                 Spacer()
+                Text("HOME'S ON을 계속 진행하면 서비스 약관에 동의하고\n 개인정보 보호정책을 읽은것으로 간주됩니다.")
+                    .font(.footnote)
+                    .padding(.top, 100)
             }
             .padding(20)
             .navigationDestination(isPresented: $isEmailLoginActive) {
@@ -69,6 +83,8 @@ struct LoginView: View {
             .navigationDestination(isPresented: $navigateToProfileEdit) {
                 ProfileEditView()
             }
+            
+            
         }
     }
 }
