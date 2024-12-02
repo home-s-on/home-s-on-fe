@@ -13,26 +13,27 @@ struct WideImageButton: View {
     var backgroundColor: Color
     var borderColer: Color = .clear // 버튼 외곽 색, 기본값 안 보이게 clear로 설정
     var textColor: Color = .white
-    @State var isHidden = false
+    var isHidden = false
     var action: () -> Void
     var body: some View {
-        if(!isHidden){
-            Button {
-                action()
-            } label: {
-                Image(systemName: icon)
-                    .foregroundStyle(textColor)
-                Text(title)
-                    .font(.headline)
-                    .foregroundStyle(textColor)
-            }
-            .frame(maxWidth: .infinity)
-            .padding()
-            .background(backgroundColor)
-            .clipShape(RoundedRectangle(cornerRadius: 10))
-            .overlay(RoundedRectangle(cornerRadius: 10).stroke(borderColer, lineWidth: 2)
-            ).padding(.horizontal)
+        
+        Button {
+            action()
+        } label: {
+            Image(systemName: icon)
+                .foregroundStyle(textColor)
+            Text(title)
+                .font(.headline)
+                .foregroundStyle(textColor)
         }
+        .frame(maxWidth: .infinity)
+        .padding()
+        .background(backgroundColor)
+        .clipShape(RoundedRectangle(cornerRadius: 10))
+        .overlay(RoundedRectangle(cornerRadius: 10).stroke(borderColer, lineWidth: 2)
+        ).padding(.horizontal)
+            .opacity(isHidden ? 0 : 1 )
+        
         
     }
 }
