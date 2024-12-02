@@ -42,7 +42,7 @@ public enum LoginType {
         case .apple:
             return Image(systemName: "applelogo")
         case .email:
-            return Image(systemName: "")
+            return Image(systemName: "at")
         }
     }
 }
