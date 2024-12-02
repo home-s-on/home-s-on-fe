@@ -10,13 +10,15 @@ import SwiftUI
 struct SettingView: View {
     @State private var isShowInviteCode = false
     @State private var isShowPastTasks = false
-    @Environment(\.presentationMode) var presentationMode
-    
+    @State private var isShowHouseInMembers = false
+    @EnvironmentObject var getHouseInMemberVM : GetMembersInHouseViewModel
     var body: some View {
-        NavigationView {  // NavigationStack-> NavigationView
-            VStack(spacing: 40) {
+        NavigationView{
+            VStack (spacing: 40){
+
                 WideImageButton(icon: "", title: "멤버 확인하기", backgroundColor: .white, borderColer: .gray, textColor: .black) {
-                    
+                    getHouseInMemberVM.getMembersInHouse()
+                    isShowHouseInMembers = true
                 }
                 WideImageButton(icon: "", title: "지난 할 일", backgroundColor: .white, borderColer: .gray, textColor: .black) {
                     isShowPastTasks = true
@@ -34,17 +36,26 @@ struct SettingView: View {
                     }
             }
             .navigationBarTitle("설정", displayMode: .inline)
-            .navigationBarBackButtonHidden(false)
-            .navigationDestination(isPresented: $isShowInviteCode) {
-                InviteMemberView(isFromSetting: true)
+
+                        .navigationBarBackButtonHidden(false)
+                        .navigationDestination(isPresented: $isShowInviteCode) {
+                            InviteMemberView(isFromSetting: true)
+                        }
+                        .navigationDestination(isPresented: $isShowPastTasks) {
+                            PastTaskListView()
+                        }
+                        .navigationDestination(isPresented: $isShowHouseInMembers) {
+                            HouseInMemberView()
+                                .environmentObject(getHouseInMemberVM)
+                            
+                        }
+                    }
+                    .navigationViewStyle(StackNavigationViewStyle())
+                }
             }
-            .navigationDestination(isPresented: $isShowPastTasks) {
-                PastTaskListView()
-            }
-        }
-        .navigationViewStyle(StackNavigationViewStyle())
-    }
-}
+
+
+
 
 #Preview {
     SettingView()
