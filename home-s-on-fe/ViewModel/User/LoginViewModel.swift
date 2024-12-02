@@ -57,7 +57,6 @@ class LoginViewModel: ObservableObject {
                                 UserDefaults.standard.set(loginData.user.email, forKey: "email")
                                 UserDefaults.standard.set(loginData.user.photo, forKey: "photo")
                                 UserDefaults.standard.set(loginData.user.nickname, forKey: "nickname")
-                                print(loginData)
                             }
                         } else {
                             self.isLoginShowing = true

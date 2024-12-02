@@ -38,7 +38,6 @@ class JoinToHouseViewModel : ObservableObject {
                                     if let joinToHouseData = apiResponse.data {
                                         UserDefaults.standard.set(joinToHouseData.houseId, forKey: "houseId")
                                         UserDefaults.standard.set(joinToHouseData.isOwner, forKey: "isOwner")
-                                        print(joinToHouseData)
                                         self.isNavigatingToMain = true
                                     }
                                 } else {
