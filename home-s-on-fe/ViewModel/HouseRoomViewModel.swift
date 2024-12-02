@@ -29,9 +29,6 @@ class HouseRoomViewModel: ObservableObject {
             "Content-Type": "application/json"
         ]
         
-        print("Using token:", token)
-        print("Request URL:", "\(APIEndpoints.baseURL)/rooms")
-        
         AF.request("\(APIEndpoints.baseURL)/rooms",
                   method: .get,
                   headers: headers)
