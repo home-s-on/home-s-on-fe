@@ -20,3 +20,9 @@ struct Member: Codable, Identifiable {
         case membersId = "members_id"
     }
 }
+
+struct HouseInMember: Codable {
+    let userId: Int
+    let nickname: String
+    let isOwner: Bool
+}

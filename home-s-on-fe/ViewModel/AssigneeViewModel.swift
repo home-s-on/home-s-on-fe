@@ -34,18 +34,16 @@ class AssigneeViewModel: ObservableObject {
             "Content-Type": "application/json"
         ]
         
-        print("Request URL:", "\(APIEndpoints.baseURL)/members/house/\(houseId)")
+        // URL 경로 수정
+        let url = "\(APIEndpoints.baseURL)/members/\(houseId)"
+
+        print("Request URL:", url)
         print("Request headers:", headers)
         
-        AF.request("\(APIEndpoints.baseURL)/members/house/\(houseId)",
+        AF.request(url,
                   method: .get,
                   headers: headers)
-            .response { response in
-                print("\n=== Response Debug ===")
-                print("Status Code:", response.response?.statusCode ?? "No status code")
-                print("Raw response:", String(data: response.data ?? Data(), encoding: .utf8) ?? "No data")
-                print("Headers:", response.response?.headers ?? "No headers")
-            }
+            .validate(statusCode: 200...299)
             .responseDecodable(of: HouseMemberResponse.self) { [weak self] response in
                 self?.isLoading = false
                 print("\n=== Decoding Debug ===")

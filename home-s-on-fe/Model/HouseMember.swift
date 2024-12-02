@@ -20,7 +20,6 @@ struct HouseMember: Codable, Identifiable {
     }
 }
 
-
 struct HouseMemberResponse: Codable {
     let status: String
     let data: [HouseMember]
