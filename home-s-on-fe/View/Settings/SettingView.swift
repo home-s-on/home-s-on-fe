@@ -13,7 +13,7 @@ struct SettingView: View {
     @State private var isShowHouseInMembers = false
     @EnvironmentObject var getHouseInMemberVM : GetMembersInHouseViewModel
     var body: some View {
-        NavigationStack{
+        NavigationView{
             VStack (spacing: 40){
                 
                 WideImageButton(icon: "", title: "멤버 확인하기", backgroundColor: .white, borderColer: .gray, textColor: .black) {
@@ -37,19 +37,25 @@ struct SettingView: View {
                     }
                 
             }
-            .navigationDestination(isPresented: $isShowInviteCode) {
-                InviteMemberView(isFromSetting: true)
+            .navigationBarTitle("설정", displayMode: .inline)
+                        .navigationBarBackButtonHidden(false)
+                        .navigationDestination(isPresented: $isShowInviteCode) {
+                            InviteMemberView(isFromSetting: true)
+                        }
+                        .navigationDestination(isPresented: $isShowPastTasks) {
+                            PastTaskListView()
+                        }
+                        .navigationDestination(isPresented: $isShowHouseInMembers) {
+                            HouseInMemberView()
+                                .environmentObject(getHouseInMemberVM)
+                            
+                        }
+                    }
+                    .navigationViewStyle(StackNavigationViewStyle())
+                }
             }
-            .navigationDestination(isPresented: $isShowPastTasks) {
-                PastTaskListView()
-            }
-            .navigationDestination(isPresented: $isShowHouseInMembers) {
-                HouseInMemberView()
-                
-            }
-        }
-    }
-}
+
+
 
 #Preview {
     SettingView()
