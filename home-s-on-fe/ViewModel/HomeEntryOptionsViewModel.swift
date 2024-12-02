@@ -27,7 +27,6 @@ class HouseEntryOptionsViewModel: ObservableObject {
         
         AF.request(url, method: .post, headers: headers)
             .responseDecodable(of: ApiResponse<House>.self) { [weak self] response in
-                print(response)
                 guard let self = self else { return }
                 SVProgressHUD.dismiss()
                 
@@ -37,7 +36,6 @@ class HouseEntryOptionsViewModel: ObservableObject {
                         if let createHouseData = apiResponse.data {
                             UserDefaults.standard.set(createHouseData.inviteCode, forKey: "inviteCode")
                             UserDefaults.standard.set(createHouseData.houseId, forKey: "houseId")
-                            print(createHouseData)
                         }
                     } else {
                         self.message = apiResponse.message ?? "Unknown error occurred"
