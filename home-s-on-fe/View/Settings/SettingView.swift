@@ -10,12 +10,15 @@ import SwiftUI
 struct SettingView: View {
     @State private var isShowInviteCode = false
     @State private var isShowPastTasks = false
+    @State private var isShowHouseInMembers = false
+    @EnvironmentObject var getHouseInMemberVM : GetMembersInHouseViewModel
     var body: some View {
         NavigationStack{
             VStack (spacing: 40){
                 
                 WideImageButton(icon: "", title: "멤버 확인하기", backgroundColor: .white, borderColer: .gray, textColor: .black) {
-                    
+                    getHouseInMemberVM.getMembersInHouse()
+                    isShowHouseInMembers = true
                 }
                 WideImageButton(icon: "", title: "지난 할 일", backgroundColor: .white, borderColer: .gray, textColor: .black) {
                     isShowPastTasks = true
@@ -39,6 +42,10 @@ struct SettingView: View {
             }
             .navigationDestination(isPresented: $isShowPastTasks) {
                 PastTaskListView()
+            }
+            .navigationDestination(isPresented: $isShowHouseInMembers) {
+                HouseInMemberView()
+                
             }
         }
     }
