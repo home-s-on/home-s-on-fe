@@ -70,3 +70,5 @@ class GetHouseIdViewModel: ObservableObject {
             }
     }
 }
+
+
