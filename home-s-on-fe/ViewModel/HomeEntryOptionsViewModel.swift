@@ -35,8 +35,8 @@ class HouseEntryOptionsViewModel: ObservableObject {
                 case .success(let apiResponse):
                     if apiResponse.status == "success" {
                         if let createHouseData = apiResponse.data {
-                            self.inviteCode = createHouseData.inviteCode
                             UserDefaults.standard.set(createHouseData.inviteCode, forKey: "inviteCode")
+                            UserDefaults.standard.set(createHouseData.houseId, forKey: "houseId")
                             print(createHouseData)
                         }
                     } else {
