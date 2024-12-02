@@ -16,23 +16,24 @@ struct SettingView: View {
         NavigationView{
             VStack (spacing: 40){
 
-                WideImageButton(icon: "", title: "멤버 확인하기", backgroundColor: .white, borderColer: .gray, textColor: .black) {
+                SettingButton(icon: "", title: "멤버 확인하기", style: ButtonStyle(isButtonShadowVisible: true)) {
                     getHouseInMemberVM.getMembersInHouse()
                     isShowHouseInMembers = true
                 }
-                WideImageButton(icon: "", title: "지난 할 일", backgroundColor: .white, borderColer: .gray, textColor: .black) {
+                SettingButton(icon: "", title: "지난 할 일", style: ButtonStyle(isButtonShadowVisible: true)) {
                     isShowPastTasks = true
                 }
-                WideImageButton(icon: "", title: "초대 코드", backgroundColor: .white, borderColer: .gray, textColor: .black) {
+                SettingButton(icon: "", title: "초대 코드", style: ButtonStyle(isButtonShadowVisible: true)) {
                     isShowInviteCode = true
                 }
                 .padding(.bottom, 300)
                 
                 Text("탈퇴할래요!")
                     .font(.footnote)
-                    .foregroundColor(.blue)
+                    .foregroundColor(.gray)
+                    .underline()
                     .onTapGesture {
-                        print("혼자 사용하기 클릭")
+                        print("탈퇴하기 클릭")
                     }
             }
             .navigationBarTitle("설정", displayMode: .inline)
@@ -58,5 +59,5 @@ struct SettingView: View {
 
 
 #Preview {
-    SettingView()
+    SettingView().environmentObject(GetMembersInHouseViewModel())
 }
