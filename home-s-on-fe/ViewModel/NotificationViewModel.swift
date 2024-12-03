@@ -43,13 +43,13 @@ class NotificationViewModel: ObservableObject {
         let tokenString = deviceToken.map { String(format: "%02.2hhx", $0) }.joined()
         
         print("APNS device token: \(tokenString)")
+        UserDefaults.standard.set(tokenString, forKey: "deviceToken")//userid와 함께 백엔드에 보내줘야 함. apn sever에서는 앞에 보냈던거랑 비교해서 보내기.
         
-        sendDeviceTokenToServer(deviceToken: tokenString)
     }
     
-    private func sendDeviceTokenToServer(deviceToken: String) {
-        guard let userId = UserDefaults.standard.string(forKey: "userId"),
-              let token = UserDefaults.standard.string(forKey: "token") else {
+    func sendDeviceTokenToServer(deviceToken: String) {
+        //guard let userId = UserDefaults.standard.string(forKey: "userId"),
+        guard let token = UserDefaults.standard.string(forKey: "token") else {
             print("사용자 ID 또는 token을 찾을 수 없습니다.")
             return
         }

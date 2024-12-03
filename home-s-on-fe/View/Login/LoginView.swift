@@ -5,6 +5,7 @@ struct LoginView: View {
     @EnvironmentObject var profileVM: ProfileViewModel
     @StateObject var appleLoginVM = AppleLoginViewModel()
     @StateObject var kakaoLoginVM = KakaoLoginViewModel()
+    @StateObject var notificationViewModel = NotificationViewModel()
     
     @State private var isEmailLoginActive = false
     @State private var selectedLoginMethod: String? = nil
@@ -78,6 +79,10 @@ struct LoginView: View {
             .onChange(of: selectedLoginMethod) { newValue in
                 if let method = newValue {
                     navigateToProfileEdit = true
+                    if let deviceToken = UserDefaults.standard.string(forKey: "deviceToken"){
+                        self.notificationViewModel.sendDeviceTokenToServer(deviceToken: deviceToken)
+                        
+                    }
                 }
             }
             .navigationDestination(isPresented: $navigateToProfileEdit) {
