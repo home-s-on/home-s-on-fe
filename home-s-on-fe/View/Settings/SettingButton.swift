@@ -26,11 +26,14 @@ struct SettingButton: View {
         Button {
             action()
         } label: {
+            Spacer()
             Image(systemName: icon)
                 .foregroundStyle(style.textColor)
+            
             Text(title)
                 .font(style.textFont)
                 .foregroundStyle(style.textColor)
+            Spacer()
         }
         .frame(maxWidth: .infinity)
         .padding()

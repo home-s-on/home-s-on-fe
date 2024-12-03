@@ -20,11 +20,13 @@ struct WideImageButton: View {
         Button {
             action()
         } label: {
+            Spacer()
             Image(systemName: icon)
                 .foregroundStyle(textColor)
             Text(title)
                 .font(.headline)
                 .foregroundStyle(textColor)
+            Spacer()
         }
         .frame(maxWidth: .infinity)
         .padding()

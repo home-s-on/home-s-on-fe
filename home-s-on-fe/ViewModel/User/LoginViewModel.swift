@@ -21,7 +21,7 @@ class LoginViewModel: ObservableObject {
     var profileViewModel: ProfileViewModel?
     @Published var nextView: String = ""
     @Published var isNavigating = false
-    @StateObject var notificationViewModel = NotificationViewModel()
+    @ObservedObject var notificationViewModel = NotificationViewModel()
     
     
 //    init(){ // 이렇게 하면 처음 로그인화면 안 보여줌
@@ -55,7 +55,7 @@ class LoginViewModel: ObservableObject {
                     case .success(let apiResponse):
                         if apiResponse.status == "success" {
                             if let loginData = apiResponse.data {
-                                self.isLoggedIn = true
+                                //self.isLoggedIn = true
                                 UserDefaults.standard.set(loginData.user.id, forKey: "userId")
                                 UserDefaults.standard.set(loginData.token, forKey: "token")
                                 UserDefaults.standard.set(loginData.user.email, forKey: "email")
