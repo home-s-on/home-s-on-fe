@@ -126,46 +126,62 @@ class TaskViewModel: ObservableObject {
     
     
     // 지난 할일 가져오기
-        func fetchPastTasks() {
-            guard !isLoading else { return }
-            isLoading = true
-            
-            guard let token = UserDefaults.standard.string(forKey: "token") else {
-                isLoading = false
-                isFetchError = true
-                message = "로그인이 필요합니다"
-                return
-            }
-            
-            let headers: HTTPHeaders = [
-                "Authorization": "Bearer \(token)",
-                "Content-Type": "application/json"
-            ]
-            
-            AF.request("\(APIEndpoints.baseURL)/tasks/pasttasks",
-                      method: .get,
-                      headers: headers)
-                .validate()
-                .responseDecodable(of: TaskResponse<Task>.self) { [weak self] response in
-                    self?.isLoading = false
-                    
-                    switch response.result {
-                    case .success(let taskResponse):
-                        self?.tasks = taskResponse.data
-                        if self?.tasks.isEmpty ?? true {
-                            self?.isFetchError = true
-                            self?.message = "지난 할일이 없습니다"
-                        }
-                    case .failure(let error):
-                        print("Error:", error)
-                        self?.isFetchError = true
-                        self?.message = "지난 할일을 불러올 수 없습니다"
-                    }
-                }
+    func fetchPastTasks() {
+        guard !isLoading else { return }
+        isLoading = true
+        
+        guard let token = UserDefaults.standard.string(forKey: "token") else {
+            isLoading = false
+            isFetchError = true
+            message = "로그인이 필요합니다"
+            return
         }
+        
+        let headers: HTTPHeaders = [
+            "Authorization": "Bearer \(token)",
+            "Content-Type": "application/json"
+        ]
+        
+        AF.request("\(APIEndpoints.baseURL)/tasks/pasttasks",
+                  method: .get,
+                  headers: headers)
+            .validate()
+            .responseDecodable(of: TaskResponse<Task>.self) { [weak self] response in
+                self?.isLoading = false
+                
+                switch response.result {
+                case .success(let taskResponse):
+                    let today = Date()
+                    self?.tasks = taskResponse.data.filter { task in
+                        guard let dueDate = self?.dateFromString(task.dueDate ?? "") else { return false }
+                        return dueDate < today
+                    }.sorted { (task1, task2) -> Bool in
+                        guard let date1 = self?.dateFromString(task1.dueDate ?? ""),
+                              let date2 = self?.dateFromString(task2.dueDate ?? "") else { return false }
+                        return date1 > date2
+                    }
+                    
+                    if self?.tasks.isEmpty ?? true {
+                        self?.isFetchError = true
+                        self?.message = "지난 할일이 없습니다"
+                    }
+                case .failure(let error):
+                    print("Error fetching past tasks: \(error.localizedDescription)")
+                    self?.isFetchError = true
+                    self?.message = "지난 할일을 불러올 수 없습니다"
+                }
+            }
+    }
+
+    private func dateFromString(_ dateString: String) -> Date? {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
+        return formatter.date(from: dateString)
+    }
     
     // 할일추가
-    func addTask(houseRoomId: Int, title: String, assigneeId: [Int], memo: String?, alarm: String?, dueDate: String?) {
+    func addTask(houseRoomId: Int, title: String, assigneeId: [Int], memo: String?, alarm: String?, dueDate: String?,
+    completion: @escaping (Bool) -> Void) {
         print("=== Add Task Debug Logs ===")
         isLoading = true
         
@@ -174,6 +190,7 @@ class TaskViewModel: ObservableObject {
             isLoading = false
             isFetchError = true
             message = "로그인이 필요합니다"
+            completion(false) // 추가
             return
         }
         
@@ -220,25 +237,31 @@ class TaskViewModel: ObservableObject {
                             let taskResponse = try JSONDecoder().decode(TaskResponse<Task>.self, from: data)
                             print("Success: Task created")
                             print("Task Response:", taskResponse)
-                            if let houseId = self.tasks.first?.houseId {
+                            // 작업 생성 후 houseId를 가져와서 fetchTasks 호출
+                            if let houseId = taskResponse.data.first?.houseId { // 첫 번째 Task에서 houseId 가져오기
                                 self.fetchTasks(houseId: houseId)
-                            }
+                                }
+                          
                             self.isFetchError = false
                             self.message = ""
+                            completion(true) // 성공 시 true 반환
                         } else {
                             let errorResponse = try JSONDecoder().decode(ErrorResponse.self, from: data)
                             print("Error Response:", errorResponse)
                             self.isFetchError = true
                             self.message = errorResponse.error
+                            completion(false) // 추가
                         }
                     } catch {
                         print("Decoding error:", error)
                         print("Raw data:", String(data: data, encoding: .utf8) ?? "")
+                        completion(false) // 추가
                     }
                 case .failure(let error):
                     print("Network error:", error)
                     self.isFetchError = true
                     self.message = "할일을 추가할 수 없습니다"
+                    completion(false) // 추가
                 }
             }
     }

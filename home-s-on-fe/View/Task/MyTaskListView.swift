@@ -14,6 +14,7 @@ struct MyTaskListView: View {
     let userId: Int
     @State private var nickname: String = UserDefaults.standard.string(forKey: "nickname") ?? ""
     @State private var photo: String = UserDefaults.standard.string(forKey: "photo") ?? ""
+    @State private var isShowingAddTask = false // 추가
 
     
     var body: some View {
@@ -72,7 +73,8 @@ struct MyTaskListView: View {
                     viewModel.fetchMyTasks(userId: userId)
                 }
                 
-                AddTaskButton()
+                // AddTaskButton에 필요한 매개변수 전달
+                AddTaskButton(isShowingAddTask: $isShowingAddTask, viewModel: viewModel, houseId: userId) // 수정
             }
         }
     }

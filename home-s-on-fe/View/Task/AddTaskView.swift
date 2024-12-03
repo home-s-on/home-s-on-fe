@@ -8,15 +8,18 @@
 import SwiftUI
 
 struct AddTaskView: View {
-    @StateObject private var viewModel = TaskViewModel()
+    //@StateObject private var viewModel = TaskViewModel()
+    @ObservedObject var viewModel: TaskViewModel //수정
     @State private var dueDate: String = ""
     @Binding var isPresented: Bool
+    let houseId: Int // 추가
     @State private var title: String = ""
     @State private var memo: String = ""
     @State private var selectedRoom: HouseRoom?
     @State private var isRepeat: Bool = false
     @State private var isAlarmOn: Bool = false
     @State private var selectedAssignee: HouseInMember?
+    
     
     // 저장 버튼 활성화 조건
     private var isFormValid: Bool {
@@ -84,7 +87,7 @@ struct AddTaskView: View {
                 trailing: Button("저장") {
                     saveTask()
                 }
-                .disabled(!isFormValid)
+                    .disabled(!isFormValid)
             )
         }
         .alert("오류", isPresented: $viewModel.isFetchError) {
@@ -108,12 +111,18 @@ struct AddTaskView: View {
             memo: memo.isEmpty ? nil : memo,
             alarm: isAlarmOn ? "on" : nil,
             dueDate: dueDate.isEmpty ? nil : dueDate
-        )
-        
-        isPresented = false
+        ){ success in
+            if success {
+                viewModel.fetchTasks(houseId: houseId) // 집 ID로 작업 목록 업데이트
+                isPresented = false // AddTaskView 닫기
+                
+            }
+        }
     }
-    }
-
-#Preview {
-    AddTaskView(isPresented: .constant(true))
 }
+
+ 
+
+    #Preview {
+        AddTaskView(viewModel: TaskViewModel(), isPresented: .constant(true), houseId: 1)
+    }

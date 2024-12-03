@@ -15,6 +15,7 @@ struct TaskListView: View {
     let houseId: Int
     @State private var nickname: String = UserDefaults.standard.string(forKey: "nickname") ?? ""
     @State private var photo: String = UserDefaults.standard.string(forKey: "photo") ?? ""
+    @State private var isShowingAddTask = false // 추가
     
     var body: some View {
         NavigationView {
@@ -22,23 +23,23 @@ struct TaskListView: View {
                 VStack {
                     //프로필 영역
                     HStack(spacing: 12) {  // HStack 추가
-
-                    if let photoURL = URL(string: "\(APIEndpoints.blobURL)/\(photo)") {
-                        KFImage(photoURL)
-                            .resizable()
-                            .scaledToFill()
-                            .frame(width: 40, height: 40)
-                            .clipShape(Circle())
-                    } else {
-                        Image(systemName: "person.circle.fill")
-                            .resizable()
-                            .frame(width: 40, height: 40)
-                            .foregroundColor(.gray)
-                    }
-                    
-                    Text(nickname)
-                        .font(.system(size: 18, weight: .medium))
-
+                        
+                        if let photoURL = URL(string: "\(APIEndpoints.blobURL)/\(photo)") {
+                            KFImage(photoURL)
+                                .resizable()
+                                .scaledToFill()
+                                .frame(width: 40, height: 40)
+                                .clipShape(Circle())
+                        } else {
+                            Image(systemName: "person.circle.fill")
+                                .resizable()
+                                .frame(width: 40, height: 40)
+                                .foregroundColor(.gray)
+                        }
+                        
+                        Text(nickname)
+                            .font(.system(size: 18, weight: .medium))
+                        
                         
                         Spacer()
                     }
@@ -62,12 +63,20 @@ struct TaskListView: View {
                         }
                     }
                 }
+                // AddTaskButton 추가 및 매개변수 전달
+                AddTaskButton(isShowingAddTask: $isShowingAddTask, viewModel: viewModel, houseId: houseId)
                 
-                AddTaskButton()
-            }
+                
+                //AddTaskButton(isShowingAddTask: $isShowingAddTask)
+                }
             .onAppear {
                 viewModel.fetchTasks(houseId: houseId)
             }
+            //
+            .sheet(isPresented: $isShowingAddTask) {
+                AddTaskView(viewModel: viewModel, isPresented: $isShowingAddTask, houseId: houseId)
+                    .presentationDetents([.large])
+                }
             .alert("오류", isPresented: .constant(errorMessage != nil)) {
                 Button("확인") {
                     errorMessage = nil
