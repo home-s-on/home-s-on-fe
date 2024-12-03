@@ -9,80 +9,54 @@ import SwiftUI
 import Alamofire
 
 struct AssigneeSelectionView: View {
-    @StateObject private var viewModel = GetMembersInHouseViewModel()
+    @EnvironmentObject var viewModel: GetMembersInHouseViewModel
+    @Environment(\.dismiss) private var dismiss
     @Binding var selectedAssignee: HouseInMember?
-    @State private var isDropdownOpen = false
 
     var body: some View {
         VStack {
-            Button(action: {
-                withAnimation {
-                    isDropdownOpen.toggle()
+            // 네비게이션 바
+            HStack {
+                Button(action: { dismiss() }) {
+                    Image(systemName: "chevron.left")
+                        .foregroundColor(.blue)
                 }
-            }) {
-                HStack {
-                    Text(selectedAssignee?.nickname ?? "담당자 선택")
-                    Spacer()
-                    Image(systemName: isDropdownOpen ? "chevron.up" : "chevron.down")
-                }
-                .padding()
-                .background(Color.white)
-                .cornerRadius(8)
-                .overlay(
-                    RoundedRectangle(cornerRadius: 8)
-                        .stroke(Color.gray, lineWidth: 1)
-                )
+                Spacer()
+                Text("담당자 선택")
+                    .font(.headline)
+                Spacer()
             }
+            .padding()
 
-            if isDropdownOpen {
-                ScrollView {
-                    VStack(alignment: .leading, spacing: 10) {
-                        ForEach(viewModel.members, id: \.userId) { member in
-                            Button(action: {
-                                selectedAssignee = member
-                                withAnimation {
-                                    isDropdownOpen = false
-                                }
-                            }) {
-                                HStack {
-                                    Text(member.nickname)
-                                    Spacer()
-                                    if member.isOwner {
-                                        Image(systemName: "star.fill")
-                                            .foregroundColor(.yellow)
-                                    }
-                                }
-                            }
-                            .padding(.vertical, 5)
+            // 멤버 목록
+            List(viewModel.houseMembers, id: \.userId) { member in
+                Button(action: {
+                    selectedAssignee = member
+                    dismiss()
+                }) {
+                    HStack {
+                        Text(member.nickname)
+                        Spacer()
+                        if member.isOwner {
+                            Text("집주인")
+                                .font(.caption)
+                                .padding(5)
+                                .background(Color.blue.opacity(0.1))
+                                .cornerRadius(5)
+                        }
+                        if selectedAssignee?.userId == member.userId {
+                            Image(systemName: "checkmark")
+                                .foregroundColor(.blue)
                         }
                     }
                 }
-                .padding()
-                .background(Color.white)
-                .cornerRadius(8)
-                .overlay(
-                    RoundedRectangle(cornerRadius: 8)
-                        .stroke(Color.gray, lineWidth: 1)
-                )
-                .shadow(radius: 2)
+                .foregroundColor(.primary)
             }
         }
+        .navigationBarHidden(true)
         .onAppear {
             viewModel.getMembersInHouse()
         }
-        .alert(isPresented: $viewModel.isGetMembersShowing) {
-            Alert(title: Text("알림"), message: Text(viewModel.message), dismissButton: .default(Text("확인")))
-        }
-        .overlay(
-            Group {
-                if viewModel.isLoading {
-                    ProgressView()
-                        .scaleEffect(1.5)
-                        .frame(maxWidth: .infinity, maxHeight: .infinity)
-                        .background(Color.black.opacity(0.4))
-                }
-            }
-        )
     }
 }
 
@@ -91,3 +65,4 @@ struct AssigneeSelectionView_Previews: PreviewProvider {
         AssigneeSelectionView(selectedAssignee: .constant(nil))
             .environmentObject(GetMembersInHouseViewModel())
     }
+}

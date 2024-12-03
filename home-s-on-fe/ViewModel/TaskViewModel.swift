@@ -6,6 +6,7 @@ class TaskViewModel: ObservableObject {
     @Published var message = ""
     @Published var isFetchError = false
     @Published var isLoading = false
+    @Published var selectedAssignee: HouseInMember?
     
     // 모든 할일
     func fetchTasks(houseId: Int) {
