@@ -11,8 +11,8 @@ struct Task: Identifiable, Codable {
     let assigneeId: [Int]
     let dueDate: String?
     let complete: Bool
-    let createdAt: String
-    let updatedAt: String
+    let createdAt: String?
+    let updatedAt: String?
     let houseRoom: HouseRoom?
     let assignees: [TaskUser]?
     
@@ -43,4 +43,9 @@ struct TaskUser: Codable {
 struct TaskResponse<T: Codable>: Codable {
     let success: Bool
     let data: [T]
+}
+
+struct AddTaskResponse<T: Codable>: Codable {
+    let success: Bool
+    let data: T
 }

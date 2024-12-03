@@ -9,7 +9,7 @@ import SwiftUI
 import Kingfisher
 
 struct TaskListView: View {
-    @StateObject private var viewModel = TaskViewModel()
+    @EnvironmentObject var viewModel: TaskViewModel
     @State private var photoURL: URL?
     @State private var errorMessage: String?
     let houseId: Int
@@ -81,5 +81,5 @@ struct TaskListView: View {
 
 #Preview {
     let _ = UserDefaults.standard.set("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzMyNzIyMzc1LCJleHAiOjE3MzI4MDg3NzV9.6gcH_Dwa5gGi9hYDIAvsKosJBoij93Na9oxjfGlAb8g", forKey: "token")
-    return TaskListView(houseId: 1)
+    return TaskListView(houseId: 1).environmentObject(TaskViewModel())
 }

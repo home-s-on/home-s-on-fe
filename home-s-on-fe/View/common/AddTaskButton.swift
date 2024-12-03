@@ -9,6 +9,8 @@ import SwiftUI
 
 struct AddTaskButton: View {
     @State private var isShowingAddTask = false
+    @EnvironmentObject var viewModel: TaskViewModel
+    @State private var houseId: Int = Int(UserDefaults.standard.string(forKey: "houseId") ?? "0") ?? 0
     
     var body: some View {
         VStack {
@@ -31,10 +33,12 @@ struct AddTaskButton: View {
         }
         .sheet(isPresented: $isShowingAddTask) {
             AddTaskView(isPresented: $isShowingAddTask)
+                .environmentObject(viewModel)  // viewModel을 전달
                 .presentationDetents([.large])
         }
     }
 }
+
 
 
 #Preview {

@@ -71,6 +71,7 @@ class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCenterDele
    private func resetUserDefaults() {
         let defaults = UserDefaults.standard
             
+       defaults.removeObject(forKey: "userId")
         defaults.removeObject(forKey: "token")
         defaults.removeObject(forKey: "email")
         defaults.removeObject(forKey: "nickname")

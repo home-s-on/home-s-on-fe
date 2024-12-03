@@ -25,7 +25,7 @@ class HouseRoomViewModel: ObservableObject {
         }
         
         let headers: HTTPHeaders = [
-            "Authorization": "Bearer \(token)", 
+            "Authorization": "Bearer \(token)",
             "Content-Type": "application/json"
         ]
         
@@ -37,7 +37,7 @@ class HouseRoomViewModel: ObservableObject {
                 self?.isLoading = false
                 
                 if let statusCode = response.response?.statusCode {
-                    print("Response status code:", statusCode)
+//                    print("Response status code:", statusCode)
                 }
                 
                 if let data = response.data {
@@ -48,7 +48,7 @@ class HouseRoomViewModel: ObservableObject {
                 case .success(let responseData):
                     self?.rooms = responseData.data
                 case .failure(let error):
-                    print("Error details:", error)
+//                    print("Error details:", error)
                     self?.errorMessage = "구역 목록을 불러올 수 없습니다"
                 }
             }
@@ -119,7 +119,7 @@ class HouseRoomViewModel: ObservableObject {
                 case .failure(let error):
                     print("Error deleting room:", error)
                     if let data = response.data {
-                        print("Error response:", String(data: data, encoding: .utf8) ?? "")
+//                        print("Error response:", String(data: data, encoding: .utf8) ?? "")
                     }
                     self?.errorMessage = "구역을 삭제할 수 없습니다"
                 }
