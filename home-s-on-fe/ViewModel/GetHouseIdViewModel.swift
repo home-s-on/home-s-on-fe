@@ -62,6 +62,8 @@ class GetHouseIdViewModel: ObservableObject {
                         } else {
                             self.message = "네트워크 오류: \(error.localizedDescription)"
                         }
+                        print("Network Error Message: \(self.message)")
+
                         completion(nil)
                     }
                 }
@@ -69,4 +71,3 @@ class GetHouseIdViewModel: ObservableObject {
     }
 
 }
-
