@@ -13,7 +13,6 @@ class HouseEntryOptionsViewModel: ObservableObject {
         
         let url = "\(APIEndpoints.baseURL)/house/create"
         
-        // UserDefaults에서 토큰 가져오기
         guard let token = UserDefaults.standard.string(forKey: "token") else {
             self.message = "토큰이 존재하지 않습니다."
             self.isLoading = false

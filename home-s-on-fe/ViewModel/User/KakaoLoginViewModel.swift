@@ -53,7 +53,7 @@ class KakaoLoginViewModel: ObservableObject {
             }
 
             if let httpResponse = response as? HTTPURLResponse {
-                print("Response status code: \(httpResponse.statusCode)")
+//                print("Response status code: \(httpResponse.statusCode)")
             }
 
             if let data = data {

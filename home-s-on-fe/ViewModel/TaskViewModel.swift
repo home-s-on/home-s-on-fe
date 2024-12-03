@@ -21,9 +21,6 @@ class TaskViewModel: ObservableObject {
             return
         }
         
-        print("Using token:", token)
-        print("Request URL:", "\(APIEndpoints.baseURL)/tasks/house")
-        
         let headers: HTTPHeaders = [
             "Authorization": "Bearer \(token)",
             "Content-Type": "application/json"
@@ -34,27 +31,26 @@ class TaskViewModel: ObservableObject {
                   headers: headers)
             .validate()
             .response { response in
-                print("Raw response:", String(data: response.data ?? Data(), encoding: .utf8) ?? "")
+//                print("Raw response:", String(data: response.data ?? Data(), encoding: .utf8) ?? "")
             }
             .responseDecodable(of: TaskResponse<Task>.self) { [weak self] response in
                 self?.isLoading = false
                 
                 if let statusCode = response.response?.statusCode {
-                    print("Response status code:", statusCode)
+//                    print("Response status code:", statusCode)
                 }
                 
                 switch response.result {
                 case .success(let taskResponse):
-                    print("Decoded response:", taskResponse)
                     self?.tasks = taskResponse.data
                     if self?.tasks.isEmpty ?? true {
                         self?.isFetchError = true
                         self?.message = "등록된 할일이 없습니다"
                     }
                 case .failure(let error):
-                    print("Error details:", error)
+//                    print("Error details:", error)
                     if let data = response.data {
-                        print("Error response:", String(data: data, encoding: .utf8) ?? "")
+//                        print("Error response:", String(data: data, encoding: .utf8) ?? "")
                     }
                     self?.isFetchError = true
                     self?.message = "할일 목록을 불러올 수 없습니다"
@@ -227,7 +223,7 @@ class TaskViewModel: ObservableObject {
                             self.message = ""
                         } else {
                             let errorResponse = try JSONDecoder().decode(ErrorResponse.self, from: data)
-                            print("Error Response:", errorResponse)
+//                            print("Error Response:", errorResponse)
                             self.isFetchError = true
                             self.message = errorResponse.error
                         }
