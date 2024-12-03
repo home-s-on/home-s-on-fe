@@ -38,22 +38,22 @@ struct SettingView: View {
             }
             .navigationBarTitle("설정", displayMode: .inline)
 
-                        .navigationBarBackButtonHidden(false)
-                        .navigationDestination(isPresented: $isShowInviteCode) {
-                            InviteMemberView(isFromSetting: true)
-                        }
-                        .navigationDestination(isPresented: $isShowPastTasks) {
-                            PastTaskListView()
-                        }
-                        .navigationDestination(isPresented: $isShowHouseInMembers) {
-                            HouseInMemberView()
-                                .environmentObject(getHouseInMemberVM)
-                            
-                        }
-                    }
-                    .navigationViewStyle(StackNavigationViewStyle())
-                }
+            .navigationBarBackButtonHidden(false)
+            .navigationDestination(isPresented: $isShowInviteCode) {
+                InviteMemberView(isFromSetting: true)
             }
+            .navigationDestination(isPresented: $isShowPastTasks) {
+                PastTaskListView()
+            }
+            .navigationDestination(isPresented: $isShowHouseInMembers) {
+                HouseInMemberView()
+                    .environmentObject(getHouseInMemberVM)
+                
+            }
+        }
+        .navigationViewStyle(StackNavigationViewStyle())
+    }
+}
 
 
 

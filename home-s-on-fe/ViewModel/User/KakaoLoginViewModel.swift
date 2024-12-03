@@ -53,7 +53,7 @@ class KakaoLoginViewModel: ObservableObject {
             }
 
             if let httpResponse = response as? HTTPURLResponse {
-                print("Response status code: \(httpResponse.statusCode)")
+//                print("Response status code: \(httpResponse.statusCode)")
             }
 
             if let data = data {
@@ -68,7 +68,7 @@ class KakaoLoginViewModel: ObservableObject {
                         UserDefaults.standard.set(loginData.user.photo ?? "", forKey: "photo")
 
                         DispatchQueue.main.async {
-                            self.isKakaoLoggedIn = true 
+                            self.isKakaoLoggedIn = true
                             print("로그인 성공! 토큰:", loginData.token)
                         }
                     } else {

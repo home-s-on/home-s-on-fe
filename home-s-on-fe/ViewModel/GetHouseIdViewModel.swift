@@ -37,6 +37,7 @@ class GetHouseIdViewModel: ObservableObject {
                         if apiResponse.status == "success" {
                             if let getHouseIdData = apiResponse.data {
                                 UserDefaults.standard.set(getHouseIdData.id, forKey: "houseId")
+                                UserDefaults.standard.set(getHouseIdData.inviteCode, forKey: "inviteCode")
                                 completion(getHouseIdData.id)
                             } else {
                                 print("No house data found")
@@ -63,11 +64,11 @@ class GetHouseIdViewModel: ObservableObject {
                             self.message = "네트워크 오류: \(error.localizedDescription)"
                         }
                         print("Network Error Message: \(self.message)")
-
                         completion(nil)
                     }
                 }
             }
     }
-
 }
+
+

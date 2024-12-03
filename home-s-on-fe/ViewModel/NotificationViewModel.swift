@@ -64,7 +64,7 @@ class NotificationViewModel: ObservableObject {
             .responseJSON { response in
                 switch response.result {
                 case .success(let value):
-                    print("디바이스 토큰이 성공적으로 서버에 전송되었습니다. 응답: \(value)")
+                    print("디바이스 토큰이 성공적으로 서버에 전송되었습니다. ") // 응답: \(value)
                 case .failure(let error):
                     print("Error sending device token to server: \(error.localizedDescription)")
                 }
