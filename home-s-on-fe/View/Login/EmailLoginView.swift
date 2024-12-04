@@ -40,12 +40,14 @@ struct EmailLoginView: View {
                     .padding(.top, 10)
 
                 VStack {
-                    NavigationLink(destination: ProfileEditView(), isActive: $loginVM.isLoggedIn) {
-                            EmptyView()
-                        }
-                    
+                    NavigationLink(destination: loginVM.destinationView(), isActive: $loginVM.isNavigating) {
+                        EmptyView()
+                    }
+
                     WideImageButton(icon: "person.badge.key", title: "로그인", backgroundColor: .blue) {
+                        print("Login button pressed")
                         loginVM.emailLogin(email: email, password: password)
+                        print("isNavigating before login: \(loginVM.isNavigating)")
                     }
                 }.padding(.top, 30)
 

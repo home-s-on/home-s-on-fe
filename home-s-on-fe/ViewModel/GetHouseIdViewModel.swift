@@ -37,7 +37,7 @@ class GetHouseIdViewModel: ObservableObject {
                         if apiResponse.status == "success" {
                             if let getHouseIdData = apiResponse.data {
                                 UserDefaults.standard.set(getHouseIdData.id, forKey: "houseId")
-                                print("Found houseId: \(getHouseIdData.id)")
+                                UserDefaults.standard.set(getHouseIdData.inviteCode, forKey: "inviteCode")
                                 completion(getHouseIdData.id)
                             } else {
                                 print("No house data found")
@@ -69,7 +69,6 @@ class GetHouseIdViewModel: ObservableObject {
                 }
             }
     }
-
 }
 
 

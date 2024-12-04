@@ -8,10 +8,10 @@
 import SwiftUI
 
 struct AddTaskButton: View {
-    @Binding var isShowingAddTask: Bool // 수정
-    var viewModel: TaskViewModel // 추가
-    var houseId: Int // 추가
-
+    @State private var isShowingAddTask = false
+    @EnvironmentObject var viewModel: TaskViewModel
+    @State private var houseId: Int = Int(UserDefaults.standard.string(forKey: "houseId") ?? "0") ?? 0
+    
     var body: some View {
         VStack {
             Spacer()
@@ -29,15 +29,16 @@ struct AddTaskButton: View {
                         .shadow(radius: 4)
                 }
                 .padding()
-                .sheet(isPresented: $isShowingAddTask) { // 수정
-                    AddTaskView(viewModel: viewModel, isPresented: $isShowingAddTask, houseId: houseId) // 수정
-                        .presentationDetents([.large])
-               
-                }
             }
+        }
+        .sheet(isPresented: $isShowingAddTask) {
+            AddTaskView(isPresented: $isShowingAddTask)
+                .environmentObject(viewModel)  // viewModel을 전달
+                .presentationDetents([.large])
         }
     }
 }
+
 
 #Preview {
     let viewModel = TaskViewModel() // 예시로 ViewModel 생성

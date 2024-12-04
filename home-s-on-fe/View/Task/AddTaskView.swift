@@ -8,8 +8,8 @@
 import SwiftUI
 
 struct AddTaskView: View {
-    //@StateObject private var viewModel = TaskViewModel()
-    @ObservedObject var viewModel: TaskViewModel //수정
+
+    @EnvironmentObject var viewModel: TaskViewModel
     @State private var dueDate: String = ""
     @Binding var isPresented: Bool
     let houseId: Int // 추가
@@ -19,6 +19,8 @@ struct AddTaskView: View {
     @State private var isRepeat: Bool = false
     @State private var isAlarmOn: Bool = false
     @State private var selectedAssignee: HouseInMember?
+    @State private var houseId: Int = Int(UserDefaults.standard.string(forKey: "houseId") ?? "0") ?? 0
+    @State private var userId: Int = Int(UserDefaults.standard.string(forKey: "userId") ?? "0") ?? 0
     
     
     // 저장 버튼 활성화 조건
@@ -46,7 +48,7 @@ struct AddTaskView: View {
                     }
                 }
                 
-                //날짜 선택
+                // 날짜 선택
                 NavigationLink {
                     DateSelectionView(dueDate: $dueDate)
                 } label: {
@@ -104,6 +106,16 @@ struct AddTaskView: View {
             return
         }
         
+        viewModel.onTaskAdded = {
+            self.viewModel.fetchTasks(houseId: self.houseId)
+            
+            self.viewModel.isLoading = false
+            self.viewModel.fetchMyTasks(userId: self.userId)
+
+            print("saveTask 끝")
+        }
+
+        print("saveTask 시작")
         viewModel.addTask(
             houseRoomId: roomId,
             title: title,
@@ -111,17 +123,11 @@ struct AddTaskView: View {
             memo: memo.isEmpty ? nil : memo,
             alarm: isAlarmOn ? "on" : nil,
             dueDate: dueDate.isEmpty ? nil : dueDate
-        ){ success in
-            if success {
-                viewModel.fetchTasks(houseId: houseId) // 집 ID로 작업 목록 업데이트
-                isPresented = false // AddTaskView 닫기
-                
-            }
-        }
+        )
+        
+        isPresented = false
     }
 }
-
- 
 
     #Preview {
         AddTaskView(viewModel: TaskViewModel(), isPresented: .constant(true), houseId: 1)

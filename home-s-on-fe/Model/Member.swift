@@ -11,11 +11,11 @@ struct Member: Codable, Identifiable {
     let id: Int
     let houseId: Int
     let membersId: [Int]
-    let updatedAt: Data
-    let createAt: Data
+    let updatedAt: String
+    let createdAt: String
 
     enum CodingKeys: String, CodingKey {
-        case id, updatedAt, createAt
+        case id, updatedAt, createdAt
         case houseId = "house_id"
         case membersId = "members_id"
     }

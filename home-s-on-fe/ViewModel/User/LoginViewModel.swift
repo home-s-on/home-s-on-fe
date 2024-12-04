@@ -19,7 +19,10 @@ class LoginViewModel: ObservableObject {
     @Published var isJoinError = false
     @Published var isNavigatingToLogin = false
     var profileViewModel: ProfileViewModel?
-    @StateObject var notificationViewModel = NotificationViewModel()
+    @Published var nextView: String = ""
+    @Published var isNavigating = false
+    @ObservedObject var notificationViewModel = NotificationViewModel()
+    
     
 //    init(){ // 이렇게 하면 처음 로그인화면 안 보여줌
 //        self.isLoggedIn = UserDefaults.standard.bool(forKey: "isLoggedIn")
@@ -52,7 +55,8 @@ class LoginViewModel: ObservableObject {
                     case .success(let apiResponse):
                         if apiResponse.status == "success" {
                             if let loginData = apiResponse.data {
-                                self.isLoggedIn = true
+                                //self.isLoggedIn = true
+                                UserDefaults.standard.set(loginData.user.id, forKey: "userId")
                                 UserDefaults.standard.set(loginData.token, forKey: "token")
                                 UserDefaults.standard.set(loginData.user.email, forKey: "email")
                                 UserDefaults.standard.set(loginData.user.photo, forKey: "photo")
@@ -62,6 +66,7 @@ class LoginViewModel: ObservableObject {
                                     self.notificationViewModel.sendDeviceTokenToServer(deviceToken: deviceToken)
                                     
                                 }
+                                self.handleAccountBasedEntry()
                             }
                         } else {
                             self.isLoginShowing = true
@@ -129,4 +134,53 @@ class LoginViewModel: ObservableObject {
                 }
             }
     }
+    
+    func handleAccountBasedEntry() {
+        let token = UserDefaults.standard.string(forKey: "token")
+        print("handleAccountBasedEntry \(token)")
+        let url = "\(APIEndpoints.baseURL)/user"
+        let headers: HTTPHeaders = ["Authorization": "Bearer \(token ?? "")"]
+            
+            AF.request(url, method: .get, headers: headers)
+                .responseDecodable(of: ApiResponse<Member?>.self) { [weak self] response in
+
+                    guard let self = self else { return }
+                    
+                    switch response.result {
+                    case .success(let apiResponse):
+//                        print("API Response for account-based entry: \(apiResponse)")
+                        self.nextView = apiResponse.message ?? "다음뷰"
+                        DispatchQueue.main.async {
+                            self.isNavigating = true
+                            print("Navigating to view after login")
+                        }
+                        if let memberData = apiResponse.data {
+                            UserDefaults.standard.set(memberData?.houseId, forKey: "houseId")
+                        }
+                    case .failure(let error):
+                        print("Error: \(error.localizedDescription)")
+                        self.message = "데이터를 가져오는 데 실패했습니다."
+                    }
+                }
+        }
+    
+    @ViewBuilder
+        func destinationView() -> some View {
+            let trimmedNextView = nextView.trimmingCharacters(in: .whitespacesAndNewlines)
+            
+            switch trimmedNextView {
+            case "profile 뷰로 진입합니다.":
+                ProfileEditView()
+                    .onAppear { print("destinationView to ProfileEditView") }
+            case "main 뷰로 진입합니다.":
+                MainView()
+                    .onAppear { print("destinationView to MainView") }
+            case "entry 뷰로 진입합니다.":
+                HouseEntryOptionsView()
+                    .onAppear { print("destinationView to EntryView") }
+            default:
+                Text("알 수 없는 뷰: \(nextView)")
+                    .onAppear { print("unknown view: \(self.nextView)") }
+            }
+        }
 }
