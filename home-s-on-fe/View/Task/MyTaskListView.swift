@@ -10,7 +10,7 @@ import Kingfisher
 import Alamofire
 
 struct MyTaskListView: View {
-    @StateObject private var viewModel = TaskViewModel()
+    @EnvironmentObject var viewModel: TaskViewModel
     let userId: Int
     @State private var nickname: String = UserDefaults.standard.string(forKey: "nickname") ?? ""
     @State private var photo: String = UserDefaults.standard.string(forKey: "photo") ?? ""
@@ -61,6 +61,7 @@ struct MyTaskListView: View {
                                 
                                 ForEach(viewModel.tasks) { task in
                                     TaskRowView(task: task)
+                                        .environmentObject(viewModel)
                                         .padding(.horizontal)
                                 }
                             }

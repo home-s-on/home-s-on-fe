@@ -9,7 +9,7 @@ import SwiftUI
 
 struct TaskRowView: View {
     let task: Task
-    @StateObject private var viewModel = TaskViewModel()
+    @EnvironmentObject var viewModel: TaskViewModel
     @State private var showEditTask = false
     
     var body: some View {

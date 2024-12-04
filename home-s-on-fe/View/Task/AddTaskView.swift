@@ -17,8 +17,9 @@ struct AddTaskView: View {
     @State private var isRepeat: Bool = false
     @State private var isAlarmOn: Bool = false
     @State private var selectedAssignee: HouseInMember?
-    @State private var houseId: Int = Int(UserDefaults.standard.string(forKey: "houseId") ?? "0") ?? 0
-    @State private var userId: Int = Int(UserDefaults.standard.string(forKey: "userId") ?? "0") ?? 0
+    @State private var houseId: Int = UserDefaults.standard.integer(forKey: "houseId")
+    @State private var userId: Int = UserDefaults.standard.integer(forKey: "userId")
+
     
     // 저장 버튼 활성화 조건
     private var isFormValid: Bool {

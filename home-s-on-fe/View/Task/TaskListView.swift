@@ -56,6 +56,7 @@ struct TaskListView: View {
                             LazyVStack(spacing: 12) {
                                 ForEach(viewModel.tasks) { task in
                                     TaskRowView(task: task)
+                                        .environmentObject(viewModel)
                                         .padding(.horizontal)
                                 }
                             }

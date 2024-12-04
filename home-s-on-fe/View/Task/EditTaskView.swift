@@ -10,8 +10,11 @@ import SwiftUI
 struct EditTaskView: View {
     @EnvironmentObject var viewModel: TaskViewModel
     @Binding var isPresented: Bool
-    let task: Task
-    let houseId: Int
+    var task: Task
+//    let houseId: Int
+    @State private var houseId: Int = UserDefaults.standard.integer(forKey: "houseId")
+    @State private var userId: Int = UserDefaults.standard.integer(forKey: "userId")
+
     
     @State private var title: String
     @State private var memo: String
@@ -108,27 +111,32 @@ struct EditTaskView: View {
     }
     
     private func saveTask() {
-            guard let roomId = selectedRoom?.id, let assignee = selectedAssignee else {
-                viewModel.message = "필수 정보를 모두 입력해주세요."
-                viewModel.isFetchError = true
-                return
-            }
-            
-            viewModel.editTask(
-                taskId: task.id,
-                houseRoomId: roomId,
-                title: title,
-                assigneeId: [assignee.userId],
-                memo: memo.isEmpty ? nil : memo,
-                alarm: isAlarmOn ? "on" : nil,
-                dueDate: dueDate.isEmpty ? nil : dueDate
-            )
-            
-            viewModel.fetchTasks(houseId: self.houseId)
-            isPresented = false
+        guard let roomId = selectedRoom?.id, let assignee = selectedAssignee else {
+            viewModel.message = "필수 정보를 모두 입력해주세요."
+            viewModel.isFetchError = true
+            return
         }
+        
+        viewModel.onTaskEdited = {
+            self.viewModel.fetchTasks(houseId: self.houseId)
+            
+            self.viewModel.isLoading = false
+            self.viewModel.fetchMyTasks(userId: self.userId)
+            
+            print("edittask saveTask 끝")
+        }
+        
+        viewModel.editTask(
+            taskId: task.id,
+            houseRoomId: roomId,
+            title: title,
+            assigneeId: [assignee.userId],
+            memo: memo.isEmpty ? nil : memo,
+            alarm: isAlarmOn ? "on" : nil,
+            dueDate: dueDate.isEmpty ? nil : dueDate
+        )
+        isPresented = false
     }
-
-#Preview {
 }
 
+#Preview {}
