@@ -20,8 +20,8 @@ struct TaskRowView: View {
                 if task.complete {
                     Image(systemName: "checkmark.circle.fill")
                         .foregroundColor(.green)
-                                 }
-                    }
+                }
+            }
             
             if let memo = task.memo {
                 Text(memo)
@@ -29,10 +29,25 @@ struct TaskRowView: View {
                     .foregroundColor(.gray)
             }
             
-            if let houseRoom = task.houseRoom {
-                Text(houseRoom.room_name)
-                    .font(.system(size: 12))
-                    .foregroundColor(.blue)
+            HStack {
+                if let houseRoom = task.houseRoom {
+                    Text(houseRoom.room_name)
+                        .font(.system(size: 12))
+                        .foregroundColor(.blue)
+                }
+                Spacer()
+                // 담당자 정보 추가
+                if let assignees = task.assignees, !assignees.isEmpty {
+                    HStack(spacing: 4) {
+                        Image(systemName: "person.fill")
+                            .foregroundColor(.gray)
+                        Text(assignees.map { $0.nickname }.joined(separator: ", "))
+                            .font(.system(size: 12))
+                            .foregroundColor(.gray)
+                    }
+                    
+                }
+               
             }
         }
         .padding()
@@ -40,6 +55,8 @@ struct TaskRowView: View {
         .cornerRadius(10)
         .shadow(color: Color.black.opacity(0.1), radius: 5, x: 0, y: 2)
     }
+    
+    
 }
 #Preview {
     let sampleTask = Task(

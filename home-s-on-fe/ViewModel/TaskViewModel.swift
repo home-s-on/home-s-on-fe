@@ -126,43 +126,58 @@ class TaskViewModel: ObservableObject {
     
     
     // 지난 할일 가져오기
-        func fetchPastTasks() {
-            guard !isLoading else { return }
-            isLoading = true
-            
-            guard let token = UserDefaults.standard.string(forKey: "token") else {
-                isLoading = false
-                isFetchError = true
-                message = "로그인이 필요합니다"
-                return
-            }
-            
-            let headers: HTTPHeaders = [
-                "Authorization": "Bearer \(token)",
-                "Content-Type": "application/json"
-            ]
-            
-            AF.request("\(APIEndpoints.baseURL)/tasks/pasttasks",
-                      method: .get,
-                      headers: headers)
-                .validate()
-                .responseDecodable(of: TaskResponse<Task>.self) { [weak self] response in
-                    self?.isLoading = false
-                    
-                    switch response.result {
-                    case .success(let taskResponse):
-                        self?.tasks = taskResponse.data
-                        if self?.tasks.isEmpty ?? true {
-                            self?.isFetchError = true
-                            self?.message = "지난 할일이 없습니다"
-                        }
-                    case .failure(let error):
-                        print("Error:", error)
-                        self?.isFetchError = true
-                        self?.message = "지난 할일을 불러올 수 없습니다"
-                    }
-                }
+    func fetchPastTasks() {
+        guard !isLoading else { return }
+        isLoading = true
+        
+        guard let token = UserDefaults.standard.string(forKey: "token") else {
+            isLoading = false
+            isFetchError = true
+            message = "로그인이 필요합니다"
+            return
         }
+        
+        let headers: HTTPHeaders = [
+            "Authorization": "Bearer \(token)",
+            "Content-Type": "application/json"
+        ]
+        
+        AF.request("\(APIEndpoints.baseURL)/tasks/pasttasks",
+                  method: .get,
+                  headers: headers)
+            .validate()
+            .responseDecodable(of: TaskResponse<Task>.self) { [weak self] response in
+                self?.isLoading = false
+                
+                switch response.result {
+                case .success(let taskResponse):
+                    let today = Date()
+                    self?.tasks = taskResponse.data.filter { task in
+                        guard let dueDate = self?.dateFromString(task.dueDate ?? "") else { return false }
+                        return dueDate < today
+                    }.sorted { (task1, task2) -> Bool in
+                        guard let date1 = self?.dateFromString(task1.dueDate ?? ""),
+                              let date2 = self?.dateFromString(task2.dueDate ?? "") else { return false }
+                        return date1 > date2
+                    }
+                    
+                    if self?.tasks.isEmpty ?? true {
+                        self?.isFetchError = true
+                        self?.message = "지난 할일이 없습니다"
+                    }
+                case .failure(let error):
+                    print("Error fetching past tasks: \(error.localizedDescription)")
+                    self?.isFetchError = true
+                    self?.message = "지난 할일을 불러올 수 없습니다"
+                }
+            }
+    }
+
+    private func dateFromString(_ dateString: String) -> Date? {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
+        return formatter.date(from: dateString)
+    }
     
     // 할일추가
     var onTaskAdded: (() -> Void)?
