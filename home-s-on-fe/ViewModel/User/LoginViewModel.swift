@@ -156,6 +156,7 @@ class LoginViewModel: ObservableObject {
                         }
                         if let memberData = apiResponse.data {
                             UserDefaults.standard.set(memberData?.houseId, forKey: "houseId")
+                            UserDefaults.standard.set(memberData?.house?.inviteCode, forKey: "inviteCode")
                         }
                     case .failure(let error):
                         print("Error: \(error.localizedDescription)")

@@ -108,7 +108,7 @@ struct ProfileEditView: View {
             if success {
                 completion()
             } else {
-                print("Profile update failed.") 
+                print("Profile update failed.")
             }
         }
     }
