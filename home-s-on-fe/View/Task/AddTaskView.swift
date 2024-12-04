@@ -19,6 +19,10 @@ struct AddTaskView: View {
     @State private var selectedAssignee: HouseInMember?
     @State private var houseId: Int = Int(UserDefaults.standard.string(forKey: "houseId") ?? "0") ?? 0
     @State private var userId: Int = Int(UserDefaults.standard.string(forKey: "userId") ?? "0") ?? 0
+    //반복
+    @State private var showRepeatSelection = false
+    @State private var selectedDays: Set<Int> = []
+    let daysOfWeek = ["일요일마다", "월요일마다", "화요일마다", "수요일마다", "목요일마다", "금요일마다", "토요일마다"]
     
     // 저장 버튼 활성화 조건
     private var isFormValid: Bool {
@@ -57,10 +61,15 @@ struct AddTaskView: View {
                 }
                 
                 // 반복 설정
-                HStack {
-                    Text("반복")
-                    Spacer()
-                    Image(systemName: "chevron.right").foregroundColor(.gray)
+                NavigationLink(destination: RepeatSelectionView(selectedDays: $selectedDays)) {
+                    HStack {
+                        Text("반복")
+                        Spacer()
+                        if !selectedDays.isEmpty {
+                            Text(selectedDays.sorted().map { daysOfWeek[$0] }.joined(separator: ", "))
+                                .foregroundColor(.gray)
+                        }
+                    }
                 }
                 
                 // 알람 설정
@@ -99,27 +108,32 @@ struct AddTaskView: View {
     }
     
     private func saveTask() {
-        guard let roomId = selectedRoom?.id else {
+        // 필수 입력값 검증
+        guard let roomId = selectedRoom?.id,
+              let assignee = selectedAssignee,
+              !title.isEmpty,
+              !dueDate.isEmpty else {
+            viewModel.message = "필수 정보를 모두 입력해주세요."
+            viewModel.isFetchError = true
             return
         }
         
+        // 작업 추가 콜백 설정
         viewModel.onTaskAdded = {
             self.viewModel.fetchTasks(houseId: self.houseId)
-            
             self.viewModel.isLoading = false
             self.viewModel.fetchMyTasks(userId: self.userId)
-
             print("saveTask 끝")
         }
-
+        
         print("saveTask 시작")
         viewModel.addTask(
             houseRoomId: roomId,
             title: title,
-            assigneeId: selectedAssignee != nil ? [selectedAssignee!.userId] : [],
+            assigneeId: [assignee.userId],
             memo: memo.isEmpty ? nil : memo,
             alarm: isAlarmOn ? "on" : nil,
-            dueDate: dueDate.isEmpty ? nil : dueDate
+            dueDate: dueDate
         )
         
         isPresented = false
