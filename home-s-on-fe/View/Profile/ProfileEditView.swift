@@ -3,13 +3,16 @@ import SwiftUI
 
 struct ProfileEditView: View {
     @EnvironmentObject var profileVM: ProfileViewModel
+    //    @EnvironmentObject var houseEntryOptionsVM: HouseEntryOptionsViewModel
     @StateObject var houseEntryOptionsVM = HouseEntryOptionsViewModel()
     @State private var nickname: String = UserDefaults.standard.string(forKey: "nickname") ?? ""
+    @State private var photo: String = UserDefaults.standard.string(forKey: "photo") ?? ""
     @State private var showImagePicker = false
     @State private var showActionSheet = false
     @State private var selectedImage: UIImage?
-    @State private var isUsingDefaultImage: Bool = false
+    @State private var isUsingDefaultImage: Bool = true
     @State private var photoURL: URL?
+    @State private var navigateToHouseEntry = false
     
     let defaultImageName = "round-profile"
     
@@ -17,40 +20,20 @@ struct ProfileEditView: View {
         NavigationStack {
             VStack {
                 ZStack {
-                    if let image = selectedImage {
-                        Image(uiImage: image)
+                    let photoURLString = photo
+                    if !photoURLString.isEmpty, let photoURL = URL(string: "\(APIEndpoints.blobURL)/\(photoURLString)") {
+                        KFImage(photoURL)
                             .resizable()
                             .scaledToFill()
                             .frame(width: 180, height: 180)
                             .clipShape(Circle())
-                    } else if let photoURLString = UserDefaults.standard.string(forKey: "photo") {
-                        // URL 생성
-                        if let photoURL = URL(string: "\(APIEndpoints.blobURL)/\(photoURLString)") {
-                            KFImage(photoURL)
-                                .resizable()
-                                .scaledToFill()
-                                .frame(width: 180, height: 180)
-                                .clipShape(Circle())
-                        } else {
-                            Image(defaultImageName)
-                                .resizable()
-                                .scaledToFill()
-                                .frame(width: 180, height: 180)
-                                .clipShape(Circle())
-                        }
+                        
                     } else {
-                        Image(defaultImageName)
-                            .resizable()
-                            .scaledToFill()
-                            .frame(width: 180, height: 180)
-                            .clipShape(Circle())
+                        RoundImage(image: UIImage(named: "round-profile")!, width: .constant(180.0), height: .constant(180.0))
                     }
                     
-                    Image(systemName: "pencil.circle")
-                        .resizable()
-                        .frame(width: 50, height: 50)
-                        .background(Circle().fill(Color(red: 33/255, green: 174/255, blue: 225/255)))
-                        .clipShape(Circle())
+                    RoundImage(image: UIImage(systemName: "pencil.circle")!, width: .constant(50.0), height: .constant(50.0))
+                        .background(Circle().fill(Color(red: 33/255, green: 174/255, blue: 225/255)).frame(width: 50, height: 55))
                         .offset(x: 60, y: 60)
                 }
                 .onTapGesture {
@@ -80,95 +63,84 @@ struct ProfileEditView: View {
                         .font(.headline)
                     CustomTextField(icon: "", placeholder: "nickname", text: $nickname)
                 }
+                .padding(.horizontal)
                 .padding(.bottom, 260)
-
-                NavigationLink(
-                    destination: HouseEntryOptionsView(),
-                    isActive: $profileVM.isNavigatingToEntry
-                ) {
-                    Button(action: {
-                        updateProfile()
+                
+                Button(action: {
+                    updateProfile {
                         houseEntryOptionsVM.createHouse()
-                    }) {
-                        Text("완료")
-                            .frame(maxWidth: .infinity)
-                            .padding()
-                            .background(Color.blue)
-                            .foregroundColor(.white)
-                            .cornerRadius(10)
                     }
+                }) {
+                    Text("완료")
+                        .frame(maxWidth: .infinity)
+                        .padding()
+                        .background(Color.blue)
+                        .foregroundColor(.white)
+                        .cornerRadius(10)
                 }
                 .padding(.horizontal)
             }
             .alert("프로필 설정 확인", isPresented: $profileVM.isProfileShowing) {
                 Button("확인") {
-                    print(profileVM.isProfiledError)
-                    print(profileVM.isNavigatingToEntry)
-                    DispatchQueue.main.async {
-                        if !profileVM.isProfiledError {
-                            profileVM.isNavigatingToEntry = true
-                        }
-                        profileVM.isProfileShowing = false
+                    if !profileVM.isProfiledError {
+                        navigateToHouseEntry = true
                     }
+                    profileVM.isProfileShowing = false
                 }
             } message: {
                 Text(profileVM.message)
             }
+            .fullScreenCover(isPresented: $navigateToHouseEntry, content: {
+                HouseEntryOptionsView()
+            })
         }
     }
-
-    private func updateProfile() {
-        var photo: UIImage? = nil
-        var savePhoto: String?
-
-        if let savedPhotoURLString = UserDefaults.standard.string(forKey: "photo") {
-            // 저장된 이미지 파일 이름을 그대로 사용
-            savePhoto = savedPhotoURLString // photo1732720416850.jpg
-            print("nickname \(nickname), photo \(savePhoto!)")
-            return profileVM.profileEdit(nickname: nickname, photoURL: savePhoto!) // 파일 이름만 전달
-        } else if let selectedImage = selectedImage {
-            // 사용자 선택 이미지가 있다면 해당 이미지를 사용
-            photo = selectedImage
-        } else if isUsingDefaultImage {
-            // 기본 이미지로 설정된 경우 기본 이미지를 UIImage로 설정
-            if let defaultImage = UIImage(named: defaultImageName) {
-                photo = defaultImage
-            }
-        }
-
-        print("Profile edit started.")
-        print("nickname \(nickname), photo \(photo)")
-        profileVM.profileEdit(nickname: nickname, photo: photo)
-    }
-}
-
-struct ImagePicker: UIViewControllerRepresentable {
-    @Binding var image: UIImage?
     
-    func makeUIViewController(context: Context) -> UIImagePickerController {
-        let picker = UIImagePickerController()
-        picker.delegate = context.coordinator
-        return picker
-    }
-
-    func updateUIViewController(_ uiViewController: UIImagePickerController, context: Context) {}
-
-    func makeCoordinator() -> Coordinator {
-        Coordinator(self)
-    }
-
-    class Coordinator: NSObject, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
-        let parent: ImagePicker
-        
-        init(_ parent: ImagePicker) {
-            self.parent = parent
+    private func updateProfile(completion: @escaping () -> Void) {
+        let photo: UIImage?
+        if isUsingDefaultImage {
+            photo = UIImage(named: defaultImageName)
+        } else {
+            photo = selectedImage
         }
-
-        func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-            if let uiImage = info[.originalImage] as? UIImage {
-                parent.image = uiImage
+        
+        profileVM.profileEdit(nickname: nickname, photo: photo) { success in
+            if success {
+                completion()
+            } else {
+                print("Profile update failed.")
             }
-            picker.dismiss(animated: true)
+        }
+    }
+    
+    struct ImagePicker: UIViewControllerRepresentable {
+        @Binding var image: UIImage?
+        
+        func makeUIViewController(context: Context) -> UIImagePickerController {
+            let picker = UIImagePickerController()
+            picker.delegate = context.coordinator
+            return picker
+        }
+        
+        func updateUIViewController(_ uiViewController: UIImagePickerController, context: Context) {}
+        
+        func makeCoordinator() -> Coordinator {
+            Coordinator(self)
+        }
+        
+        class Coordinator: NSObject, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+            let parent: ImagePicker
+            
+            init(_ parent: ImagePicker) {
+                self.parent = parent
+            }
+            
+            func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+                if let uiImage = info[.originalImage] as? UIImage {
+                    parent.image = uiImage
+                }
+                picker.dismiss(animated: true)
+            }
         }
     }
 }

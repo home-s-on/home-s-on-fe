@@ -10,7 +10,7 @@ import SwiftUI
 struct AddTaskButton: View {
     @State private var isShowingAddTask = false
     @EnvironmentObject var viewModel: TaskViewModel
-    @State private var houseId: Int = Int(UserDefaults.standard.string(forKey: "houseId") ?? "0") ?? 0
+    @State private var houseId: Int = UserDefaults.standard.integer(forKey: "houseId")
     
     var body: some View {
         VStack {
