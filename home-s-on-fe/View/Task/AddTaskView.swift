@@ -22,7 +22,7 @@ struct AddTaskView: View {
     
     // 저장 버튼 활성화 조건
     private var isFormValid: Bool {
-        !title.isEmpty && selectedRoom != nil
+        !title.isEmpty && selectedRoom != nil && selectedAssignee != nil && !dueDate.isEmpty
     }
     
     var body: some View {
@@ -86,7 +86,7 @@ struct AddTaskView: View {
                 trailing: Button("저장") {
                     saveTask()
                 }
-                .disabled(!isFormValid)
+                    .disabled(!isFormValid)
             )
         }
         .alert("오류", isPresented: $viewModel.isFetchError) {
@@ -99,33 +99,27 @@ struct AddTaskView: View {
     }
     
     private func saveTask() {
-        guard let roomId = selectedRoom?.id else {
+        guard let roomId = selectedRoom?.id, let assignee = selectedAssignee else {
+            viewModel.message = "필수 정보를 모두 입력해주세요."
+            viewModel.isFetchError = true
             return
         }
         
-        viewModel.onTaskAdded = {
-            self.viewModel.fetchTasks(houseId: self.houseId)
-            
-            self.viewModel.isLoading = false
-            self.viewModel.fetchMyTasks(userId: self.userId)
-
-            print("saveTask 끝")
-        }
-
-        print("saveTask 시작")
         viewModel.addTask(
             houseRoomId: roomId,
             title: title,
-            assigneeId: selectedAssignee != nil ? [selectedAssignee!.userId] : [],
+            assigneeId: [assignee.userId],
             memo: memo.isEmpty ? nil : memo,
             alarm: isAlarmOn ? "on" : nil,
             dueDate: dueDate.isEmpty ? nil : dueDate
         )
         
+        // 성공 시 처리
+        viewModel.fetchTasks(houseId: self.houseId)
+        viewModel.fetchMyTasks(userId: self.userId)
         isPresented = false
     }
 }
-
 
 #Preview {
     AddTaskView(isPresented: .constant(true))

@@ -11,19 +11,9 @@ struct PastTaskListView: View {
     @Environment(\.dismiss) private var dismiss
     @StateObject private var viewModel: TaskViewModel
     
-    //더미데이터
-    init() {
-        let viewModel = TaskViewModel()
-        viewModel.tasks = [
-            Task(id: 1, houseId: 1, houseRoomId: 1, userId: 1, title: "음식물 쓰레기 봉투 구입", memo: nil, alarm: nil, assigneeId: [1], dueDate: "2024-11-08", complete: true, createdAt: "", updatedAt: "", houseRoom: nil, assignees: nil),
-            Task(id: 2, houseId: 1, houseRoomId: 2, userId: 1, title: "휴지 채우기", memo: nil, alarm: nil, assigneeId: [1], dueDate: "2024-11-08", complete: true, createdAt: "", updatedAt: "", houseRoom: nil, assignees: nil),
-            Task(id: 3, houseId: 1, houseRoomId: 2, userId: 1, title: "아들 빨래하기", memo: nil, alarm: nil, assigneeId: [1], dueDate: "2024-11-07", complete: true, createdAt: "", updatedAt: "", houseRoom: nil, assignees: nil),
-            Task(id: 4, houseId: 1, houseRoomId: 3, userId: 1, title: "주방세제 구입", memo: nil, alarm: nil, assigneeId: [1], dueDate: "2024-11-07", complete: true, createdAt: "", updatedAt: "", houseRoom: nil, assignees: nil),
-            Task(id: 5, houseId: 1, houseRoomId: 1, userId: 1, title: "주방세제 사기", memo: nil, alarm: nil, assigneeId: [1], dueDate: "2024-10-31", complete: true, createdAt: "", updatedAt: "", houseRoom: nil, assignees: nil),
-            Task(id: 6, houseId: 1, houseRoomId: 2, userId: 1, title: "휴지 채우기", memo: nil, alarm: nil, assigneeId: [1], dueDate: "2024-10-31", complete: true, createdAt: "", updatedAt: "", houseRoom: nil, assignees: nil)
-        ]
-        _viewModel = StateObject(wrappedValue: viewModel)
-    }
+    init(viewModel: TaskViewModel = TaskViewModel()) {
+           _viewModel = StateObject(wrappedValue: viewModel)
+       }
 
     
     var body: some View {
@@ -79,6 +69,13 @@ struct PastTaskListView: View {
             }
         }
         .navigationBarHidden(true)
+        .onAppear {
+            viewModel.fetchPastTasks()
+            print("Tasks count: \(viewModel.tasks.count)")
+            viewModel.tasks.forEach { task in
+                print("Task: \(task.title), Date: \(task.dueDate ?? "No date")")
+            }
+        }
     }
             
     //날짜 그룹
@@ -91,8 +88,11 @@ struct PastTaskListView: View {
     //날짜 포맷
     private func formatDate(from dateString: String) -> String {
         let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy-MM-dd"
-        guard let date = formatter.date(from: dateString) else { return "" }
+        formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
+        guard let date = formatter.date(from: dateString) else {
+            print("Failed to parse date: \(dateString)")
+            return ""
+        }
         
         formatter.dateFormat = "MM월 dd일 E"
         formatter.locale = Locale(identifier: "ko_KR")
@@ -102,7 +102,6 @@ struct PastTaskListView: View {
 
 #Preview {
     NavigationView {
-        PastTaskListView()
+        PastTaskListView(viewModel: TaskViewModel())
     }
-    
 }
