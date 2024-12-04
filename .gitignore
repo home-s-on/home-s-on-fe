@@ -4,3 +4,5 @@ Pods/
 Info.plist
 *.xcconfig
 .DS_Store
+
+xcuserdata/

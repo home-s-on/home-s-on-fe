@@ -58,30 +58,4 @@ struct TaskRowView: View {
     
     
 }
-#Preview {
-    let sampleTask = Task(
-        id: 1,
-        houseId: 1,
-        houseRoomId: 1,
-        userId: 1,
-        title: "방청소 하기",
-        memo: "먼지 쌓여있음",
-        alarm: "11:00:00",
-        assigneeId: [1],
-        dueDate: "2024-12-31",
-        complete: true,
-        createdAt: "2024-11-22",
-        updatedAt: "2024-11-22",
-        houseRoom: HouseRoom(id: 1,house_id: 1,room_name: "거실"),
-        assignees: [
-            TaskUser(
-                id: 1,
-                nickname: "Park"
-            )
-        ]
-    )
-    
-    TaskRowView(task: sampleTask)
-        .padding()
-        .background(Color(.systemBackground))
-}
+

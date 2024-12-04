@@ -45,7 +45,7 @@ class TaskViewModel: ObservableObject {
                 
                 switch response.result {
                 case .success(let taskResponse):
-//                    print("Decoded response:", taskResponse)
+                    print("fetchTasks Decoded response:", taskResponse)
                     self?.tasks = taskResponse.data
                     if self?.tasks.isEmpty ?? true {
                         self?.isFetchError = true

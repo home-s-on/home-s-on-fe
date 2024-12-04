@@ -99,24 +99,29 @@ struct AddTaskView: View {
     }
     
     private func saveTask() {
-        guard let roomId = selectedRoom?.id, let assignee = selectedAssignee else {
-            viewModel.message = "필수 정보를 모두 입력해주세요."
-            viewModel.isFetchError = true
+        guard let roomId = selectedRoom?.id else {
             return
         }
         
+        viewModel.onTaskAdded = {
+            self.viewModel.fetchTasks(houseId: self.houseId)
+            
+            self.viewModel.isLoading = false
+            self.viewModel.fetchMyTasks(userId: self.userId)
+
+            print("saveTask 끝")
+        }
+
+        print("saveTask 시작")
         viewModel.addTask(
             houseRoomId: roomId,
             title: title,
-            assigneeId: [assignee.userId],
+            assigneeId: selectedAssignee != nil ? [selectedAssignee!.userId] : [],
             memo: memo.isEmpty ? nil : memo,
             alarm: isAlarmOn ? "on" : nil,
             dueDate: dueDate.isEmpty ? nil : dueDate
         )
         
-        // 성공 시 처리
-        viewModel.fetchTasks(houseId: self.houseId)
-        viewModel.fetchMyTasks(userId: self.userId)
         isPresented = false
     }
 }
