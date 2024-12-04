@@ -9,6 +9,8 @@ import SwiftUI
 
 struct TaskRowView: View {
     let task: Task
+    @StateObject private var viewModel = TaskViewModel()
+    @State private var showEditTask = false
     
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
@@ -16,6 +18,16 @@ struct TaskRowView: View {
                 Text(task.title)
                     .font(.system(size: 16, weight: .medium))
                 Spacer()
+                // 편집 버튼 추가
+                if task.canEdit {
+                    Button(action: {
+                        showEditTask = true
+                    }) {
+                        Image(systemName: "pencil")
+                            .foregroundColor(.blue)
+                    }
+                    
+                }
                 //완료 체크박스
                 if task.complete {
                     Image(systemName: "checkmark.circle.fill")
@@ -54,6 +66,14 @@ struct TaskRowView: View {
         .background(Color.white)
         .cornerRadius(10)
         .shadow(color: Color.black.opacity(0.1), radius: 5, x: 0, y: 2)
+        .sheet(isPresented: $showEditTask) {
+            EditTaskView(
+                task: task,
+                isPresented: $showEditTask,
+                houseId: task.houseId
+            )
+            .environmentObject(viewModel)
+        }
     }
     
     

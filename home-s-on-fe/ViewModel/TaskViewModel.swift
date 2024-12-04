@@ -45,7 +45,7 @@ class TaskViewModel: ObservableObject {
                 
                 switch response.result {
                 case .success(let taskResponse):
-                    print("fetchTasks Decoded response:", taskResponse)
+//                    print("fetchTasks Decoded response:", taskResponse)
                     self?.tasks = taskResponse.data
                     if self?.tasks.isEmpty ?? true {
                         self?.isFetchError = true
@@ -103,7 +103,7 @@ class TaskViewModel: ObservableObject {
                 
                 switch response.result {
                 case .success(let taskResponse):
-                    print("Success Response:", taskResponse)
+//                    print("Success Response:", taskResponse)
 //                    print("Tasks count:", taskResponse.data.count)
                     self?.tasks = taskResponse.data
                     if self?.tasks.isEmpty ?? true {
@@ -257,6 +257,68 @@ class TaskViewModel: ObservableObject {
                     }
                 }
         }
+    
+    //할 일 편집
+    func editTask(taskId: Int, houseRoomId: Int, title: String, assigneeId: [Int], memo: String?, alarm: String?, dueDate: String?) {
+        print("=== Edit Task Debug Logs ===")
+        isLoading = true
+        
+        guard let token = UserDefaults.standard.string(forKey: "token"),
+              let savedHouseId = UserDefaults.standard.string(forKey: "houseId") else {
+            print("Error: Token or HouseId not found")
+            isLoading = false
+            isFetchError = true
+            message = "필요한 정보를 찾을 수 없습니다"
+            return
+        }
+        
+        let headers: HTTPHeaders = [
+            "Authorization": "Bearer \(token)",
+            "Content-Type": "application/json"
+        ]
+        
+        var parameters: [String: Any] = [
+            "house_room_id": houseRoomId,
+            "title": title,
+            "assignee_id": assigneeId
+        ]
+        
+        if let memo = memo, !memo.isEmpty { parameters["memo"] = memo }
+        if let alarm = alarm { parameters["alarm"] = alarm }
+        if let dueDate = dueDate, !dueDate.isEmpty { parameters["due_date"] = dueDate }
+        
+        let url = "\(APIEndpoints.baseURL)/tasks/\(taskId)"
+        print(url)
+        
+        AF.request(url,
+                   method: .patch,
+                   parameters: parameters,
+                   encoding: JSONEncoding.default,
+                   headers: headers)
+            .validate()
+            .responseData { [weak self] response in
+                self?.isLoading = false
+                
+                switch response.result {
+                case .success(let data):
+                    do {
+                        let taskResponse = try JSONDecoder().decode(AddTaskResponse<Task>.self, from: data)
+                        print("Success: Task updated")
+                        self?.fetchTasks(houseId: Int(savedHouseId)!)
+                        self?.isFetchError = false
+                        self?.message = ""
+                    } catch {
+                        print("Decoding error:", error)
+                        self?.isFetchError = true
+                        self?.message = "할일을 수정할 수 없습니다"
+                    }
+                case .failure(let error):
+                    print("Network error:", error)
+                    self?.isFetchError = true
+                    self?.message = "할일을 수정할 수 없습니다"
+                }
+            }
+    }
         
         // 할일 삭제
         func deleteTask(taskId: Int) {

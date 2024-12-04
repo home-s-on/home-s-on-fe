@@ -17,6 +17,11 @@ struct Task: Identifiable, Codable {
     let houseRoom: HouseRoom?
     let assignees: [TaskUser]?
     
+    // 편집 권한 확인용
+        var canEdit: Bool {
+            return userId == UserDefaults.standard.integer(forKey: "userId")
+        }
+    
     enum CodingKeys: String, CodingKey {
         case id
         case houseId = "house_id"
