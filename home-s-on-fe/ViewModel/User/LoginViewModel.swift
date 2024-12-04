@@ -19,7 +19,7 @@ class LoginViewModel: ObservableObject {
     @Published var isJoinError = false
     @Published var isNavigatingToLogin = false
     var profileViewModel: ProfileViewModel?
-    
+    @StateObject var notificationViewModel = NotificationViewModel()
     
 //    init(){ // 이렇게 하면 처음 로그인화면 안 보여줌
 //        self.isLoggedIn = UserDefaults.standard.bool(forKey: "isLoggedIn")
@@ -57,7 +57,11 @@ class LoginViewModel: ObservableObject {
                                 UserDefaults.standard.set(loginData.user.email, forKey: "email")
                                 UserDefaults.standard.set(loginData.user.photo, forKey: "photo")
                                 UserDefaults.standard.set(loginData.user.nickname, forKey: "nickname")
-                                print(loginData)
+                                if let deviceToken = UserDefaults.standard.string(forKey: "deviceToken"){
+                                    print("send deviceToken")
+                                    self.notificationViewModel.sendDeviceTokenToServer(deviceToken: deviceToken)
+                                    
+                                }
                             }
                         } else {
                             self.isLoginShowing = true

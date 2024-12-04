@@ -17,6 +17,11 @@ struct TaskListView: View {
     @State private var photo: String = UserDefaults.standard.string(forKey: "photo") ?? ""
     @State private var isShowingAddTask = false // 추가
     
+    init(houseId: Int) {
+        self.houseId = houseId
+        self._viewModel = StateObject(wrappedValue: TaskViewModel())
+    }
+    
     var body: some View {
         NavigationView {
             ZStack {
@@ -56,7 +61,7 @@ struct TaskListView: View {
                         ScrollView {
                             LazyVStack(spacing: 12) {
                                 ForEach(viewModel.tasks) { task in
-                                    TaskRowView(task: task)
+                                    TaskRowView(task: task, showAssignee: true)
                                         .padding(.horizontal)
                                 }
                             }
@@ -65,18 +70,14 @@ struct TaskListView: View {
                 }
                 // AddTaskButton 추가 및 매개변수 전달
                 AddTaskButton(isShowingAddTask: $isShowingAddTask, viewModel: viewModel, houseId: houseId)
-                
-                
-                //AddTaskButton(isShowingAddTask: $isShowingAddTask)
-                }
+            }
             .onAppear {
                 viewModel.fetchTasks(houseId: houseId)
             }
-            //
             .sheet(isPresented: $isShowingAddTask) {
                 AddTaskView(viewModel: viewModel, isPresented: $isShowingAddTask, houseId: houseId)
                     .presentationDetents([.large])
-                }
+            }
             .alert("오류", isPresented: .constant(errorMessage != nil)) {
                 Button("확인") {
                     errorMessage = nil
@@ -87,7 +88,6 @@ struct TaskListView: View {
         }
     }
 }
-
 #Preview {
     let _ = UserDefaults.standard.set("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzMyNzIyMzc1LCJleHAiOjE3MzI4MDg3NzV9.6gcH_Dwa5gGi9hYDIAvsKosJBoij93Na9oxjfGlAb8g", forKey: "token")
     return TaskListView(houseId: 1)

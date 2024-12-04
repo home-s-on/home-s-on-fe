@@ -61,7 +61,7 @@ struct MyTaskListView: View {
                                 }
                                 
                                 ForEach(viewModel.tasks) { task in
-                                    TaskRowView(task: task)
+                                    TaskRowView(task: task,showAssignee: false)
                                         .padding(.horizontal)
                                 }
                             }
@@ -70,6 +70,7 @@ struct MyTaskListView: View {
                     }
                 }
                 .onAppear {
+                    UserDefaults.standard.set(userId, forKey: "userId")
                     viewModel.fetchMyTasks(userId: userId)
                 }
                 

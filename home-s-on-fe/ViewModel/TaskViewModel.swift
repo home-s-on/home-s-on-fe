@@ -10,55 +10,72 @@ class TaskViewModel: ObservableObject {
     
     // 모든 할일
     func fetchTasks(houseId: Int) {
-        guard !isLoading else { return }
-        isLoading = true
-        
-        guard let token = UserDefaults.standard.string(forKey: "token") else {
-            print("Token not found")
-            isLoading = false
-            isFetchError = true
-            message = "로그인이 필요합니다"
+        print("=== Fetch Tasks Debug Start ===")
+        guard !isLoading else {
+            print("Already loading")
             return
         }
         
-        print("Using token:", token)
-        print("Request URL:", "\(APIEndpoints.baseURL)/tasks/house")
+        print("Checking UserDefaults values:")
+        print("Stored token:", UserDefaults.standard.string(forKey: "token") ?? "nil")
+        print("Stored houseId:", UserDefaults.standard.string(forKey: "houseId") ?? "nil")
+        
+        guard let token = UserDefaults.standard.string(forKey: "token"),
+              let savedHouseId = UserDefaults.standard.string(forKey: "houseId"),
+              let savedHouseIdInt = Int(savedHouseId) else {
+            print("Failed to get token or houseId from UserDefaults")
+            isLoading = false
+            isFetchError = true
+            message = "필요한 정보를 찾을 수 없습니다"
+            return
+        }
+        
+        let houseIdToUse = savedHouseIdInt
+        print("Using houseId:", houseIdToUse)
+        
+        isLoading = true
         
         let headers: HTTPHeaders = [
             "Authorization": "Bearer \(token)",
             "Content-Type": "application/json"
         ]
         
-        AF.request("\(APIEndpoints.baseURL)/tasks/house",
+        let url = "\(APIEndpoints.baseURL)/tasks/house"
+        let parameters: [String: Any] = ["house_id": houseIdToUse]
+        
+        print("Request URL:", url)
+        print("Parameters:", parameters)
+        
+        AF.request(url,
                   method: .get,
+                  parameters: parameters,
+                  encoding: URLEncoding.queryString,
                   headers: headers)
             .validate()
-            .response { response in
-                print("Raw response:", String(data: response.data ?? Data(), encoding: .utf8) ?? "")
-            }
             .responseDecodable(of: TaskResponse<Task>.self) { [weak self] response in
                 self?.isLoading = false
                 
-                if let statusCode = response.response?.statusCode {
-                    print("Response status code:", statusCode)
-                }
-                
                 switch response.result {
                 case .success(let taskResponse):
-                    print("Decoded response:", taskResponse)
+                    print("Success: Tasks count:", taskResponse.data.count)
                     self?.tasks = taskResponse.data
                     if self?.tasks.isEmpty ?? true {
                         self?.isFetchError = true
                         self?.message = "등록된 할일이 없습니다"
+                    } else {
+                        self?.isFetchError = false
+                        self?.message = ""
                     }
                 case .failure(let error):
-                    print("Error details:", error)
+                    print("Error:", error)
                     if let data = response.data {
                         print("Error response:", String(data: data, encoding: .utf8) ?? "")
                     }
                     self?.isFetchError = true
                     self?.message = "할일 목록을 불러올 수 없습니다"
                 }
+                
+                print("=== End Debug Logs ===\n")
             }
     }
     
@@ -181,16 +198,17 @@ class TaskViewModel: ObservableObject {
     
     // 할일추가
     func addTask(houseRoomId: Int, title: String, assigneeId: [Int], memo: String?, alarm: String?, dueDate: String?,
-    completion: @escaping (Bool) -> Void) {
+        completion: @escaping (Bool) -> Void) {
         print("=== Add Task Debug Logs ===")
         isLoading = true
         
-        guard let token = UserDefaults.standard.string(forKey: "token") else {
-            print("Error: Token not found")
+        guard let token = UserDefaults.standard.string(forKey: "token"),
+              let savedHouseId = UserDefaults.standard.string(forKey: "houseId") else {
+            print("Error: Token or HouseId not found")
             isLoading = false
             isFetchError = true
-            message = "로그인이 필요합니다"
-            completion(false) // 추가
+            message = "필요한 정보를 찾을 수 없습니다"
+            completion(false)
             return
         }
         
@@ -221,7 +239,10 @@ class TaskViewModel: ObservableObject {
         
         print("Request parameters:", parameters)
         
-        AF.request("\(APIEndpoints.baseURL)/tasks/add",
+        let url = "\(APIEndpoints.baseURL)/tasks/add?house_id=\(savedHouseId)"
+        print("Request URL:", url)
+        
+        AF.request(url,
                    method: .post,
                    parameters: parameters,
                    encoding: JSONEncoding.default,
@@ -237,33 +258,96 @@ class TaskViewModel: ObservableObject {
                             let taskResponse = try JSONDecoder().decode(TaskResponse<Task>.self, from: data)
                             print("Success: Task created")
                             print("Task Response:", taskResponse)
-                            // 작업 생성 후 houseId를 가져와서 fetchTasks 호출
-                            if let houseId = taskResponse.data.first?.houseId { // 첫 번째 Task에서 houseId 가져오기
-                                self.fetchTasks(houseId: houseId)
-                                }
-                          
+                            // 작업 생성 후 저장된 house_id로 fetchTasks 호출
+                            self.fetchTasks(houseId: Int(savedHouseId)!)
                             self.isFetchError = false
                             self.message = ""
-                            completion(true) // 성공 시 true 반환
+                            completion(true)
                         } else {
                             let errorResponse = try JSONDecoder().decode(ErrorResponse.self, from: data)
                             print("Error Response:", errorResponse)
                             self.isFetchError = true
                             self.message = errorResponse.error
-                            completion(false) // 추가
+                            completion(false)
                         }
                     } catch {
                         print("Decoding error:", error)
                         print("Raw data:", String(data: data, encoding: .utf8) ?? "")
-                        completion(false) // 추가
+                        completion(false)
                     }
                 case .failure(let error):
                     print("Network error:", error)
                     self.isFetchError = true
                     self.message = "할일을 추가할 수 없습니다"
-                    completion(false) // 추가
+                    completion(false)
                 }
             }
+    }
+    
+    //할일 편집
+    func editTask(taskId: Int, houseRoomId: Int, title: String, assigneeId: [Int], memo: String?, alarm: String?, dueDate: String?, completion: @escaping (Bool) -> Void) {
+        print("=== Edit Task Debug Logs ===")
+        isLoading = true
+        
+        guard let token = UserDefaults.standard.string(forKey: "token"),
+              let savedHouseId = UserDefaults.standard.string(forKey: "houseId") else {
+            print("Error: Token or HouseId not found")
+            isLoading = false
+            isFetchError = true
+            message = "필요한 정보를 찾을 수 없습니다"
+            completion(false)
+            return
+        }
+        
+        let headers: HTTPHeaders = [
+            "Authorization": "Bearer \(token)",
+            "Content-Type": "application/json"
+        ]
+        
+        var parameters: [String: Any] = [
+            "house_room_id": houseRoomId,
+            "title": title,
+            "assignee_id": assigneeId
+        ]
+        
+        if let memo = memo, !memo.isEmpty { parameters["memo"] = memo }
+        if let alarm = alarm { parameters["alarm"] = alarm }
+        if let dueDate = dueDate, !dueDate.isEmpty { parameters["due_date"] = dueDate }
+        
+        let url = "\(APIEndpoints.baseURL)/api/tasks/edit/\(taskId)?house_id=\(savedHouseId)"
+        
+        AF.request(url,
+                   method: .put,
+                   parameters: parameters,
+                   encoding: JSONEncoding.default,
+                   headers: headers)
+        .validate()
+        .responseData { [weak self] response in
+            self?.isLoading = false
+            
+            switch response.result {
+            case .success(let data):
+                do {
+                    let taskResponse = try JSONDecoder().decode(TaskResponse<Task>.self, from: data)
+                    print("Success: Task updated")
+                    self?.fetchTasks(houseId: Int(savedHouseId)!)
+                    self?.isFetchError = false
+                    self?.message = ""
+                    completion(true)
+                } catch {
+                    print("Decoding error:", error)
+                    self?.isFetchError = true
+                    self?.message = "할일을 수정할 수 없습니다"
+                    completion(false)
+                }
+            case .failure(let error):
+                print("Network error:", error)
+                self?.isFetchError = true
+                self?.message = "할일을 수정할 수 없습니다"
+                completion(false)
+            }
+        }
+        
     }
         
         // 할일 삭제

@@ -25,8 +25,6 @@ class GetMembersInHouseViewModel: ObservableObject {
         let url = "\(APIEndpoints.baseURL)/member/members/\(houseId ?? 0)"
         let headers: HTTPHeaders = ["Authorization": "Bearer \(token)"]
         
-        print("Request URL: \(url)")
-        print("houseId: \(houseId ?? -1)")
         
         AF.request(url, method: .get, headers: headers)
             .responseDecodable(of: ApiResponse<[HouseInMember]>.self) { [weak self] response in
@@ -38,11 +36,9 @@ class GetMembersInHouseViewModel: ObservableObject {
                     
                     switch response.result {
                     case .success(let apiResponse):
-                            print("Full API Response: \(apiResponse)")
                             if apiResponse.status == "success" {
                                 if let getMembersInHouseData = apiResponse.data {
                                     self.houseMembers = getMembersInHouseData
-                                    print("getMembersInHouseData: \(getMembersInHouseData)")
                                 } else {
                                     print("No house in member data found")
                                 }
@@ -50,7 +46,6 @@ class GetMembersInHouseViewModel: ObservableObject {
                                 self.isGetMembersShowing = true
                                 self.isGetMembersError = true
                                 self.message = apiResponse.message ?? "알 수 없는 오류가 발생했습니다."
-                                print("API Error Message: \(self.message)")
                             }
                         case .failure(let error):
                             self.isGetMembersShowing = true
@@ -70,5 +65,6 @@ class GetMembersInHouseViewModel: ObservableObject {
                     }
                 }
             }
+    
     
 }
