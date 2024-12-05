@@ -11,6 +11,7 @@ import Alamofire
 
 struct MyTaskListView: View {
     @EnvironmentObject var viewModel: TaskViewModel
+    @EnvironmentObject var appState: SelectedTabViewModel
     let userId: Int
     @State private var nickname: String = UserDefaults.standard.string(forKey: "nickname") ?? ""
     @State private var photo: String = UserDefaults.standard.string(forKey: "photo") ?? ""
@@ -64,6 +65,7 @@ struct MyTaskListView: View {
                                     ForEach(viewModel.tasks) { task in
                                         TaskRowView(task: task)
                                             .environmentObject(viewModel)
+                                            .environmentObject(appState)
                                             .padding(.horizontal)
                                     }
                                 }
@@ -77,6 +79,7 @@ struct MyTaskListView: View {
                 }
                 
                 AddTaskButton()
+                    .environmentObject(appState)
                             }
                         }
                         .alert("오류", isPresented: $viewModel.isFetchError) {
@@ -96,7 +99,7 @@ struct MyTaskListView: View {
     }
 }
 
-#Preview {
-                let _ = UserDefaults.standard.set("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTYsImlhdCI6MTczMzA1NjE2NiwiZXhwIjoxNzM1NjQ4MTY2fQ.kEMlNTg7gpvn1NMPhNgtTtJGGFU9LIwz6P78zBuGiXA", forKey: "token")
-                MyTaskListView(userId: 16)
-            }
+//#Preview {
+//                let _ = UserDefaults.standard.set("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTYsImlhdCI6MTczMzA1NjE2NiwiZXhwIjoxNzM1NjQ4MTY2fQ.kEMlNTg7gpvn1NMPhNgtTtJGGFU9LIwz6P78zBuGiXA", forKey: "token")
+//                MyTaskListView(userId: 16)
+//            }
