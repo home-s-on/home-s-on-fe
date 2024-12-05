@@ -61,7 +61,7 @@ struct EditTaskView: View {
                 formatter.dateFormat = "yyyy-MM-dd" // 출력할 날짜
                 return formatter.string(from: date)
             }
-            return dateString 
+            return dateString
         }
     
     private var isFormValid: Bool {

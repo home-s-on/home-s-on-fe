@@ -63,7 +63,7 @@ struct MyTaskListView: View {
                                         .padding()
                                 } else {
                                     ForEach(viewModel.tasks) { task in
-                                        TaskRowView(task: task)
+                                        TaskRowView(task: task, canEdit: true)
                                             .environmentObject(viewModel)
                                             .environmentObject(appState)
                                             .padding(.horizontal)
