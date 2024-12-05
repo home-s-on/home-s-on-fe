@@ -19,11 +19,13 @@ struct AddTaskView: View {
     @State private var selectedAssignee: HouseInMember?
     @State private var houseId: Int = UserDefaults.standard.integer(forKey: "houseId")
     @State private var userId: Int = UserDefaults.standard.integer(forKey: "userId")
-    
+    @EnvironmentObject var triggerVM: TriggerViewModel
     //반복선택
     @State private var showRepeatSelection = false
     @State private var selectedDays: Set<Int> = []
     let daysOfWeek = ["일요일마다", "월요일마다", "화요일마다", "수요일마다", "목요일마다", "금요일마다", "토요일마다"]
+    
+
 
     
     // 저장 버튼 활성화 조건
@@ -114,6 +116,14 @@ struct AddTaskView: View {
             self.viewModel.fetchMyTasks(userId: self.userId)
 
             print("saveTask 끝")
+
+            
+            //알람?
+            if(isAlarmOn){
+                //triggerVM.intervalTrigger(subtitle: title, body: dueDate)
+                triggerVM.calenderTrigger(subtitle: title, body: dueDate)
+            }
+
         }
 
         print("saveTask 시작")
@@ -122,7 +132,7 @@ struct AddTaskView: View {
             title: title,
             assigneeId: selectedAssignee != nil ? [selectedAssignee!.userId] : [],
             memo: memo.isEmpty ? nil : memo,
-            alarm: isAlarmOn ? "on" : nil,
+            alarm: isAlarmOn,
             dueDate: dueDate.isEmpty ? nil : dueDate
         )
         

@@ -25,6 +25,7 @@ class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCenterDele
         // UserDefaults 초기화
         resetUserDefaults()
         
+        UNUserNotificationCenter.current().delegate = self
         // 알림 권한 요청
         requestNotificationAuthorization()
         
@@ -44,6 +45,21 @@ class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCenterDele
                 print("알림 권한이 거부되었습니다.")
             }
         }
+    }
+    
+    //앱 실행 중
+    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+        let info = notification.request.content.userInfo
+        print(info["name"] ?? "")
+        //앱 실행 중 알람 동작
+        completionHandler([.banner, .sound])
+    }
+    
+    //로컬? 알림 응답 처리
+    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
+        let info = response.notification.request.content.userInfo
+        print(info["name"] ?? "")
+        completionHandler()
     }
 
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
