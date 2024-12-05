@@ -1,28 +1,51 @@
 //
-//  AddTaskView.swift
+//  EditTaskView.swift
 //  home-s-on-fe
 //
-//  Created by 안혜지 on 11/25/24.
+//  Created by 안혜지 on 12/4/24.
 //
 
 import SwiftUI
 
-struct AddTaskView: View {
+struct EditTaskView: View {
     @EnvironmentObject var viewModel: TaskViewModel
-    @State private var dueDate: String = ""
     @Binding var isPresented: Bool
-    @State private var title: String = ""
-    @State private var memo: String = ""
-    @State private var selectedRoom: HouseRoom?
-    @State private var isRepeat: Bool = false
-    @State private var isAlarmOn: Bool = false
-    @State private var selectedAssignee: HouseInMember?
-    @State private var houseId: Int = Int(UserDefaults.standard.string(forKey: "houseId") ?? "0") ?? 0
-    @State private var userId: Int = Int(UserDefaults.standard.string(forKey: "userId") ?? "0") ?? 0
-    @EnvironmentObject var triggerVM: TriggerViewModel
+    var task: Task
+//    let houseId: Int
+    @State private var houseId: Int = UserDefaults.standard.integer(forKey: "houseId")
+    @State private var userId: Int = UserDefaults.standard.integer(forKey: "userId")
 
     
-    // 저장 버튼 활성화 조건
+    @State private var title: String
+    @State private var memo: String
+    @State private var selectedRoom: HouseRoom?
+    @State private var dueDate: String
+    @State private var isAlarmOn: Bool
+    @State private var selectedAssignee: HouseInMember?
+    
+    // 초기화 시 기존 데이터로 상태 초기화
+    init(task: Task, isPresented: Binding<Bool>, houseId: Int) {
+        self.task = task
+        self._isPresented = isPresented
+        self.houseId = houseId
+        
+        _title = State(initialValue: task.title)
+        _memo = State(initialValue: task.memo ?? "")
+        _selectedRoom = State(initialValue: task.houseRoom)
+        _dueDate = State(initialValue: task.dueDate ?? "")
+        _isAlarmOn = State(initialValue: task.alarm != nil)
+        
+        if let assignee = task.assignees?.first {
+            _selectedAssignee = State(initialValue: HouseInMember(
+                userId: assignee.id,
+                nickname: assignee.nickname,
+                isOwner: false
+            ))
+        } else {
+            _selectedAssignee = State(initialValue: nil)
+        }
+    }
+    
     private var isFormValid: Bool {
         !title.isEmpty && selectedRoom != nil && selectedAssignee != nil && !dueDate.isEmpty
     }
@@ -30,13 +53,10 @@ struct AddTaskView: View {
     var body: some View {
         NavigationView {
             Form {
-                // 제목 입력
                 TextField("할일 제목", text: $title)
                 
-                // 메모 입력
                 TextField("메모(선택사항)", text: $memo)
                 
-                // 구역 선택
                 NavigationLink(destination: RoomSelectionView(selectedRoom: $selectedRoom)) {
                     HStack {
                         Text("구역 선택")
@@ -47,7 +67,6 @@ struct AddTaskView: View {
                     }
                 }
                 
-                // 날짜 선택
                 NavigationLink {
                     DateSelectionView(dueDate: $dueDate)
                 } label: {
@@ -58,17 +77,8 @@ struct AddTaskView: View {
                     }
                 }
                 
-                // 반복 설정
-                HStack {
-                    Text("반복")
-                    Spacer()
-                    Image(systemName: "chevron.right").foregroundColor(.gray)
-                }
-                
-                // 알람 설정
                 Toggle("알람", isOn: $isAlarmOn)
                 
-                // 담당자 지정
                 NavigationLink(destination: AssigneeSelectionView(selectedAssignee: $selectedAssignee).environmentObject(GetMembersInHouseViewModel())) {
                     HStack {
                         Text("담당자 지정")
@@ -80,7 +90,7 @@ struct AddTaskView: View {
                     }
                 }
             }
-            .navigationTitle("새 작업 추가")
+            .navigationTitle("할일 수정")
             .navigationBarItems(
                 leading: Button("취소") {
                     isPresented = false
@@ -88,7 +98,7 @@ struct AddTaskView: View {
                 trailing: Button("저장") {
                     saveTask()
                 }
-                    .disabled(!isFormValid)
+                .disabled(!isFormValid)
             )
         }
         .alert("오류", isPresented: $viewModel.isFetchError) {
@@ -101,41 +111,32 @@ struct AddTaskView: View {
     }
     
     private func saveTask() {
-        guard let roomId = selectedRoom?.id else {
+        guard let roomId = selectedRoom?.id, let assignee = selectedAssignee else {
+            viewModel.message = "필수 정보를 모두 입력해주세요."
+            viewModel.isFetchError = true
             return
         }
         
-        viewModel.onTaskAdded = {
+        viewModel.onTaskEdited = {
             self.viewModel.fetchTasks(houseId: self.houseId)
             
             self.viewModel.isLoading = false
             self.viewModel.fetchMyTasks(userId: self.userId)
-
-            print("saveTask 끝")
-
             
-            //알람?
-            if(isAlarmOn){
-                //triggerVM.intervalTrigger(subtitle: title, body: dueDate)
-                triggerVM.calenderTrigger(subtitle: title, body: dueDate)
-            }
-
+            print("edittask saveTask 끝")
         }
-
-        print("saveTask 시작")
-        viewModel.addTask(
+        
+        viewModel.editTask(
+            taskId: task.id,
             houseRoomId: roomId,
             title: title,
-            assigneeId: selectedAssignee != nil ? [selectedAssignee!.userId] : [],
+            assigneeId: [assignee.userId],
             memo: memo.isEmpty ? nil : memo,
-            alarm: isAlarmOn,
+            alarm: isAlarmOn ? "on" : nil,
             dueDate: dueDate.isEmpty ? nil : dueDate
         )
-        
         isPresented = false
     }
 }
 
-#Preview {
-    AddTaskView(isPresented: .constant(true))
-}
+#Preview {}

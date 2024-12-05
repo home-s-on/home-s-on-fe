@@ -1,7 +1,8 @@
 import SwiftUI
 
 struct MainView: View {
-    let taskVM = TaskViewModel()
+    @StateObject var viewModel = TaskViewModel()
+//    let taskVM = TaskViewModel()
     @StateObject private var getHouseInMemberVM = GetMembersInHouseViewModel()
     
     var body: some View {
@@ -24,7 +25,7 @@ struct MainView: View {
                     Text("설정")
                 }
         }
-        .environmentObject(taskVM)
+        .environmentObject(viewModel)
         .environmentObject(getHouseInMemberVM)
         .navigationBarBackButtonHidden(true)
     }

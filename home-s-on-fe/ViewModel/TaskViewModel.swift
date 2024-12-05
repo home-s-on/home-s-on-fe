@@ -3,9 +3,9 @@ import Alamofire
 
 class TaskViewModel: ObservableObject {
     @Published var tasks: [Task] = []
-    @Published var message = ""
-    @Published var isFetchError = false
-    @Published var isLoading = false
+    @Published var message: String = ""
+    @Published var isFetchError: Bool = false
+    @Published var isLoading: Bool = false
     @Published var selectedAssignee: HouseInMember?
     
     // 모든 할일
@@ -45,7 +45,7 @@ class TaskViewModel: ObservableObject {
                 
                 switch response.result {
                 case .success(let taskResponse):
-//                    print("fetchTasks Decoded response:", taskResponse)
+                    print("fetchTasks Decoded response:", taskResponse)
                     self?.tasks = taskResponse.data
                     if self?.tasks.isEmpty ?? true {
                         self?.isFetchError = true
@@ -260,6 +260,7 @@ class TaskViewModel: ObservableObject {
         }
     
     //할 일 편집
+    var onTaskEdited: (() -> Void)?
     func editTask(taskId: Int, houseRoomId: Int, title: String, assigneeId: [Int], memo: String?, alarm: String?, dueDate: String?) {
         print("=== Edit Task Debug Logs ===")
         isLoading = true
@@ -289,7 +290,6 @@ class TaskViewModel: ObservableObject {
         if let dueDate = dueDate, !dueDate.isEmpty { parameters["due_date"] = dueDate }
         
         let url = "\(APIEndpoints.baseURL)/tasks/\(taskId)"
-        print(url)
         
         AF.request(url,
                    method: .patch,
@@ -297,26 +297,32 @@ class TaskViewModel: ObservableObject {
                    encoding: JSONEncoding.default,
                    headers: headers)
             .validate()
-            .responseData { [weak self] response in
-                self?.isLoading = false
+            .responseData { response in
+                self.isLoading = false
+
                 
                 switch response.result {
                 case .success(let data):
                     do {
-                        let taskResponse = try JSONDecoder().decode(TaskResponse<Task>.self, from: data)
-                        print("Success: Task updated")
-                        self?.fetchTasks(houseId: Int(savedHouseId)!)
-                        self?.isFetchError = false
-                        self?.message = ""
+                        let taskResponse = try JSONDecoder().decode(AddTaskResponse<Task>.self, from: data)
+//                        print("Success: Task updated")
+//                        self?.fetchTasks(houseId: Int(savedHouseId)!)
+                        
+                        // 콜백 호출
+                        self.onTaskEdited?()
+                        
+                        self.isFetchError = false
+                        self.message = ""
                     } catch {
                         print("Decoding error:", error)
-                        self?.isFetchError = true
-                        self?.message = "할일을 수정할 수 없습니다"
+                        self.isFetchError = true
+                        self.message = "할일을 수정할 수 없습니다"
                     }
                 case .failure(let error):
                     print("Network error:", error)
-                    self?.isFetchError = true
-                    self?.message = "할일을 수정할 수 없습니다"
+                    self.isFetchError = true
+                    self.message = "할일을 수정할 수 없습니다"
+
                 }
             }
     }
