@@ -12,7 +12,6 @@ struct TaskRowView: View {
     @EnvironmentObject var viewModel: TaskViewModel
     @EnvironmentObject var appState: SelectedTabViewModel
     @State private var showEditTask = false
-    var canEdit: Bool = false
     
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
@@ -21,15 +20,15 @@ struct TaskRowView: View {
                     .font(.system(size: 16, weight: .medium))
                 Spacer()
                 // 편집 버튼 추가
-                if canEdit {  // canEdit이 true일 때만 버튼 표시
+                if task.canEdit {
                     Button(action: {
                         showEditTask = true
                     }) {
                         Image(systemName: "pencil")
                             .foregroundColor(.blue)
                     }
+                    
                 }
-                
                 //완료 체크박스
                 if task.complete {
                     Image(systemName: "checkmark.circle.fill")
