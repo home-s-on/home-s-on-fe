@@ -18,6 +18,11 @@ struct RoomResponse: Codable {
     let data: [HouseRoom]
 }
 
+struct AddRoomResponse: Codable {
+    let success: Bool
+    let data: HouseRoom
+}
+
 struct ErrorResponse: Codable {
     let success: Bool
     let error: String

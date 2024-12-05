@@ -73,7 +73,7 @@ class HouseRoomViewModel: ObservableObject {
                   encoding: JSONEncoding.default,
                   headers: headers)
             .validate(statusCode: 200..<300)
-            .responseDecodable(of: RoomResponse.self) { [weak self] response in
+            .responseDecodable(of: AddRoomResponse.self) { [weak self] response in
                 print("Add room response:", response)
                 
                 switch response.result {
