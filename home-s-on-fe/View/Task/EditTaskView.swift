@@ -33,7 +33,14 @@ struct EditTaskView: View {
         _title = State(initialValue: task.title)
         _memo = State(initialValue: task.memo ?? "")
         _selectedRoom = State(initialValue: task.houseRoom)
-        _dueDate = State(initialValue: task.dueDate ?? "")
+
+        if let dueDate = task.dueDate {
+            let formattedDate = Self.formatDate(dueDate)
+            _dueDate = State(initialValue: formattedDate)
+        } else {
+            _dueDate = State(initialValue: "")
+        }
+        
         _isAlarmOn = State(initialValue: task.alarm != nil)
         
         if let assignee = task.assignees?.first {
@@ -46,6 +53,16 @@ struct EditTaskView: View {
             _selectedAssignee = State(initialValue: nil)
         }
     }
+    
+    private static func formatDate(_ dateString: String) -> String {
+            let formatter = DateFormatter()
+            formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ" // 원본 날짜
+            if let date = formatter.date(from: dateString) {
+                formatter.dateFormat = "yyyy-MM-dd" // 출력할 날짜
+                return formatter.string(from: date)
+            }
+            return dateString
+        }
     
     private var isFormValid: Bool {
         !title.isEmpty && selectedRoom != nil && selectedAssignee != nil && !dueDate.isEmpty
