@@ -22,23 +22,23 @@ struct TaskListView: View {
                 VStack {
                     //프로필 영역
                     HStack(spacing: 12) {  // HStack 추가
-
-                    if let photoURL = URL(string: "\(APIEndpoints.blobURL)/\(photo)") {
-                        KFImage(photoURL)
-                            .resizable()
-                            .scaledToFill()
-                            .frame(width: 40, height: 40)
-                            .clipShape(Circle())
-                    } else {
-                        Image(systemName: "person.circle.fill")
-                            .resizable()
-                            .frame(width: 40, height: 40)
-                            .foregroundColor(.gray)
-                    }
-                    
-                    Text(nickname)
-                        .font(.system(size: 18, weight: .medium))
-
+                        
+                        if let photoURL = URL(string: "\(APIEndpoints.blobURL)/\(photo)") {
+                            KFImage(photoURL)
+                                .resizable()
+                                .scaledToFill()
+                                .frame(width: 40, height: 40)
+                                .clipShape(Circle())
+                        } else {
+                            Image(systemName: "person.circle.fill")
+                                .resizable()
+                                .frame(width: 40, height: 40)
+                                .foregroundColor(.gray)
+                        }
+                        
+                        Text(nickname)
+                            .font(.system(size: 18, weight: .medium))
+                        
                         
                         Spacer()
                     }
@@ -47,31 +47,35 @@ struct TaskListView: View {
                     // 에러메세지 할일 목록
                     if viewModel.isLoading {
                         ProgressView()
-                    } else if viewModel.isFetchError {
-                        Text(viewModel.message)
-                            .foregroundColor(.gray)
-                            .padding()
                     } else {
                         ScrollView {
                             LazyVStack(spacing: 12) {
-                                ForEach(viewModel.tasks) { task in
-                                    TaskRowView(task: task)
-                                        .environmentObject(viewModel)
-                                        .padding(.horizontal)
+                                if viewModel.tasks.isEmpty && !viewModel.isFetchError {
+                                    Text("등록된 할일이 없습니다")
+                                        .foregroundColor(.gray)
+                                        .padding()
+                                } else {
+                                    ForEach(viewModel.tasks) { task in
+                                        TaskRowView(task: task)
+                                            .environmentObject(viewModel)
+                                            .padding(.horizontal)
+                                        
+                                    }
                                 }
                             }
+                            .padding()
                         }
                     }
                 }
+                .onAppear {
+                    viewModel.fetchTasks(houseId: houseId)
                 
+            }
                 AddTaskButton()
             }
-            .onAppear {
-                viewModel.fetchTasks(houseId: houseId)
-            }
-            .alert("오류", isPresented: .constant(errorMessage != nil)) {
-                Button("확인") {
-                    errorMessage = nil
+            .alert("오류", isPresented: $viewModel.isFetchError) {
+                       Button("확인") {
+                           viewModel.isFetchError = false
                 }
             } message: {
                 Text(errorMessage ?? "")

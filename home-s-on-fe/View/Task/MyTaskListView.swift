@@ -14,28 +14,28 @@ struct MyTaskListView: View {
     let userId: Int
     @State private var nickname: String = UserDefaults.standard.string(forKey: "nickname") ?? ""
     @State private var photo: String = UserDefaults.standard.string(forKey: "photo") ?? ""
-
+    
     
     var body: some View {
-      NavigationView {
+        NavigationView {
             ZStack {  // ZStack -> AddTaskButton 맨 위에 오도록
                 VStack {
                     HStack(spacing: 12) {
                         if let photoURL = URL(string: "\(APIEndpoints.blobURL)/\(photo)") {
-                        KFImage(photoURL)
-                            .resizable()
-                            .scaledToFill()
-                            .frame(width: 40, height: 40)
-                            .clipShape(Circle())
-                    } else {
-                        Image(systemName: "person.circle.fill")
-                            .resizable()
-                            .frame(width: 40, height: 40)
-                            .foregroundColor(.gray)
-                    }
-                    
-                    Text(nickname)
-                        .font(.system(size: 18, weight: .medium))
+                            KFImage(photoURL)
+                                .resizable()
+                                .scaledToFill()
+                                .frame(width: 40, height: 40)
+                                .clipShape(Circle())
+                        } else {
+                            Image(systemName: "person.circle.fill")
+                                .resizable()
+                                .frame(width: 40, height: 40)
+                                .foregroundColor(.gray)
+                        }
+                        
+                        Text(nickname)
+                            .font(.system(size: 18, weight: .medium))
                         
                         Spacer()
                     }
@@ -43,9 +43,6 @@ struct MyTaskListView: View {
                     
                     if viewModel.isLoading {
                         ProgressView()
-                    } else if viewModel.isFetchError {
-                        Text(viewModel.message)
-                            .foregroundColor(.red)
                     } else {
                         ScrollView {
                             LazyVStack(spacing: 12) {
@@ -59,10 +56,16 @@ struct MyTaskListView: View {
                                     Spacer()
                                 }
                                 
-                                ForEach(viewModel.tasks) { task in
-                                    TaskRowView(task: task)
-                                        .environmentObject(viewModel)
-                                        .padding(.horizontal)
+                                if viewModel.tasks.isEmpty && !viewModel.isFetchError {
+                                    Text("등록된 할일이 없습니다")
+                                        .foregroundColor(.gray)
+                                        .padding()
+                                } else {
+                                    ForEach(viewModel.tasks) { task in
+                                        TaskRowView(task: task)
+                                            .environmentObject(viewModel)
+                                            .padding(.horizontal)
+                                    }
                                 }
                             }
                             .padding()
@@ -74,10 +77,17 @@ struct MyTaskListView: View {
                 }
                 
                 AddTaskButton()
-            }
-        }
-    }
-    
+                            }
+                        }
+                        .alert("오류", isPresented: $viewModel.isFetchError) {
+                            Button("확인") {
+                                viewModel.isFetchError = false
+                            }
+                        } message: {
+                            Text(viewModel.message)
+                        }
+                    }
+  
     private func formattedDate() -> String {
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy년 MM월 dd일"
