@@ -11,6 +11,7 @@ struct AddTaskButton: View {
     @State private var isShowingAddTask = false
     @EnvironmentObject var viewModel: TaskViewModel
     @State private var houseId: Int = Int(UserDefaults.standard.string(forKey: "houseId") ?? "0") ?? 0
+    @EnvironmentObject var triggerVM: TriggerViewModel
     
     var body: some View {
         VStack {
@@ -35,6 +36,7 @@ struct AddTaskButton: View {
             AddTaskView(isPresented: $isShowingAddTask)
                 .environmentObject(viewModel)  // viewModel을 전달
                 .presentationDetents([.large])
+                .environmentObject(TriggerViewModel())
         }
     }
 }

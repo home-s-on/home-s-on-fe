@@ -7,7 +7,8 @@ struct Task: Identifiable, Codable {
     let userId: Int
     let title: String
     let memo: String?
-    let alarm: String?
+    let alarm: Bool
+    let repeatDay: [Int]?
     let assigneeId: [Int]
     let dueDate: String?
     let complete: Bool
@@ -16,12 +17,18 @@ struct Task: Identifiable, Codable {
     let houseRoom: HouseRoom?
     let assignees: [TaskUser]?
     
+    // 편집 권한 확인용
+        var canEdit: Bool {
+            return userId == UserDefaults.standard.integer(forKey: "userId")
+        }
+    
     enum CodingKeys: String, CodingKey {
         case id
         case houseId = "house_id"
         case houseRoomId = "house_room_id"
         case userId = "user_id"
         case title, memo, alarm
+        case repeatDay = "repeat_day"
         case assigneeId = "assignee_id"
         case dueDate = "due_date"
         case complete
