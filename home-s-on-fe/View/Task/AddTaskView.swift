@@ -114,7 +114,8 @@ struct AddTaskView: View {
             
             //알람?
             if(isAlarmOn){
-                triggerVM.intervalTrigger()
+                //triggerVM.intervalTrigger(subtitle: title, body: dueDate)
+                triggerVM.calenderTrigger(subtitle: title, body: dueDate)
             }
         }
 
