@@ -5,8 +5,8 @@
 //  Created by 안혜지 on 11/27/24.
 //
 
-import SwiftUI
 import Alamofire
+import SwiftUI
 
 class HouseRoomViewModel: ObservableObject {
     @Published var rooms: [HouseRoom] = []
@@ -30,8 +30,8 @@ class HouseRoomViewModel: ObservableObject {
         ]
         
         AF.request("\(APIEndpoints.baseURL)/rooms",
-                  method: .get,
-                  headers: headers)
+                   method: .get,
+                   headers: headers)
             .validate(statusCode: 200..<300)
             .responseDecodable(of: RoomResponse.self) { [weak self] response in
                 self?.isLoading = false
@@ -68,10 +68,10 @@ class HouseRoomViewModel: ObservableObject {
         let parameters: Parameters = ["room_name": name]
         
         AF.request("\(APIEndpoints.baseURL)/rooms",
-                  method: .post,
-                  parameters: parameters,
-                  encoding: JSONEncoding.default,
-                  headers: headers)
+                   method: .post,
+                   parameters: parameters,
+                   encoding: JSONEncoding.default,
+                   headers: headers)
             .validate(statusCode: 200..<300)
             .responseDecodable(of: AddRoomResponse.self) { [weak self] response in
                 print("Add room response:", response)
@@ -102,10 +102,10 @@ class HouseRoomViewModel: ObservableObject {
         ]
         
         AF.request("\(APIEndpoints.baseURL)/rooms/\(id)",
-                  method: .delete,
-                  headers: headers)
+                   method: .delete,
+                   headers: headers)
             .validate(statusCode: 200..<300)
-            .responseDecodable(of: RoomResponse.self) { [weak self] response in
+            .responseDecodable(of: DeleteRoomResponse.self) { [weak self] response in
                 print("Delete room response:", response)
                 
                 switch response.result {

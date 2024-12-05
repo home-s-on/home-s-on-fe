@@ -23,6 +23,11 @@ struct AddRoomResponse: Codable {
     let data: HouseRoom
 }
 
+struct DeleteRoomResponse: Codable {
+    let success: Bool
+    let message: String
+}
+
 struct ErrorResponse: Codable {
     let success: Bool
     let error: String
