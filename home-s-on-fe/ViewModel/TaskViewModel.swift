@@ -14,15 +14,11 @@ class TaskViewModel: ObservableObject {
         isLoading = true
         
         guard let token = UserDefaults.standard.string(forKey: "token") else {
-            print("Token not found")
             isLoading = false
             isFetchError = true
             message = "로그인이 필요합니다"
             return
         }
-        
-//        print("Using token:", token)
-//        print("Request URL:", "\(APIEndpoints.baseURL)/tasks/house")
         
         let headers: HTTPHeaders = [
             "Authorization": "Bearer \(token)",
@@ -33,39 +29,26 @@ class TaskViewModel: ObservableObject {
                   method: .get,
                   headers: headers)
             .validate()
-            .response { response in
-//                print("Raw response:", String(data: response.data ?? Data(), encoding: .utf8) ?? "")
-            }
             .responseDecodable(of: TaskResponse<Task>.self) { [weak self] response in
                 self?.isLoading = false
                 
-                if let statusCode = response.response?.statusCode {
-//                    print("Response status code:", statusCode)
-                }
-                
                 switch response.result {
                 case .success(let taskResponse):
-                    print("fetchTasks Decoded response:", taskResponse)
                     self?.tasks = taskResponse.data
-                    if self?.tasks.isEmpty ?? true {
-                        self?.isFetchError = true
-                        self?.message = "등록된 할일이 없습니다"
-                    }
+                    self?.isFetchError = false
+                    self?.message = ""
+                    
                 case .failure(let error):
-//                    print("Error details:", error)
-                    if let data = response.data {
-//                        print("Error response:", String(data: data, encoding: .utf8) ?? "")
-                    }
-                    self?.isFetchError = true
-                    self?.message = "할일 목록을 불러올 수 없습니다"
+
+                    self?.message = "rcr"
                 }
             }
     }
     
     //나의 할일 가져오기
     func fetchMyTasks(userId: Int) {
-//        print("=== Fetch My Tasks Debug Logs ===")
-//        print("Starting fetchMyTasks for userId:", userId)
+        //        print("=== Fetch My Tasks Debug Logs ===")
+        //        print("Starting fetchMyTasks for userId:", userId)
         
         guard !isLoading else {
             print("Loading in progress, skipping fetch")
@@ -80,48 +63,45 @@ class TaskViewModel: ObservableObject {
             message = "로그인이 필요합니다"
             return
         }
-//        print("Token:", token)
-//        print("Request URL:", "\(APIEndpoints.baseURL)/tasks/mytasks")
+        //        print("Token:", token)
+        //        print("Request URL:", "\(APIEndpoints.baseURL)/tasks/mytasks")
         
         let headers: HTTPHeaders = [
             "Authorization": "Bearer \(token)",
             "Content-Type": "application/json"
         ]
-//        print("Request headers:", headers)
+        //        print("Request headers:", headers)
         
         AF.request("\(APIEndpoints.baseURL)/tasks/mytasks",
-                  method: .get,
-                  headers: headers)
-            .validate()
-            .response { response in
-//                print("\n=== Response Debug ===")
-//                print("Status Code:", response.response?.statusCode ?? "No status code")
-//                print("Raw response:", String(data: response.data ?? Data(), encoding: .utf8) ?? "No data")
-            }
-            .responseDecodable(of: TaskResponse<Task>.self) { [weak self] response in
-                self?.isLoading = false
+                   method: .get,
+                   headers: headers)
+        .validate()
+        .response { response in
+            //                print("\n=== Response Debug ===")
+            //                print("Status Code:", response.response?.statusCode ?? "No status code")
+            //                print("Raw response:", String(data: response.data ?? Data(), encoding: .utf8) ?? "No data")
+        }
+        .responseDecodable(of: TaskResponse<Task>.self) { [weak self] response in
+            self?.isLoading = false
+            
+            switch response.result {
+            case .success(let taskResponse):
+                print("Success Response:", taskResponse)
+                //                    print("Tasks count:", taskResponse.data.count)
+                self?.tasks = taskResponse.data
+                self?.isFetchError = false  // 성공 시 에러 상태 초기화
+                self?.message = ""
                 
-                switch response.result {
-                case .success(let taskResponse):
-                    print("Success Response:", taskResponse)
-//                    print("Tasks count:", taskResponse.data.count)
-                    self?.tasks = taskResponse.data
-                    if self?.tasks.isEmpty ?? true {
-                        print("No tasks found")
-                        self?.isFetchError = true
-                        self?.message = "사용자의 할일 목록이 비어있습니다"
-                    }
-                case .failure(let error):
-//                    print("Error:", error)
-//                    print("Error Description:", error.localizedDescription)
-                    if let data = response.data {
-                        print("Error response body:", String(data: data, encoding: .utf8) ?? "")
-                    }
-                    self?.isFetchError = true
-                    self?.message = "할일 목록을 불러올 수 없습니다"
+                // 빈 목록 에러 판단 못하게
+                if self?.tasks.isEmpty ?? true {
+                    self?.message = "할일이 없습니다"
                 }
-//                print("=== End Debug Logs ===\n")
+            case .failure(let error):
+                // 실제 오류 발생 시에만 에러 처리
+                self?.isFetchError = true
+                self?.message = "할일 목록을 불러올 수 없습니다"
             }
+        }
     }
     
     
