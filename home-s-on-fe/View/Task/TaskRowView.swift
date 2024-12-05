@@ -10,6 +10,7 @@ import SwiftUI
 struct TaskRowView: View {
     let task: Task
     @EnvironmentObject var viewModel: TaskViewModel
+    @EnvironmentObject var appState: SelectedTabViewModel
     @State private var showEditTask = false
     
     var body: some View {
@@ -73,6 +74,7 @@ struct TaskRowView: View {
                 houseId: task.houseId
             )
             .environmentObject(viewModel)
+            .environmentObject(appState)
         }
     }
     

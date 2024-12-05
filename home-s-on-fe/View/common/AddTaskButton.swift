@@ -11,6 +11,7 @@ struct AddTaskButton: View {
     @State private var isShowingAddTask = false
     @EnvironmentObject var viewModel: TaskViewModel
     @EnvironmentObject var triggerVM: TriggerViewModel
+    @EnvironmentObject var appState: SelectedTabViewModel
     @State private var houseId: Int = UserDefaults.standard.integer(forKey: "houseId")
 
     
@@ -38,15 +39,16 @@ struct AddTaskButton: View {
                 .environmentObject(viewModel)  // viewModel을 전달
                 .presentationDetents([.large])
                 .environmentObject(TriggerViewModel())
+                .environmentObject(appState)
         }
     }
 }
 
 
 
-#Preview {
-    ZStack {
-        Color.white.edgesIgnoringSafeArea(.all) // 배경색 추가
-        AddTaskButton ()
-    }
-}
+//#Preview {
+//    ZStack {
+//        Color.white.edgesIgnoringSafeArea(.all) // 배경색 추가
+//        AddTaskButton ()
+//    }
+//}

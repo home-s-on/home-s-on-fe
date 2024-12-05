@@ -9,6 +9,7 @@ import SwiftUI
 
 struct AddTaskView: View {
     @EnvironmentObject var viewModel: TaskViewModel
+    @EnvironmentObject var appState: SelectedTabViewModel
     @State private var dueDate: String = ""
     @Binding var isPresented: Bool
     @State private var title: String = ""
@@ -25,8 +26,6 @@ struct AddTaskView: View {
     @State private var selectedDays: Set<Int> = []
     let daysOfWeek = ["일요일마다", "월요일마다", "화요일마다", "수요일마다", "목요일마다", "금요일마다", "토요일마다"]
     
-
-
     
     // 저장 버튼 활성화 조건
     private var isFormValid: Bool {
@@ -105,41 +104,37 @@ struct AddTaskView: View {
     }
     
     private func saveTask() {
-        guard let roomId = selectedRoom?.id else {
-            return
-        }
-        
-        viewModel.onTaskAdded = {
-            self.viewModel.fetchTasks(houseId: self.houseId)
-            
-            self.viewModel.isLoading = false
-            self.viewModel.fetchMyTasks(userId: self.userId)
+            guard let roomId = selectedRoom?.id else { return }
 
-            print("saveTask 끝")
+            print("saveTask 시작")
+            viewModel.addTask(
+                houseRoomId: roomId,
+                title: title,
+                assigneeId: selectedAssignee != nil ? [selectedAssignee!.userId] : [],
+                memo: memo.isEmpty ? nil : memo,
+                alarm: isAlarmOn,
+                dueDate: dueDate.isEmpty ? nil : dueDate
+            )
 
-            
-            //알람?
-            if(isAlarmOn){
-                //triggerVM.intervalTrigger(subtitle: title, body: dueDate)
-                triggerVM.calenderTrigger(subtitle: title, body: dueDate)
+            viewModel.onTaskAdded = {
+                if appState.selectedTab == 0 {
+                    // "할일 목록" 탭일 때
+                    self.viewModel.fetchTasks(houseId: self.houseId)
+                } else if appState.selectedTab == 1 {
+                    // "나의 할일" 탭일 때
+                    self.viewModel.isLoading = false
+                    self.viewModel.fetchMyTasks(userId: self.userId)
+                }
+
+                print("saveTask 끝")
+
+                // 알람 설정
+                if isAlarmOn {
+                    triggerVM.calenderTrigger(subtitle: title, body: dueDate)
+                }
             }
 
+            isPresented = false
         }
-
-        print("saveTask 시작")
-        viewModel.addTask(
-            houseRoomId: roomId,
-            title: title,
-            assigneeId: selectedAssignee != nil ? [selectedAssignee!.userId] : [],
-            memo: memo.isEmpty ? nil : memo,
-            alarm: isAlarmOn,
-            dueDate: dueDate.isEmpty ? nil : dueDate
-        )
-        
-        isPresented = false
-    }
 }
 
-#Preview {
-    AddTaskView(isPresented: .constant(true))
-}

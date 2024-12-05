@@ -10,6 +10,7 @@ import Kingfisher
 
 struct TaskListView: View {
     @EnvironmentObject var viewModel: TaskViewModel
+    @EnvironmentObject var appState: SelectedTabViewModel
     @State private var photoURL: URL?
     @State private var errorMessage: String?
     let houseId: Int
@@ -58,6 +59,7 @@ struct TaskListView: View {
                                     ForEach(viewModel.tasks) { task in
                                         TaskRowView(task: task)
                                             .environmentObject(viewModel)
+                                            .environmentObject(appState)
                                             .padding(.horizontal)
                                         
                                     }
@@ -72,6 +74,7 @@ struct TaskListView: View {
                 
             }
                 AddTaskButton()
+                    .environmentObject(appState)
             }
             .alert("오류", isPresented: $viewModel.isFetchError) {
                        Button("확인") {
@@ -84,7 +87,7 @@ struct TaskListView: View {
     }
 }
 
-#Preview {
-    let _ = UserDefaults.standard.set("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzMyNzIyMzc1LCJleHAiOjE3MzI4MDg3NzV9.6gcH_Dwa5gGi9hYDIAvsKosJBoij93Na9oxjfGlAb8g", forKey: "token")
-    return TaskListView(houseId: 1).environmentObject(TaskViewModel())
-}
+//#Preview {
+//    let _ = UserDefaults.standard.set("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzMyNzIyMzc1LCJleHAiOjE3MzI4MDg3NzV9.6gcH_Dwa5gGi9hYDIAvsKosJBoij93Na9oxjfGlAb8g", forKey: "token")
+//    return TaskListView(houseId: 1).environmentObject(TaskViewModel())
+//}

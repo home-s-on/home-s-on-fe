@@ -9,6 +9,7 @@ import SwiftUI
 
 struct EditTaskView: View {
     @EnvironmentObject var viewModel: TaskViewModel
+    @EnvironmentObject var appState: SelectedTabViewModel
     @Binding var isPresented: Bool
     var task: Task
 //    let houseId: Int
@@ -118,12 +119,17 @@ struct EditTaskView: View {
         }
         
         viewModel.onTaskEdited = {
-            self.viewModel.fetchTasks(houseId: self.houseId)
-            
-            self.viewModel.isLoading = false
-            self.viewModel.fetchMyTasks(userId: self.userId)
-            
+            if appState.selectedTab == 0 {
+                // "할일 목록" 탭일 때
+                self.viewModel.fetchTasks(houseId: self.houseId)
+            } else if appState.selectedTab == 1 {
+                // "나의 할일" 탭일 때
+                self.viewModel.isLoading = false
+                self.viewModel.fetchMyTasks(userId: self.userId)
+            }
+
             print("edittask saveTask 끝")
+
         }
         
         viewModel.editTask(
