@@ -11,7 +11,10 @@ struct SettingView: View {
     @State private var isShowInviteCode = false
     @State private var isShowPastTasks = false
     @State private var isShowHouseInMembers = false
+    @State private var showLogoutAlert = false
     @EnvironmentObject var getHouseInMemberVM : GetMembersInHouseViewModel
+    @Environment(\.presentationMode) var presentationMode
+    
     var body: some View {
         NavigationView{
             VStack (spacing: 40){
@@ -28,12 +31,12 @@ struct SettingView: View {
                 }
                 .padding(.bottom, 300)
                 
-                Text("탈퇴할래요!")
+                Text("로그아웃할래요!")
                     .font(.footnote)
                     .foregroundColor(.gray)
                     .underline()
                     .onTapGesture {
-                        print("탈퇴하기 클릭")
+                        showLogoutAlert = true
                     }
             }
             .navigationBarTitle("설정", displayMode: .inline)
@@ -50,8 +53,38 @@ struct SettingView: View {
                     .environmentObject(getHouseInMemberVM)
                 
             }
+            // 로그아웃 알림
+            .alert(isPresented: $showLogoutAlert) {
+                Alert(
+                    title: Text("로그아웃"),
+                    message: Text("정말 로그아웃하시겠습니까?"),
+                    primaryButton: .destructive(Text("확인")) {
+                        logout() // 로그아웃 처리 함수 호출
+                    },
+                    secondaryButton: .cancel(Text("취소"))
+                )
+            }
         }
         .navigationViewStyle(StackNavigationViewStyle())
+    }
+    
+    // 로그아웃
+    private func logout() {
+        resetUserDefaults()
+        presentationMode.wrappedValue.dismiss()
+    }
+
+    private func resetUserDefaults() {
+        let defaults = UserDefaults.standard
+
+        defaults.removeObject(forKey: "userId")
+        defaults.removeObject(forKey: "token")
+        defaults.removeObject(forKey: "email")
+        defaults.removeObject(forKey: "nickname")
+        defaults.removeObject(forKey: "photo")
+        defaults.removeObject(forKey: "inviteCode")
+        defaults.removeObject(forKey: "houseId")
+        defaults.removeObject(forKey: "isOwner")
     }
 }
 
