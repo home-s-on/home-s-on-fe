@@ -17,8 +17,9 @@ struct AddTaskView: View {
     @State private var isRepeat: Bool = false
     @State private var isAlarmOn: Bool = false
     @State private var selectedAssignee: HouseInMember?
-    @State private var houseId: Int = UserDefaults.standard.integer(forKey: "houseId")
-    @State private var userId: Int = UserDefaults.standard.integer(forKey: "userId")
+    @State private var houseId: Int = Int(UserDefaults.standard.string(forKey: "houseId") ?? "0") ?? 0
+    @State private var userId: Int = Int(UserDefaults.standard.string(forKey: "userId") ?? "0") ?? 0
+    @EnvironmentObject var triggerVM: TriggerViewModel
 
     
     // 저장 버튼 활성화 조건
@@ -111,6 +112,14 @@ struct AddTaskView: View {
             self.viewModel.fetchMyTasks(userId: self.userId)
 
             print("saveTask 끝")
+
+            
+            //알람?
+            if(isAlarmOn){
+                //triggerVM.intervalTrigger(subtitle: title, body: dueDate)
+                triggerVM.calenderTrigger(subtitle: title, body: dueDate)
+            }
+
         }
 
         print("saveTask 시작")
@@ -119,7 +128,7 @@ struct AddTaskView: View {
             title: title,
             assigneeId: selectedAssignee != nil ? [selectedAssignee!.userId] : [],
             memo: memo.isEmpty ? nil : memo,
-            alarm: isAlarmOn ? "on" : nil,
+            alarm: isAlarmOn,
             dueDate: dueDate.isEmpty ? nil : dueDate
         )
         

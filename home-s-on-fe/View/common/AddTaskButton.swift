@@ -10,7 +10,9 @@ import SwiftUI
 struct AddTaskButton: View {
     @State private var isShowingAddTask = false
     @EnvironmentObject var viewModel: TaskViewModel
+    @EnvironmentObject var triggerVM: TriggerViewModel
     @State private var houseId: Int = UserDefaults.standard.integer(forKey: "houseId")
+
     
     var body: some View {
         VStack {
@@ -35,6 +37,7 @@ struct AddTaskButton: View {
             AddTaskView(isPresented: $isShowingAddTask)
                 .environmentObject(viewModel)  // viewModel을 전달
                 .presentationDetents([.large])
+                .environmentObject(TriggerViewModel())
         }
     }
 }

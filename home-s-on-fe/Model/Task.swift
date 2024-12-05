@@ -7,7 +7,7 @@ struct Task: Identifiable, Codable {
     let userId: Int
     let title: String
     let memo: String?
-    let alarm: String?
+    let alarm: Bool
     let repeatDay: [Int]?
     let assigneeId: [Int]
     let dueDate: String?

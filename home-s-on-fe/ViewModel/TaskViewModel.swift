@@ -181,7 +181,7 @@ class TaskViewModel: ObservableObject {
     
     // 할일추가
     var onTaskAdded: (() -> Void)?
-    func addTask(houseRoomId: Int, title: String, assigneeId: [Int], memo: String?, alarm: String?, dueDate: String?) {
+    func addTask(houseRoomId: Int, title: String, assigneeId: [Int], memo: String?, alarm: Bool, dueDate: String?) {
             print("=== Add Task Debug Logs ===")
             isLoading = true
             
@@ -210,12 +210,13 @@ class TaskViewModel: ObservableObject {
             var parameters: [String: Any] = [
                 "house_room_id": houseRoomId,
                 "title": title,
-                "assignee_id": assigneeId
+                "assignee_id": assigneeId,
+                "alarm": alarm
             ]
             
             // Optional 파라미터
             if let memo = memo, !memo.isEmpty { parameters["memo"] = memo }
-            if let alarm = alarm { parameters["alarm"] = alarm }
+//            if let alarm = alarm { parameters["alarm"] = alarm }
             if let dueDate = dueDate, !dueDate.isEmpty { parameters["due_date"] = dueDate }
             
             print("Request parameters:", parameters)
@@ -298,6 +299,7 @@ class TaskViewModel: ObservableObject {
             .validate()
             .responseData { response in
                 self.isLoading = false
+
                 
                 switch response.result {
                 case .success(let data):
@@ -320,6 +322,7 @@ class TaskViewModel: ObservableObject {
                     print("Network error:", error)
                     self.isFetchError = true
                     self.message = "할일을 수정할 수 없습니다"
+
                 }
             }
     }
