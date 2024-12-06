@@ -10,27 +10,23 @@ struct ProfileEditView: View {
     @State private var showImagePicker = false
     @State private var showActionSheet = false
     @State private var selectedImage: UIImage?
-    @State private var isUsingDefaultImage: Bool = true
+    @State private var isUsingDefaultImage: Bool = false
     @State private var photoURL: URL?
     @State private var navigateToHouseEntry = false
     
-    let defaultImageName = "round-profile"
+    let defaultImageName = "default-round-profile"
     
     var body: some View {
         NavigationStack {
             VStack {
                 ZStack {
-                    let photoURLString = photo
-                    if !photoURLString.isEmpty, let photoURL = URL(string: "\(APIEndpoints.blobURL)/\(photoURLString)") {
-                        KFImage(photoURL)
-                            .resizable()
-                            .scaledToFill()
-                            .frame(width: 180, height: 180)
-                            .clipShape(Circle())
-                        
-                    } else {
-                        RoundImage(image: UIImage(named: "round-profile")!, width: .constant(180.0), height: .constant(180.0))
-                    }
+                    if isUsingDefaultImage {
+                       RoundImage(image: UIImage(named: defaultImageName)!, width: .constant(215.0), height: .constant(215.0))                        
+                   } else if let image = selectedImage {
+                       RoundImage(image: image, width: .constant(180.0), height: .constant(180.0))
+                   } else {
+                       RoundImage(image: UIImage(named: "round-profile")!, width: .constant(195.0), height: .constant(195.0))
+                   }
                     
                     RoundImage(image: UIImage(systemName: "pencil.circle")!, width: .constant(50.0), height: .constant(50.0))
                         .background(Circle().fill(Color(red: 33/255, green: 174/255, blue: 225/255)).frame(width: 50, height: 55))

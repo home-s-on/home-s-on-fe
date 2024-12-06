@@ -1,11 +1,11 @@
 {
   "images" : [
     {
+      "filename" : "default-round-profile.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "kakao_login_large_wide.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
