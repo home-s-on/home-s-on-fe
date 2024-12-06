@@ -15,7 +15,7 @@ class JoinMemberViewModel : ObservableObject {
     @Published var isJoinMemberShowing = false
     @Published var isJoinMemberError = false
     @Published var isNavigatingToMain = false
-    @AppStorage("houseId") var houseId: Int?
+    @State private var houseId: Int = UserDefaults.standard.integer(forKey: "houseId")
     
     func joinMember(houseId: Int) {
         isLoading = true
@@ -29,11 +29,10 @@ class JoinMemberViewModel : ObservableObject {
         }
         print("houseId \(houseId)")
         let url = "\(APIEndpoints.baseURL)/member/join/\(houseId)"
-        let params: Parameters = ["houseId": houseId]
         let headers: HTTPHeaders = ["Authorization": "Bearer \(token)"]
         
-        AF.request(url, method: .post, parameters: params, headers: headers)
-                    .responseDecodable(of: ApiResponse<Member>.self) { [weak self] response in
+        AF.request(url, method: .post, headers: headers)
+                    .responseDecodable(of: ApiResponse<JoinMember>.self) { [weak self] response in
                         print("joinMember \(response)")
                         guard let self = self else { return }
                         DispatchQueue.main.async {

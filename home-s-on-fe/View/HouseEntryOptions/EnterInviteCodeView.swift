@@ -4,8 +4,10 @@ struct EnterInviteCodeView: View {
     @EnvironmentObject var joinToHouseVM: JoinToHouseViewModel
     @EnvironmentObject var getHouseIdVM: GetHouseIdViewModel
     @StateObject var joinMemberVM = JoinMemberViewModel()
-    @State private var inviteCode = ""
-    @AppStorage("houseId") var houseId: Int?
+//    @State private var inviteCode = ""
+//    @AppStorage("houseId") var houseId: Int?
+    @State private var inviteCode: String = UserDefaults.standard.string(forKey: "inviteCode") ?? ""
+    @State private var houseId: Int = UserDefaults.standard.integer(forKey: "houseId")
 
     var body: some View {
         VStack {
