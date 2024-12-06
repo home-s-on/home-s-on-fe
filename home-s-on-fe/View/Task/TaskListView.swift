@@ -74,7 +74,7 @@ struct TaskListView: View {
                            viewModel.isFetchError = false
                 }
             } message: {
-                Text(errorMessage ?? "")
+                Text(errorMessage ?? "모든 할 일을 불러 올 수 없습니다")
             }
         }
     }
