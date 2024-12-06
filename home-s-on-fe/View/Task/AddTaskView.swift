@@ -132,7 +132,7 @@ struct AddTaskView: View {
             
             // 알람 설정
             if isAlarmOn {
-                //triggerVM.calenderTrigger(subtitle: title, body: dueDate)
+                triggerVM.calenderTrigger(subtitle: title, body: dueDate)
                 triggerVM.sendPushNotification(assigneeId: selectedAssignee != nil ? [selectedAssignee!.userId] : [], title: title, subtitle: title, body: dueDate)
        
             }
