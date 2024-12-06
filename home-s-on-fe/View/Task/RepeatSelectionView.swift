@@ -35,8 +35,7 @@ struct RepeatSelectionView: View {
                     }
                 }
             }
-            .navigationBarTitle("반복", displayMode: .inline)
-        }
+        }.navigationTitle("반복")
     }
     
 }

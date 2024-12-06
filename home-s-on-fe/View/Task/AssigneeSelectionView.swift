@@ -10,59 +10,49 @@ import Alamofire
 
 struct AssigneeSelectionView: View {
     @EnvironmentObject var viewModel: GetMembersInHouseViewModel
-    @Environment(\.dismiss) private var dismiss
-    @Binding var selectedAssignee: HouseInMember?
-
+    @Binding var selectedAssignees: Set<HouseInMember>
+    
     var body: some View {
-        VStack {
-            // 네비게이션 바
-            HStack {
-                Button(action: { dismiss() }) {
-                    Image(systemName: "chevron.left")
-                        .foregroundColor(.blue)
-                }
-                Spacer()
-                Text("담당자 선택")
-                    .font(.headline)
-                Spacer()
-            }
-            .padding()
-
-            // 멤버 목록
-            List(viewModel.houseMembers, id: \.userId) { member in
-                Button(action: {
-                    selectedAssignee = member
-                    dismiss()
-                }) {
-                    HStack {
-                        Text(member.nickname)
-                        Spacer()
-                        if member.isOwner {
-                            Text("집주인")
-                                .font(.caption)
-                                .padding(5)
-                                .background(Color.blue.opacity(0.1))
-                                .cornerRadius(5)
+        NavigationView {
+            List {
+                ForEach(viewModel.houseMembers, id: \.userId) { member in
+                    Button(action: {
+                        if selectedAssignees.contains(member) {
+                            selectedAssignees.remove(member)
+                        } else {
+                            selectedAssignees.insert(member)
                         }
-                        if selectedAssignee?.userId == member.userId {
-                            Image(systemName: "checkmark")
-                                .foregroundColor(.blue)
+                    }) {
+                        HStack {
+                            Text(member.nickname)
+                                .foregroundColor(.primary)
+                            Spacer()
+                            if member.isOwner {
+                                Text("작성자")
+                                    .font(.caption)
+                                    .padding(5)
+                                    .background(Color.blue.opacity(0.1))
+                                    .cornerRadius(5)
+                            }
+                            if selectedAssignees.contains(member) {
+                                Image(systemName: "checkmark")
+                                    .foregroundColor(.blue)
+                            }
                         }
                     }
                 }
-                .foregroundColor(.primary)
             }
-        }
-        .navigationBarHidden(true)
-        .onAppear {
-            viewModel.getMembersInHouse()
+            .navigationTitle("담당자 선택")
+            .onAppear {
+                viewModel.getMembersInHouse()
+            }
         }
     }
 }
 
 struct AssigneeSelectionView_Previews: PreviewProvider {
     static var previews: some View {
-        AssigneeSelectionView(selectedAssignee: .constant(nil))
+        AssigneeSelectionView(selectedAssignees: .constant([]))
             .environmentObject(GetMembersInHouseViewModel())
     }
 }
