@@ -91,29 +91,39 @@ struct AddTaskView: View {
 
         print("saveTask 시작")
         viewModel.addTask(
-            houseRoomId: roomId,
-            title: title,
-            assigneeId: selectedAssignees.map { $0.userId },  // 변경
-            memo: memo.isEmpty ? nil : memo,
-            alarm: isAlarmOn,
-            dueDate: dueDate.isEmpty ? nil : dueDate
+          houseRoomId: roomId,
+          title: title,
+          assigneeId: selectedAssignees.map { $0.userId },  // 변경
+          memo: memo.isEmpty ? nil : memo,
+          alarm: isAlarmOn,
+          dueDate: dueDate.isEmpty ? nil : dueDate
         )
 
+        
+        
+        
         viewModel.onTaskAdded = {
             if appState.selectedTab == 0 {
+                // "할일 목록" 탭일 때
                 self.viewModel.fetchTasks(houseId: self.houseId)
             } else if appState.selectedTab == 1 {
+                // "나의 할일" 탭일 때
                 self.viewModel.isLoading = false
                 self.viewModel.fetchMyTasks(userId: self.userId)
             }
-
+            
             print("saveTask 끝")
-
+            
+            // 알람 설정
             if isAlarmOn {
-                triggerVM.calenderTrigger(subtitle: title, body: dueDate)
+                //triggerVM.calenderTrigger(subtitle: title, body: dueDate)
+                triggerVM.sendPushNotification(assigneeId: selectedAssignee != nil ? [selectedAssignee!.userId] : [], title: title, subtitle: title, body: dueDate)
+       
             }
         }
-
+        
         isPresented = false
     }
 }
+
+
