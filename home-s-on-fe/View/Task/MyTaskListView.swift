@@ -22,18 +22,12 @@ struct MyTaskListView: View {
             ZStack {  // ZStack -> AddTaskButton 맨 위에 오도록
                 VStack {
                     HStack(spacing: 12) {
-                        if let photoURL = URL(string: "\(APIEndpoints.blobURL)/\(photo)") {
-                            KFImage(photoURL)
-                                .resizable()
-                                .scaledToFill()
-                                .frame(width: 40, height: 40)
-                                .clipShape(Circle())
-                        } else {
-                            Image(systemName: "person.circle.fill")
-                                .resizable()
-                                .frame(width: 40, height: 40)
-                                .foregroundColor(.gray)
-                        }
+                        let photoURL = URL(string: "\(APIEndpoints.blobURL)/\(photo)")
+                        KFImage(photoURL)
+                            .resizable()
+                            .scaledToFill()
+                            .frame(width: 40, height: 40)
+                            .clipShape(Circle())
                         
                         Text(nickname)
                             .font(.system(size: 18, weight: .medium))
