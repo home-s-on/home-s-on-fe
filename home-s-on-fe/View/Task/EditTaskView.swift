@@ -10,13 +10,12 @@ import SwiftUI
 struct EditTaskView: View {
     @EnvironmentObject var viewModel: TaskViewModel
     @EnvironmentObject var appState: SelectedTabViewModel
+    @StateObject private var completeViewModel = TaskCompleteViewModel()
     @Binding var isPresented: Bool
     var task: Task
-//    let houseId: Int
+    
     @State private var houseId: Int = UserDefaults.standard.integer(forKey: "houseId")
     @State private var userId: Int = UserDefaults.standard.integer(forKey: "userId")
-
-    
     @State private var title: String
     @State private var memo: String
     @State private var selectedRoom: HouseRoom?
@@ -24,7 +23,6 @@ struct EditTaskView: View {
     @State private var isAlarmOn: Bool
     @State private var selectedAssignee: HouseInMember?
     
-    // 초기화 시 기존 데이터로 상태 초기화
     init(task: Task, isPresented: Binding<Bool>, houseId: Int) {
         self.task = task
         self._isPresented = isPresented
@@ -33,7 +31,7 @@ struct EditTaskView: View {
         _title = State(initialValue: task.title)
         _memo = State(initialValue: task.memo ?? "")
         _selectedRoom = State(initialValue: task.houseRoom)
-
+        
         if let dueDate = task.dueDate {
             let formattedDate = Self.formatDate(dueDate)
             _dueDate = State(initialValue: formattedDate)
@@ -55,14 +53,14 @@ struct EditTaskView: View {
     }
     
     private static func formatDate(_ dateString: String) -> String {
-            let formatter = DateFormatter()
-            formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ" // 원본 날짜
-            if let date = formatter.date(from: dateString) {
-                formatter.dateFormat = "yyyy-MM-dd" // 출력할 날짜
-                return formatter.string(from: date)
-            }
-            return dateString
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
+        if let date = formatter.date(from: dateString) {
+            formatter.dateFormat = "yyyy-MM-dd"
+            return formatter.string(from: date)
         }
+        return dateString
+    }
     
     private var isFormValid: Bool {
         !title.isEmpty && selectedRoom != nil && selectedAssignee != nil && !dueDate.isEmpty
@@ -70,43 +68,57 @@ struct EditTaskView: View {
     
     var body: some View {
         NavigationView {
-            Form {
-                TextField("할일 제목", text: $title)
-                
-                TextField("메모(선택사항)", text: $memo)
-                
-                NavigationLink(destination: RoomSelectionView(selectedRoom: $selectedRoom)) {
-                    HStack {
-                        Text("구역 선택")
-                        Spacer()
-                        if let room = selectedRoom {
-                            Text(room.room_name).foregroundColor(.gray)
+            VStack {
+                Form {
+                    TextField("할일 제목", text: $title)
+                    
+                    TextField("메모(선택사항)", text: $memo)
+                    
+                    NavigationLink(destination: RoomSelectionView(selectedRoom: $selectedRoom)) {
+                        HStack {
+                            Text("구역 선택")
+                            Spacer()
+                            if let room = selectedRoom {
+                                Text(room.room_name).foregroundColor(.gray)
+                            }
+                        }
+                    }
+                    
+                    NavigationLink {
+                        DateSelectionView(dueDate: $dueDate)
+                    } label: {
+                        HStack {
+                            Text("날짜")
+                            Spacer()
+                            Text(dueDate).foregroundColor(.gray)
+                        }
+                    }
+                    
+                    Toggle("알람", isOn: $isAlarmOn)
+                    
+                    NavigationLink(destination: AssigneeSelectionView(selectedAssignee: $selectedAssignee).environmentObject(GetMembersInHouseViewModel())) {
+                        HStack {
+                            Text("담당자 지정")
+                            Spacer()
+                            if let assignee = selectedAssignee {
+                                Text(assignee.nickname)
+                                    .foregroundColor(.gray)
+                            }
                         }
                     }
                 }
-                
-                NavigationLink {
-                    DateSelectionView(dueDate: $dueDate)
-                } label: {
+                Button(action: { completeTask() }) {
                     HStack {
-                        Text("날짜")
-                        Spacer()
-                        Text(dueDate).foregroundColor(.gray)
+                        Image(systemName: "checkmark.circle.fill")
+                        Text(task.complete ? "할일 완료 취소" : "할일 완료")
                     }
+                    .frame(maxWidth: .infinity)
+                    .padding()
+                    .background(Color.blue.opacity(0.1))
+                    .foregroundColor(task.complete ? .gray : .blue)
+                    .cornerRadius(10)
                 }
-                
-                Toggle("알람", isOn: $isAlarmOn)
-                
-                NavigationLink(destination: AssigneeSelectionView(selectedAssignee: $selectedAssignee).environmentObject(GetMembersInHouseViewModel())) {
-                    HStack {
-                        Text("담당자 지정")
-                        Spacer()
-                        if let assignee = selectedAssignee {
-                            Text(assignee.nickname)
-                                .foregroundColor(.gray)
-                        }
-                    }
-                }
+                .padding()
             }
             .navigationTitle("할일 수정")
             .navigationBarItems(
@@ -119,12 +131,18 @@ struct EditTaskView: View {
                 .disabled(!isFormValid)
             )
         }
-        .alert("오류", isPresented: $viewModel.isFetchError) {
+        //할일완료alter
+        .alert(completeViewModel.message, isPresented: $completeViewModel.showSuccessAlert) {
             Button("확인") {
-                viewModel.isFetchError = false
+                completeViewModel.showSuccessAlert = false
+            }
+        }
+        .alert("오류", isPresented: $completeViewModel.isFetchError) {
+            Button("확인") {
+                completeViewModel.isFetchError = false
             }
         } message: {
-            Text(viewModel.message)
+            Text(completeViewModel.message)
         }
     }
     
@@ -137,16 +155,11 @@ struct EditTaskView: View {
         
         viewModel.onTaskEdited = {
             if appState.selectedTab == 0 {
-                // "할일 목록" 탭일 때
                 self.viewModel.fetchTasks(houseId: self.houseId)
             } else if appState.selectedTab == 1 {
-                // "나의 할일" 탭일 때
                 self.viewModel.isLoading = false
                 self.viewModel.fetchMyTasks(userId: self.userId)
             }
-
-            print("edittask saveTask 끝")
-
         }
         
         viewModel.editTask(
@@ -160,6 +173,50 @@ struct EditTaskView: View {
         )
         isPresented = false
     }
+    
+    private func completeTask() {
+        completeViewModel.toggleTaskComplete(taskId: task.id) {
+            if appState.selectedTab == 0 {
+                viewModel.fetchTasks(houseId: self.houseId)
+            } else {
+                viewModel.fetchMyTasks(userId: self.userId)
+            }
+            isPresented = false
+        }
+    }
 }
 
-#Preview {}
+#Preview {
+    EditTaskView(
+        task: Task(
+            id: 1,
+            houseId: 1,
+            houseRoomId: 1,
+            userId: 1,
+            title: "테스트 할일",
+            memo: "테스트 메모",
+            alarm: false,  // String이 아닌 Bool로 변경
+            repeatDay: [],  // nil 대신 빈 배열
+            assigneeId: [1],
+            dueDate: "2024-12-06T00:00:00.000Z",
+            complete: false,
+            createdAt: "2024-12-06T00:00:00.000Z",
+            updatedAt: "2024-12-06T00:00:00.000Z",
+            houseRoom: HouseRoom(
+                id: 1,
+                house_id: 1,  // house_id 파라미터 추가
+                room_name: "거실"
+            ),
+            assignees: [
+                TaskUser(
+                    id: 1,
+                    nickname: "테스트 유저"
+                )
+            ]
+        ),
+        isPresented: .constant(true),
+        houseId: 1
+    )
+    .environmentObject(TaskViewModel())
+    .environmentObject(SelectedTabViewModel())
+}
