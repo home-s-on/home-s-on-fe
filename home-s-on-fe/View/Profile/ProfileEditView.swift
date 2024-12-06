@@ -21,7 +21,7 @@ struct ProfileEditView: View {
             VStack {
                 ZStack {
                     if isUsingDefaultImage {
-                       RoundImage(image: UIImage(named: defaultImageName)!, width: .constant(215.0), height: .constant(215.0))                        
+                       RoundImage(image: UIImage(named: defaultImageName)!, width: .constant(215.0), height: .constant(215.0))
                    } else if let image = selectedImage {
                        RoundImage(image: image, width: .constant(180.0), height: .constant(180.0))
                    } else {
