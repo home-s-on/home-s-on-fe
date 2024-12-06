@@ -10,7 +10,6 @@ import SwiftUI
 struct EditTaskView: View {
     @EnvironmentObject var viewModel: TaskViewModel
     @EnvironmentObject var appState: SelectedTabViewModel
-    @StateObject private var completeViewModel = TaskCompleteViewModel()
     @Binding var isPresented: Bool
     var task: Task
     
@@ -21,7 +20,7 @@ struct EditTaskView: View {
     @State private var selectedRoom: HouseRoom?
     @State private var dueDate: String
     @State private var isAlarmOn: Bool
-    @State private var selectedAssignee: HouseInMember?
+    @State private var selectedAssignees: Set<HouseInMember> = []  // 변경
     
     init(task: Task, isPresented: Binding<Bool>, houseId: Int) {
         self.task = task
@@ -41,15 +40,18 @@ struct EditTaskView: View {
         
         _isAlarmOn = State(initialValue: task.alarm != nil)
         
-        if let assignee = task.assignees?.first {
-            _selectedAssignee = State(initialValue: HouseInMember(
-                userId: assignee.id,
-                nickname: assignee.nickname,
-                isOwner: false
-            ))
-        } else {
-            _selectedAssignee = State(initialValue: nil)
+        // 담당자 초기화 수정
+        var initialAssignees: Set<HouseInMember> = []
+        if let assignees = task.assignees {
+            for assignee in assignees {
+                initialAssignees.insert(HouseInMember(
+                    userId: assignee.id,
+                    nickname: assignee.nickname,
+                    isOwner: false
+                ))
+            }
         }
+        _selectedAssignees = State(initialValue: initialAssignees)
     }
     
     private static func formatDate(_ dateString: String) -> String {
@@ -63,62 +65,46 @@ struct EditTaskView: View {
     }
     
     private var isFormValid: Bool {
-        !title.isEmpty && selectedRoom != nil && selectedAssignee != nil && !dueDate.isEmpty
+        !title.isEmpty && selectedRoom != nil && !selectedAssignees.isEmpty && !dueDate.isEmpty
     }
     
     var body: some View {
         NavigationView {
-            VStack {
-                Form {
-                    TextField("할일 제목", text: $title)
-                    
-                    TextField("메모(선택사항)", text: $memo)
-                    
-                    NavigationLink(destination: RoomSelectionView(selectedRoom: $selectedRoom)) {
-                        HStack {
-                            Text("구역 선택")
-                            Spacer()
-                            if let room = selectedRoom {
-                                Text(room.room_name).foregroundColor(.gray)
-                            }
-                        }
-                    }
-                    
-                    NavigationLink {
-                        DateSelectionView(dueDate: $dueDate)
-                    } label: {
-                        HStack {
-                            Text("날짜")
-                            Spacer()
-                            Text(dueDate).foregroundColor(.gray)
-                        }
-                    }
-                    
-                    Toggle("알람", isOn: $isAlarmOn)
-                    
-                    NavigationLink(destination: AssigneeSelectionView(selectedAssignee: $selectedAssignee).environmentObject(GetMembersInHouseViewModel())) {
-                        HStack {
-                            Text("담당자 지정")
-                            Spacer()
-                            if let assignee = selectedAssignee {
-                                Text(assignee.nickname)
-                                    .foregroundColor(.gray)
-                            }
-                        }
-                    }
-                }
-                Button(action: { completeTask() }) {
+            Form {
+                TextField("할일 제목", text: $title)
+                
+                TextField("메모(선택사항)", text: $memo)
+                
+                NavigationLink(destination: RoomSelectionView(selectedRoom: $selectedRoom)) {
                     HStack {
-                        Image(systemName: "checkmark.circle.fill")
-                        Text(task.complete ? "할일 완료 취소" : "할일 완료")
+                        Text("구역 선택")
+                        Spacer()
+                        if let room = selectedRoom {
+                            Text(room.room_name).foregroundColor(.gray)
+                        }
                     }
-                    .frame(maxWidth: .infinity)
-                    .padding()
-                    .background(Color.blue.opacity(0.1))
-                    .foregroundColor(task.complete ? .gray : .blue)
-                    .cornerRadius(10)
                 }
-                .padding()
+                
+                NavigationLink {
+                    DateSelectionView(dueDate: $dueDate)
+                } label: {
+                    HStack {
+                        Text("날짜")
+                        Spacer()
+                        Text(dueDate).foregroundColor(.gray)
+                    }
+                }
+                
+                Toggle("알람", isOn: $isAlarmOn)
+                
+                NavigationLink(destination: AssigneeSelectionView(selectedAssignees: $selectedAssignees).environmentObject(GetMembersInHouseViewModel())) {
+                    HStack {
+                        Text("담당자 지정")
+                        Spacer()
+                        Text(selectedAssignees.map { $0.nickname }.joined(separator: ", "))
+                            .foregroundColor(.gray)
+                    }
+                }
             }
             .navigationTitle("할일 수정")
             .navigationBarItems(
@@ -131,23 +117,10 @@ struct EditTaskView: View {
                 .disabled(!isFormValid)
             )
         }
-        //할일완료alter
-        .alert(completeViewModel.message, isPresented: $completeViewModel.showSuccessAlert) {
-            Button("확인") {
-                completeViewModel.showSuccessAlert = false
-            }
-        }
-        .alert("오류", isPresented: $completeViewModel.isFetchError) {
-            Button("확인") {
-                completeViewModel.isFetchError = false
-            }
-        } message: {
-            Text(completeViewModel.message)
-        }
     }
     
     private func saveTask() {
-        guard let roomId = selectedRoom?.id, let assignee = selectedAssignee else {
+        guard let roomId = selectedRoom?.id, !selectedAssignees.isEmpty else {
             viewModel.message = "필수 정보를 모두 입력해주세요."
             viewModel.isFetchError = true
             return
@@ -166,23 +139,12 @@ struct EditTaskView: View {
             taskId: task.id,
             houseRoomId: roomId,
             title: title,
-            assigneeId: [assignee.userId],
+            assigneeId: selectedAssignees.map { $0.userId },  // 변경
             memo: memo.isEmpty ? nil : memo,
             alarm: isAlarmOn ? "on" : nil,
             dueDate: dueDate.isEmpty ? nil : dueDate
         )
         isPresented = false
-    }
-    
-    private func completeTask() {
-        completeViewModel.toggleTaskComplete(taskId: task.id) {
-            if appState.selectedTab == 0 {
-                viewModel.fetchTasks(houseId: self.houseId)
-            } else {
-                viewModel.fetchMyTasks(userId: self.userId)
-            }
-            isPresented = false
-        }
     }
 }
 
@@ -195,8 +157,8 @@ struct EditTaskView: View {
             userId: 1,
             title: "테스트 할일",
             memo: "테스트 메모",
-            alarm: false,  // String이 아닌 Bool로 변경
-            repeatDay: [],  // nil 대신 빈 배열
+            alarm: false,
+            repeatDay: [],
             assigneeId: [1],
             dueDate: "2024-12-06T00:00:00.000Z",
             complete: false,
@@ -204,7 +166,7 @@ struct EditTaskView: View {
             updatedAt: "2024-12-06T00:00:00.000Z",
             houseRoom: HouseRoom(
                 id: 1,
-                house_id: 1,  // house_id 파라미터 추가
+                house_id: 1,
                 room_name: "거실"
             ),
             assignees: [
