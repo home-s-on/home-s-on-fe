@@ -50,6 +50,13 @@ struct TaskUser: Codable {
 struct TaskResponse<T: Codable>: Codable {
     let success: Bool
     let data: [T]
+    let message: String?
+}
+
+struct CompleteTaskResponse<T: Codable>: Codable {
+    let success: Bool
+    let data: T
+    let message: String?
 }
 
 struct AddTaskResponse<T: Codable>: Codable {

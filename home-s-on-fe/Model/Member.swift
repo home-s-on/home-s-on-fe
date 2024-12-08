@@ -43,6 +43,7 @@ struct HouseInMember: Codable {
     let isOwner: Bool
 }
 
+
 struct MemberHouse: Codable {
     let inviteCode: String
 

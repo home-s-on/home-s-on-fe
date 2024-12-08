@@ -55,9 +55,6 @@ struct RoomSelectionView: View {
             }
             .navigationTitle("구역 선택")
             .navigationBarItems(
-                leading: Button("취소") {
-                    dismiss()
-                },
                 trailing: HStack {
                     Button(isEditing ? "Done" : "Edit") {
                         isEditing.toggle()

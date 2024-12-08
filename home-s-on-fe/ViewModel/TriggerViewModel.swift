@@ -7,6 +7,7 @@
 
 import SwiftUI
 import UserNotifications
+import Alamofire
 
 struct FeatureFlags {
     static let TEST = true
@@ -69,6 +70,58 @@ class TriggerViewModel: ObservableObject {
         content.body = body
         content.userInfo = ["name": UserDefaults.standard.string(forKey: "nickname") ?? ""]
         return content
+    }
+    
+    func sendPushNotification(assigneeId: [Int], title:String , subtitle: String, body: String){
+        
+        let url = "\(APIEndpoints.baseURL)/noti"
+        
+        
+        let headers: HTTPHeaders = [
+            //"Authorization": "Bearer \(token)",
+            "Content-Type": "application/json"
+        ]
+        
+        // 파라미터 구성
+        var parameters: [String: Any] = [
+            "assigneeId" : assigneeId,
+            "title": "HOME'S ON",
+            "subtitle": subtitle,
+            "body": body
+        ]
+        //print("notification parameters:", parameters)
+        
+        AF.request(url,
+                   method: .post,
+                   parameters: parameters,
+                   encoding: JSONEncoding.default,
+                   headers: headers)
+        
+        .validate(statusCode: 200..<300)
+        .responseData { response in
+            
+            
+            switch response.result {
+            case .success(let data):
+                do {
+                    if response.response?.statusCode == 201 {
+                        let notiResponse = try JSONDecoder().decode(AddTaskResponse<Task>.self, from: data)
+                        print("Success: Send Notification")
+                        print("Response:", notiResponse)
+                        
+                    } else {
+                        let errorResponse = try JSONDecoder().decode(ErrorResponse.self, from: data)
+                        
+                    }
+                } catch {
+                    print("Decoding error:", error)
+                    print("Raw data:", String(data: data, encoding: .utf8) ?? "")
+                }
+            case .failure(let error):
+                print("Network error:", error)
+                
+            }
+        }
     }
     
 }
