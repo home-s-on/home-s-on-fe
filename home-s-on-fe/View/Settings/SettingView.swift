@@ -64,7 +64,15 @@ struct SettingView: View {
     // 로그아웃
     private func logout() {
         resetUserDefaults()
-        presentationMode.wrappedValue.dismiss()
+        // 로그아웃 후 LoginView로 이동
+            if let rootViewController = UIApplication.shared.windows.first?.rootViewController {
+                rootViewController.dismiss(animated: true) {
+                    // LoginView로 이동
+                    if let contentView = rootViewController as? ContentView {
+                        contentView.navigateToLoginView = true
+                    }
+                }
+            }
     }
 
     private func resetUserDefaults() {
