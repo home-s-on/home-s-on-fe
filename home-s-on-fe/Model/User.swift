@@ -14,6 +14,15 @@ struct ApiResponse<T: Codable>: Codable {
     let status: String
     let message: String?
     let data: T?
+    let houseId: Int?
+    let inviteCode: String?
+
+    enum CodingKeys: String, CodingKey {
+        case status, message, data
+        case houseId = "house_id"
+        case inviteCode = "invite_code"
+    }
+    
 }
 
 struct EmailLoginData: Codable {

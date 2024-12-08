@@ -137,7 +137,6 @@ class LoginViewModel: ObservableObject {
     
     func handleAccountBasedEntry() {
         let token = UserDefaults.standard.string(forKey: "token")
-        print("handleAccountBasedEntry \(token)")
         let url = "\(APIEndpoints.baseURL)/user"
         let headers: HTTPHeaders = ["Authorization": "Bearer \(token ?? "")"]
             
@@ -148,16 +147,27 @@ class LoginViewModel: ObservableObject {
                     
                     switch response.result {
                     case .success(let apiResponse):
-//                        print("API Response for account-based entry: \(apiResponse)")
+                        print("API Response for account-based entry: \(apiResponse)")
                         self.nextView = apiResponse.message ?? "다음뷰"
                         DispatchQueue.main.async {
                             self.isNavigating = true
                             print("Navigating to view after login")
                         }
-                        if let memberData = apiResponse.data {
-                            UserDefaults.standard.set(memberData?.houseId, forKey: "houseId")
-                            UserDefaults.standard.set(memberData?.house?.inviteCode, forKey: "inviteCode")
-                        }
+                        if apiResponse.message == "entry 뷰로 진입합니다." {
+                                if let houseId = apiResponse.houseId,
+                                   let inviteCode = apiResponse.inviteCode {
+                                    UserDefaults.standard.set(houseId, forKey: "houseId")
+                                    UserDefaults.standard.set(inviteCode, forKey: "inviteCode")
+                                    print("handleAccountBasedEntry, houseId: \(houseId) inviteCode: \(inviteCode)")
+                                }
+                            }
+
+                            // 두 번째 경우: data 안에 house_id와 House의 invite_code가 포함된 경우
+                            if let memberData = apiResponse.data {
+                                UserDefaults.standard.set(memberData?.houseId, forKey: "houseId")
+                                UserDefaults.standard.set(memberData?.house?.inviteCode, forKey: "inviteCode")
+                                print("handleAccountBasedEntry, houseId: \(memberData?.houseId) inviteCode: \(memberData?.house?.inviteCode ?? "No invite code")")
+                            }
                     case .failure(let error):
                         print("Error: \(error.localizedDescription)")
                         self.message = "데이터를 가져오는 데 실패했습니다."
