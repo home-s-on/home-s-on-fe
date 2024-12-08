@@ -48,6 +48,7 @@ class ProfileViewModel: ObservableObject {
                                 UserDefaults.standard.set(profileData.nickname, forKey: "nickname")
                                 UserDefaults.standard.set(profileData.photo, forKey: "photo")
                             }
+                            self?.message = apiResponse.message ?? "등록에 성공했습니다."
                             self?.isProfiledError = false
                             self?.isProfileShowing = true
                             completion(true) // 성공 상태 전달

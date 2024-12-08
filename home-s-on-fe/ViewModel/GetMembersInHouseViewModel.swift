@@ -8,8 +8,10 @@ class GetMembersInHouseViewModel: ObservableObject {
     @Published var isGetMembersShowing = false
     @Published var isGetMembersError = false
     @Published var isNavigatingToNext = false
-    @AppStorage("houseId") var houseId: Int?
+//    @AppStorage("houseId") var houseId: Int?
+    @State private var houseId: Int = UserDefaults.standard.integer(forKey: "houseId")
     @Published var houseMembers: [HouseInMember] = []
+    
     
     func getMembersInHouse() {
         isLoading = true
@@ -24,6 +26,7 @@ class GetMembersInHouseViewModel: ObservableObject {
         
         let url = "\(APIEndpoints.baseURL)/member/members/\(houseId ?? 0)"
         let headers: HTTPHeaders = ["Authorization": "Bearer \(token)"]
+        print("getMembersInHouse url \(url)")
         
         
         AF.request(url, method: .get, headers: headers)
@@ -39,6 +42,7 @@ class GetMembersInHouseViewModel: ObservableObject {
                             if apiResponse.status == "success" {
                                 if let getMembersInHouseData = apiResponse.data {
                                     self.houseMembers = getMembersInHouseData
+                                    print("houseMembers\(self.houseMembers)")
                                 } else {
                                     print("No house in member data found")
                                 }
