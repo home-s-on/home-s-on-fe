@@ -63,3 +63,8 @@ struct AddTaskResponse<T: Codable>: Codable {
     let success: Bool
     let data: T
 }
+
+struct DeleteResponse: Codable {
+    let success: Bool
+    let message: String
+}

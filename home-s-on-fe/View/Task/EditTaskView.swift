@@ -133,27 +133,21 @@ struct EditTaskView: View {
                 }
                     .disabled(!isFormValid)
             )
-            .alert("할일 삭제", isPresented: $showDeleteConfirmation) {
-                Button("취소", role: .cancel) { }
-                Button("삭제", role: .destructive) {
-                    completeViewModel.deleteTask(taskId: task.id) {
-                        if appState.selectedTab == 0 {
-                            viewModel.fetchTasks(houseId: houseId)
-                        } else {
-                            viewModel.fetchMyTasks(userId: userId)
-                        }
-                        DispatchQueue.main.async {
-                            isPresented = false
-                        }
-                    }
-                }
-            } message: {
-                Text("정말 삭제하시겠습니까?")
+        }
+        .alert("할일 삭제", isPresented: $showDeleteConfirmation) {
+            Button("취소", role: .cancel) { }
+            Button("삭제", role: .destructive) {
+                deleteTask()
             }
+        } message: {
+            Text("정말 삭제하시겠습니까?")
         }
         .alert(completeViewModel.message, isPresented: $completeViewModel.showSuccessAlert) {
             Button("확인") {
                 completeViewModel.showSuccessAlert = false
+                if !completeViewModel.isFetchError {
+                    isPresented = false
+                }
             }
         }
         .alert("오류", isPresented: $completeViewModel.isFetchError) {
@@ -164,6 +158,7 @@ struct EditTaskView: View {
             Text(completeViewModel.message)
         }
     }
+    
     private func saveTask() {
         guard let roomId = selectedRoom?.id, !selectedAssignees.isEmpty else {
             viewModel.message = "필수 정보를 모두 입력해주세요."
@@ -193,14 +188,20 @@ struct EditTaskView: View {
         
     }
     private func deleteTask() {
-        completeViewModel.deleteTask(taskId: task.id) {
-            if appState.selectedTab == 0 {
-                viewModel.fetchTasks(houseId: self.houseId)
-            } else {
-                viewModel.fetchMyTasks(userId: self.userId)
+        completeViewModel.deleteTask(taskId: task.id) { [self] in
+            if !completeViewModel.isFetchError {
+                if appState.selectedTab == 0 {
+                    viewModel.fetchTasks(houseId: houseId)
+                } else {
+                    viewModel.fetchMyTasks(userId: userId)
+                }
+                
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                    isPresented = false
+                }
             }
-            isPresented = false
         }
+        
     }
     
 }

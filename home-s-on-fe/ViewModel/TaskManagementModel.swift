@@ -76,30 +76,31 @@ class TaskCompleteViewModel: ObservableObject {
         ]
         
         AF.request("\(APIEndpoints.baseURL)/tasks/\(taskId)",
-                   method: .delete,
-                   headers: headers)
-        .validate()
-        .responseDecodable(of: TaskResponse<Task>.self) { [weak self] response in
-            switch response.result {
-            case .success(let taskResponse):
-                self?.isFetchError = false
-                self?.message = taskResponse.message ?? "할일이 삭제되었습니다"
-                self?.showSuccessAlert = true
-                completion()
-                
-            case .failure(let error):
-                self?.isFetchError = true
-                if let statusCode = error.responseCode {
-                    switch statusCode {
-                    case 403:
-                        self?.message = "삭제 권한이 없습니다"
-                    case 404:
-                        self?.message = "할일을 찾을 수 없습니다"
-                    default:
-                        self?.message = "할일을 삭제할 수 없습니다"
+                  method: .delete,
+                  headers: headers)
+            .validate()
+            .responseDecodable(of: DeleteResponse.self) { [weak self] response in
+                switch response.result {
+                case .success(let response):
+                    self?.isFetchError = false
+                    self?.message = response.message
+                    self?.showSuccessAlert = true
+                    completion()
+                    
+                case .failure(let error):
+                    self?.isFetchError = true
+                    if let statusCode = error.responseCode {
+                        switch statusCode {
+                        case 403:
+                            self?.message = "삭제 권한이 없습니다"
+                        case 404:
+                            self?.message = "할일을 찾을 수 없습니다"
+                        default:
+                            self?.message = "할일을 삭제할 수 없습니다"
+                        }
                     }
                 }
             }
-        }
     }
 }
+
