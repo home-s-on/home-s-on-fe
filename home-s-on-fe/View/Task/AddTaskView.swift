@@ -113,10 +113,12 @@ struct AddTaskView: View {
             }
             
             print("saveTask 끝")
+            print(selectedDays)
             
             // 알람 설정
             if isAlarmOn {
-                triggerVM.calenderTrigger(subtitle: title, body: dueDate)
+                
+                triggerVM.calenderTrigger(subtitle: title, body: dueDate, weekdays: selectedDays.isEmpty ? nil : Array(selectedDays))
                 triggerVM.sendPushNotification(assigneeId: selectedAssignees.map { $0.userId }, title: title, subtitle: title, body: dueDate)
        
             }

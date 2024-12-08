@@ -31,16 +31,54 @@ class TriggerViewModel: ObservableObject {
         }
     }
     
+    func createNotificationTriggers(weekdays: [Int]? = nil, hour: Int, min: Int) -> [UNCalendarNotificationTrigger] {
+        if let weekdays = weekdays, !weekdays.isEmpty{
+            //특정 요일들에 대한 트리거 생성
+            return weekdays.map { weekday in
+                var dateComponents = DateComponents()
+                dateComponents.weekday = weekday+1// 1부터 7까지의 정수를 반환합니다. 1은 일요일, 2는 월요일, ... 7은 토요일
+                dateComponents.hour = hour
+                dateComponents.minute = min
+                
+                return UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: true)
+            }
+        } else {
+            // 요일 지정 없이 트리거 생성
+            var dateComponents = DateComponents()
+            dateComponents.hour = hour
+            dateComponents.minute = min+1
+            
+            return [UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: false)]
+        }
+    }
+
+    fileprivate func scheduleNotificationsForDays(_ hour: Int, _ min: Int, _ content: UNNotificationContent, _ weekdays: [Int]? = nil) {
+        
+        if let weekdays = weekdays, !weekdays.isEmpty{
+            let weekdayTriggers = createNotificationTriggers(weekdays: weekdays, hour: hour, min: min)
+            for weekdayTrigger in weekdayTriggers {
+                let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: weekdayTrigger)
+                UNUserNotificationCenter.current().add(request)
+            }
+        } else {
+            let dayTrigger = createNotificationTriggers(hour: hour, min: min)
+            let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: dayTrigger[0])
+            UNUserNotificationCenter.current().add(request)
+        }
+    }
     
-    func calenderTrigger(subtitle: String, body: String, timeinterval: Double = 5, isRepeat: Bool = false) {
-        print("calenderTrigger")
+    func calenderTrigger(subtitle: String, body: String, timeinterval: Double = 5, weekdays: [Int]? = nil) {
         
         let content = makeContent(subtitle: subtitle, body: body)
         
         UNUserNotificationCenter.current().removeAllPendingNotificationRequests()//등록되어 있는거 다 날림....?
+        // 기존의 특정 알림만 제거
+//            for weekday in weekdays {
+//                UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [UUID().uuidString])
+//            }
         
-        var currentHour = 12
-        var currentMinute = 25
+        var currentHour = 10
+        var currentMinute = 30
         //테스트 용
         if FeatureFlags.TEST {
             let now = Date()
@@ -51,16 +89,8 @@ class TriggerViewModel: ObservableObject {
         
         print("currentMinute \(currentMinute)")
         
-        var dateComponents = DateComponents()
-        dateComponents.weekday // 나중에 반복에서 가져오기
-        dateComponents.hour = currentHour
-        dateComponents.minute = currentMinute+1
+        scheduleNotificationsForDays(currentHour, currentMinute, content, weekdays)
         
-        let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: isRepeat)//repeat true이면 매일, hour:minute에 알람
-        
-        let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
-        //알림이 여러개 있을 거니까 추가해준다
-        UNUserNotificationCenter.current().add(request)
     }
     
     func makeContent(subtitle: String, body: String)-> UNNotificationContent{
