@@ -5,6 +5,7 @@ struct SettingView: View {
     @State private var isShowPastTasks = false
     @State private var isShowHouseInMembers = false
     @State private var showLogoutAlert = false
+    @State private var navigateToLoginView = false  // 로그인 화면으로 이동할 상태 변수 추가
     @EnvironmentObject var getHouseInMemberVM : GetMembersInHouseViewModel
     @Environment(\.presentationMode) var presentationMode
     
@@ -59,20 +60,15 @@ struct SettingView: View {
         .onAppear {
             getHouseInMemberVM.getMembersInHouse()
         }
+        .fullScreenCover(isPresented: $navigateToLoginView) {
+            LoginView()
+        }
     }
     
     // 로그아웃
     private func logout() {
         resetUserDefaults()
-        // 로그아웃 후 LoginView로 이동
-            if let rootViewController = UIApplication.shared.windows.first?.rootViewController {
-                rootViewController.dismiss(animated: true) {
-                    // LoginView로 이동
-                    if let contentView = rootViewController as? ContentView {
-                        contentView.navigateToLoginView = true
-                    }
-                }
-            }
+        navigateToLoginView = true  // 로그아웃 후 로그인 화면으로 이동
     }
 
     private func resetUserDefaults() {
