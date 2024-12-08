@@ -10,6 +10,7 @@ import SwiftUI
 struct EditTaskView: View {
     @EnvironmentObject var viewModel: TaskViewModel
     @EnvironmentObject var appState: SelectedTabViewModel
+    @StateObject private var completeViewModel = TaskCompleteViewModel()
     @Binding var isPresented: Bool
     var task: Task
     
@@ -20,7 +21,8 @@ struct EditTaskView: View {
     @State private var selectedRoom: HouseRoom?
     @State private var dueDate: String
     @State private var isAlarmOn: Bool
-    @State private var selectedAssignees: Set<HouseInMember> = []  // 변경
+    @State private var selectedAssignees: Set<HouseInMember> = []
+    @State private var showDeleteConfirmation = false //할일 삭제 시
     
     init(task: Task, isPresented: Binding<Bool>, houseId: Int) {
         self.task = task
@@ -105,6 +107,21 @@ struct EditTaskView: View {
                             .foregroundColor(.gray)
                     }
                 }
+                
+                if task.canEdit {
+                    Section {
+                        Button(action: {
+                            showDeleteConfirmation = true
+                        }) {
+                            HStack {
+                                Spacer()
+                                Text("할일 삭제")
+                                    .foregroundColor(.red)
+                                Spacer()
+                            }
+                        }
+                    }
+                }
             }
             .navigationTitle("할일 수정")
             .navigationBarItems(
@@ -114,11 +131,39 @@ struct EditTaskView: View {
                 trailing: Button("저장") {
                     saveTask()
                 }
-                .disabled(!isFormValid)
+                    .disabled(!isFormValid)
             )
+            .alert("할일 삭제", isPresented: $showDeleteConfirmation) {
+                Button("취소", role: .cancel) { }
+                Button("삭제", role: .destructive) {
+                    completeViewModel.deleteTask(taskId: task.id) {
+                        if appState.selectedTab == 0 {
+                            viewModel.fetchTasks(houseId: houseId)
+                        } else {
+                            viewModel.fetchMyTasks(userId: userId)
+                        }
+                        DispatchQueue.main.async {
+                            isPresented = false
+                        }
+                    }
+                }
+            } message: {
+                Text("정말 삭제하시겠습니까?")
+            }
+        }
+        .alert(completeViewModel.message, isPresented: $completeViewModel.showSuccessAlert) {
+            Button("확인") {
+                completeViewModel.showSuccessAlert = false
+            }
+        }
+        .alert("오류", isPresented: $completeViewModel.isFetchError) {
+            Button("확인") {
+                completeViewModel.isFetchError = false
+            }
+        } message: {
+            Text(completeViewModel.message)
         }
     }
-    
     private func saveTask() {
         guard let roomId = selectedRoom?.id, !selectedAssignees.isEmpty else {
             viewModel.message = "필수 정보를 모두 입력해주세요."
@@ -145,7 +190,19 @@ struct EditTaskView: View {
             dueDate: dueDate.isEmpty ? nil : dueDate
         )
         isPresented = false
+        
     }
+    private func deleteTask() {
+        completeViewModel.deleteTask(taskId: task.id) {
+            if appState.selectedTab == 0 {
+                viewModel.fetchTasks(houseId: self.houseId)
+            } else {
+                viewModel.fetchMyTasks(userId: self.userId)
+            }
+            isPresented = false
+        }
+    }
+    
 }
 
 #Preview {
