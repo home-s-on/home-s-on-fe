@@ -14,8 +14,11 @@ struct TaskRowView: View {
     @State private var showEditTask = false
     @State private var userId: Int = UserDefaults.standard.integer(forKey: "userId")
     
+
+    
     private var isAssignee: Bool {
-        task.assignees?.contains(where: { $0.id == userId }) ?? false
+        // 나의 할일 탭(selectedTab == 1)에서만 체크박스 표시
+        appState.selectedTab == 1 && (task.assignees?.contains(where: { $0.id == userId }) ?? false)
     }
     
     var body: some View {

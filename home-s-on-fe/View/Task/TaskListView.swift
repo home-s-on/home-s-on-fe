@@ -17,12 +17,26 @@ struct TaskListView: View {
     @State private var nickname: String = UserDefaults.standard.string(forKey: "nickname") ?? ""
     @State private var photo: String = UserDefaults.standard.string(forKey: "photo") ?? ""
     
+    // 통계 계산을 위한 계산 프로퍼티들
+    private var totalTasks: Int {
+        viewModel.tasks.count
+    }
+    
+    private var completedTasks: Int {
+        viewModel.tasks.filter { $0.complete }.count
+    }
+    
+    private var completionRate: Double {
+        guard totalTasks > 0 else { return 0 }
+        return Double(completedTasks) / Double(totalTasks) * 100
+    }
+    
     var body: some View {
         NavigationView {
             ZStack {
                 VStack {
                     //프로필 영역
-                    HStack(spacing: 12) {  // HStack 추가
+                    HStack(spacing: 12) {
                         let photoURL = URL(string: "\(APIEndpoints.blobURL)/\(photo)")
                         KFImage(photoURL)
                             .resizable()
@@ -33,10 +47,18 @@ struct TaskListView: View {
                         Text(nickname)
                             .font(.system(size: 18, weight: .medium))
                         
-                        
                         Spacer()
                     }
                     .padding()
+                    
+                    // 통계 정보 섹션
+                    HStack(spacing: 20) {
+                        StatisticBox(title: "전체", value: "\(totalTasks)")
+                        StatisticBox(title: "완료", value: "\(completedTasks)")
+                        StatisticBox(title: "완료율", value: String(format: "%.1f%%", completionRate))
+                    }
+                    .padding(.horizontal)
+                    .padding(.bottom, 8)
                     
                     // 에러메세지 할일 목록
                     if viewModel.isLoading {
@@ -54,7 +76,6 @@ struct TaskListView: View {
                                             .environmentObject(viewModel)
                                             .environmentObject(appState)
                                             .padding(.horizontal)
-                                        
                                     }
                                 }
                             }
@@ -64,19 +85,41 @@ struct TaskListView: View {
                 }
                 .onAppear {
                     viewModel.fetchTasks(houseId: houseId)
+                }
                 
-            }
                 AddTaskButton()
                     .environmentObject(appState)
             }
             .alert("오류", isPresented: $viewModel.isFetchError) {
-                       Button("확인") {
-                           viewModel.isFetchError = false
+                Button("확인") {
+                    viewModel.isFetchError = false
                 }
             } message: {
                 Text(errorMessage ?? "모든 할 일을 불러 올 수 없습니다")
             }
         }
+    }
+}
+
+// 통계 박스 컴포넌트
+struct StatisticBox: View {
+    let title: String
+    let value: String
+    
+    var body: some View {
+        VStack {
+            Text(title)
+                .font(.caption)
+                .foregroundColor(.gray)
+            Text(value)
+                .font(.headline)
+                .foregroundColor(.blue)
+        }
+        .frame(maxWidth: .infinity)
+        .padding(.vertical, 8)
+        .background(Color.white)
+        .cornerRadius(10)
+        .shadow(color: Color.black.opacity(0.1), radius: 2, x: 0, y: 2)
     }
 }
 

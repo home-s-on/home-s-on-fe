@@ -43,7 +43,7 @@ struct AddTaskView: View {
                     DateSelectionView(dueDate: $dueDate)
                 } label: {
                     HStack {
-                        Text("날짜")
+                        Text("마감 날짜")
                         Spacer()
                         Text(dueDate).foregroundColor(.gray)
                     }
@@ -62,7 +62,10 @@ struct AddTaskView: View {
                 
                 Toggle("알람", isOn: $isAlarmOn)
                 
-                NavigationLink(destination: AssigneeSelectionView(selectedAssignees: $selectedAssignees).environmentObject(GetMembersInHouseViewModel())) {
+                NavigationLink {
+                    AssigneeSelectionView(selectedAssignees: $selectedAssignees)
+                        .environmentObject(GetMembersInHouseViewModel())
+                } label: {
                     HStack {
                         Text("담당자 지정")
                         Spacer()
