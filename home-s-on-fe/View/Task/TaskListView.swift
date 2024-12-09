@@ -101,28 +101,6 @@ struct TaskListView: View {
     }
 }
 
-// 통계 박스 컴포넌트
-struct StatisticBox: View {
-    let title: String
-    let value: String
-    
-    var body: some View {
-        VStack {
-            Text(title)
-                .font(.caption)
-                .foregroundColor(.gray)
-            Text(value)
-                .font(.headline)
-                .foregroundColor(.blue)
-        }
-        .frame(maxWidth: .infinity)
-        .padding(.vertical, 8)
-        .background(Color.white)
-        .cornerRadius(10)
-        .shadow(color: Color.black.opacity(0.1), radius: 2, x: 0, y: 2)
-    }
-}
-
 //#Preview {
 //    let _ = UserDefaults.standard.set("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzMyNzIyMzc1LCJleHAiOjE3MzI4MDg3NzV9.6gcH_Dwa5gGi9hYDIAvsKosJBoij93Na9oxjfGlAb8g", forKey: "token")
 //    return TaskListView(houseId: 1).environmentObject(TaskViewModel())

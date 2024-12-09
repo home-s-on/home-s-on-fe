@@ -34,7 +34,7 @@ struct TaskRowView: View {
                     Spacer()
                     if task.userId == userId {
                         Image(systemName: "pencil.and.scribble")
-                            .foregroundColor(.blue)
+                            .foregroundColor(.mainColor)
                             .font(.system(size: 16))
                     }
                 }
@@ -50,7 +50,7 @@ struct TaskRowView: View {
                     if isAssignee {
                         Button(action: { completeTask() }) {
                             Image(systemName: task.complete ? "checkmark.square.fill" : "square")
-                                .foregroundColor(task.complete ? .blue : .gray)
+                                .foregroundColor(task.complete ? .mainColor : .gray)
                                 .font(.system(size: 20))
                         }
                         .padding(.top, 4)
@@ -61,7 +61,7 @@ struct TaskRowView: View {
                     if let houseRoom = task.houseRoom {
                         Text(houseRoom.room_name)
                             .font(.system(size: 12))
-                            .foregroundColor(.blue)
+                            .foregroundColor(Color.mainColor.opacity(0.8))
                     }
                     Spacer()
                     
@@ -69,16 +69,16 @@ struct TaskRowView: View {
                     if appState.selectedTab == 0, let assignees = task.assignees, !assignees.isEmpty {
                         HStack(spacing: 4) {
                             Image(systemName: "person.fill")
-                                .foregroundColor(.gray)
+                                .foregroundColor(.mainColor)
                             Text(assignees.map { $0.nickname }.joined(separator: ", "))
                                 .font(.system(size: 12))
-                                .foregroundColor(.gray)
+                                .foregroundColor(Color.mainColor.opacity(0.6))
                         }
                     } else if appState.selectedTab == 1 && coAssigneesCount > 0 {
                         // 나의 할일 탭에서는 추가 담당자 수만 표시
                         Text("외 \(coAssigneesCount)명")
                             .font(.system(size: 12))
-                            .foregroundColor(.gray)
+                            .foregroundColor(Color.mainColor.opacity(0.8))
                     }
                 }
             }

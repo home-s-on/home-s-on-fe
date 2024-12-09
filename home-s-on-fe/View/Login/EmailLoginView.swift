@@ -44,7 +44,7 @@ struct EmailLoginView: View {
                         EmptyView()
                     }
 
-                    WideImageButton(icon: "person.badge.key", title: "로그인", backgroundColor: .blue) {
+                    WideImageButton(icon: "person.badge.key", title: "로그인", backgroundColor: .mainColor) {
                         print("Login button pressed")
                         loginVM.emailLogin(email: email, password: password)
                         print("isNavigating before login: \(loginVM.isNavigating)")
@@ -58,7 +58,7 @@ struct EmailLoginView: View {
                     NavigationLink(destination: EmailSignUpView(), isActive: $isEmailSignUpActive) {
                         Text("회원가입")
                             .font(.subheadline)
-                            .foregroundColor(.blue)
+                            .foregroundColor(.mainColor)
                             .onTapGesture {
                                 isEmailSignUpActive = true
                             }
