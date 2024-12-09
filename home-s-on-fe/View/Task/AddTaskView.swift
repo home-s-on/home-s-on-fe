@@ -117,8 +117,13 @@ struct AddTaskView: View {
             // 알람 설정
             if isAlarmOn {
                 triggerVM.calenderTrigger(subtitle: title, body: dueDate)
-                triggerVM.sendPushNotification(assigneeId: selectedAssignees.map { $0.userId }, title: title, subtitle: title, body: dueDate)
-       
+                triggerVM.sendPushNotification(
+                    assigneeId: Array(selectedAssignees).map { $0.userId },  // Set을 Array로 변환하고 userId 매핑
+                    title: title,
+                    subtitle: title,
+                    body: dueDate
+                )
+
             }
         }
         
