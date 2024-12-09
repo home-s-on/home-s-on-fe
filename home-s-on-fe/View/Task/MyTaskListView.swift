@@ -16,10 +16,45 @@ struct MyTaskListView: View {
     @State private var nickname: String = UserDefaults.standard.string(forKey: "nickname") ?? ""
     @State private var photo: String = UserDefaults.standard.string(forKey: "photo") ?? ""
     
+    // 오늘 마감인 할일 필터링
+    private var todayTasks: [Task] {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
+        formatter.timeZone = TimeZone(abbreviation: "UTC")
+        
+        let today = Calendar.current.startOfDay(for: Date())
+        
+        return viewModel.tasks.filter { task in
+            if let dueDateString = task.dueDate,
+               let taskDate = formatter.date(from: dueDateString) {
+                let startOfTaskDate = Calendar.current.startOfDay(for: taskDate)
+                return startOfTaskDate == today
+            }
+            return false
+        }
+    }
+
+    // 다른 날짜 마감인 할일 필터링
+    private var otherTasks: [Task] {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
+        formatter.timeZone = TimeZone(abbreviation: "UTC")
+        
+        let today = Calendar.current.startOfDay(for: Date())
+        
+        return viewModel.tasks.filter { task in
+            if let dueDateString = task.dueDate,
+               let taskDate = formatter.date(from: dueDateString) {
+                let startOfTaskDate = Calendar.current.startOfDay(for: taskDate)
+                return startOfTaskDate != today
+            }
+            return false
+        }
+    }
     
     var body: some View {
         NavigationView {
-            ZStack {  // ZStack -> AddTaskButton 맨 위에 오도록
+            ZStack {
                 VStack {
                     HStack(spacing: 12) {
                         let photoURL = URL(string: "\(APIEndpoints.blobURL)/\(photo)")
@@ -42,7 +77,6 @@ struct MyTaskListView: View {
                     } else {
                         ScrollView {
                             LazyVStack(spacing: 12) {
-                                // 오늘 날짜 표시
                                 HStack {
                                     Text(formattedDate())
                                         .font(.system(size: 14))
@@ -57,11 +91,35 @@ struct MyTaskListView: View {
                                         .foregroundColor(.gray)
                                         .padding()
                                 } else {
-                                    ForEach(viewModel.tasks) { task in
-                                        TaskRowView(task: task)
-                                            .environmentObject(viewModel)
-                                            .environmentObject(appState)
+                                    // 오늘 마감 할일 섹션
+                                    if !todayTasks.isEmpty {
+                                        Text("오늘 마감")
+                                            .font(.headline)
+                                            .frame(maxWidth: .infinity, alignment: .leading)
                                             .padding(.horizontal)
+                                        
+                                        ForEach(todayTasks) { task in
+                                            TaskRowView(task: task)
+                                                .environmentObject(viewModel)
+                                                .environmentObject(appState)
+                                                .padding(.horizontal)
+                                        }
+                                    }
+                                    
+                                    // 다른 할일 섹션
+                                    if !otherTasks.isEmpty {
+                                        Text("예정된 할일")
+                                            .font(.headline)
+                                            .frame(maxWidth: .infinity, alignment: .leading)
+                                            .padding(.horizontal)
+                                            .padding(.top, 20)
+                                        
+                                        ForEach(otherTasks) { task in
+                                            TaskRowView(task: task)
+                                                .environmentObject(viewModel)
+                                                .environmentObject(appState)
+                                                .padding(.horizontal)
+                                        }
                                     }
                                 }
                             }
@@ -75,23 +133,21 @@ struct MyTaskListView: View {
                 
                 AddTaskButton()
                     .environmentObject(appState)
-                            }
-                        }
-                        .alert("오류", isPresented: $viewModel.isFetchError) {
-                            Button("확인") {
-                                viewModel.isFetchError = false
-                            }
-                        } message: {
-                            Text(viewModel.message)
-                        }
-                    }
-  
+            }
+        }
+        .alert("오류", isPresented: $viewModel.isFetchError) {
+            Button("확인") {
+                viewModel.isFetchError = false
+            }
+        } message: {
+            Text(viewModel.message)
+        }
+    }
+    
     private func formattedDate() -> String {
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy년 MM월 dd일"
         formatter.locale = Locale(identifier: "ko_KR")
         return formatter.string(from: Date())
     }
-    
-    
 }

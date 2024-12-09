@@ -14,11 +14,12 @@ struct TaskRowView: View {
     @State private var showEditTask = false
     @State private var userId: Int = UserDefaults.standard.integer(forKey: "userId")
     
-
-    
     private var isAssignee: Bool {
-        // 나의 할일 탭(selectedTab == 1)에서만 체크박스 표시
         appState.selectedTab == 1 && (task.assignees?.contains(where: { $0.id == userId }) ?? false)
+    }
+    
+    private var coAssigneesCount: Int {
+        (task.assignees?.filter { $0.id != userId }.count) ?? 0
     }
     
     var body: some View {
@@ -32,9 +33,9 @@ struct TaskRowView: View {
                         .foregroundColor(task.complete ? .gray : .black)
                     Spacer()
                     if task.userId == userId {
-                        Image(systemName: "bookmark.fill")
+                        Image(systemName: "pencil.and.scribble")
                             .foregroundColor(.blue)
-                            .font(.system(size: 14))
+                            .font(.system(size: 16))
                     }
                 }
                 
@@ -64,7 +65,8 @@ struct TaskRowView: View {
                     }
                     Spacer()
                     
-                    if let assignees = task.assignees, !assignees.isEmpty {
+                    // 모든 할 일 화면 - 모든 담당자 표시
+                    if appState.selectedTab == 0, let assignees = task.assignees, !assignees.isEmpty {
                         HStack(spacing: 4) {
                             Image(systemName: "person.fill")
                                 .foregroundColor(.gray)
@@ -72,6 +74,11 @@ struct TaskRowView: View {
                                 .font(.system(size: 12))
                                 .foregroundColor(.gray)
                         }
+                    } else if appState.selectedTab == 1 && coAssigneesCount > 0 {
+                        // 나의 할일 탭에서는 추가 담당자 수만 표시
+                        Text("외 \(coAssigneesCount)명")
+                            .font(.system(size: 12))
+                            .foregroundColor(.gray)
                     }
                 }
             }
