@@ -37,7 +37,7 @@ struct JoinMember: Codable, Identifiable {
     }
 }
 
-struct HouseInMember: Codable,Hashable {
+struct HouseInMember: Codable, Hashable {
     let userId: Int
     let nickname: String
     let isOwner: Bool
