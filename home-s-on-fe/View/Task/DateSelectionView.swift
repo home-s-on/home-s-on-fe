@@ -19,7 +19,7 @@ struct DateSelectionView: View {
     
     var body: some View {
         VStack {
-            DatePicker("날짜 선택",
+            DatePicker("마감 날짜 선택",
                       selection: $selectedDate,
                       in: today..., // 오늘 이후의 날짜만 선택 가능
                       displayedComponents: .date)
