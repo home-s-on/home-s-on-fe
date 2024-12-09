@@ -20,11 +20,15 @@ struct SettingView: View {
                 print("지난 할 일 버튼 탭됨")
                 isShowPastTasks = true
             }
-            SettingButton(icon: "", title: "초대 코드", style: ButtonStyle(isButtonShadowVisible: true)) {
-                print("초대 코드 버튼 탭됨")
-                isShowInviteCode = true
+            if let currentUser = getHouseInMemberVM.houseMembers.first(where: { $0.userId == UserDefaults.standard.integer(forKey: "userId") }),
+                   currentUser.isOwner {
+                    SettingButton(icon: "", title: "초대 코드", style: ButtonStyle(isButtonShadowVisible: true)) {
+                        print("초대 코드 버튼 탭됨")
+                        isShowInviteCode = true
+                }
             }
-            .padding(.bottom, 300)
+            Spacer()
+              .frame(height: 300)
             
             Text("로그아웃할래요!")
                 .font(.footnote)
