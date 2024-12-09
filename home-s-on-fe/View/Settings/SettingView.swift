@@ -8,6 +8,7 @@ struct SettingView: View {
     @State private var navigateToLoginView = false  // 로그인 화면으로 이동할 상태 변수 추가
     @EnvironmentObject var getHouseInMemberVM : GetMembersInHouseViewModel
     @Environment(\.presentationMode) var presentationMode
+    @EnvironmentObject var loginVM : LoginViewModel
     
     var body: some View {
         VStack (spacing: 40){
@@ -73,6 +74,7 @@ struct SettingView: View {
     private func logout() {
         resetUserDefaults()
         navigateToLoginView = true  // 로그아웃 후 로그인 화면으로 이동
+        loginVM.isNavigating = false
     }
 
     private func resetUserDefaults() {
