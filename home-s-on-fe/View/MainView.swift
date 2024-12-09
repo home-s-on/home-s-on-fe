@@ -31,6 +31,7 @@ struct MainView: View {
                     }
                     .tag(2)
             }
+            .accentColor(.mainColor) // 선택한 탭 색
             .environmentObject(viewModel)
             .environmentObject(getHouseInMemberVM)
             .environmentObject(selectedTabVM)

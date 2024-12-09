@@ -46,7 +46,7 @@ struct EmailSignUpView: View {
                    
 
                 VStack {
-                    WideImageButton(icon: "person.badge.plus", title: "회원가입", backgroundColor: .blue) {
+                    WideImageButton(icon: "person.badge.plus", title: "회원가입", backgroundColor: .mainColor) {
                         
                         // 입력 유효성 검사
                         if isValidEmail(email) {

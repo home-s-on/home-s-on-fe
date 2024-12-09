@@ -27,7 +27,7 @@ struct AddTaskButton: View {
                         .font(.title2)
                         .foregroundColor(.white)
                         .frame(width: 50, height: 50)
-                        .background(Color.blue)
+                        .background(Color.mainColor)
                         .clipShape(Circle())
                         .shadow(radius: 4)
                 }
