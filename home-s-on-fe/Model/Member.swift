@@ -11,8 +11,8 @@ struct Member: Codable, Identifiable {
     let id: Int
     let houseId: Int
     let membersId: [Int]
-    let updatedAt: String
-    let createdAt: String
+    let updatedAt: String?
+    let createdAt: String?
     let house: MemberHouse?
 
     enum CodingKeys: String, CodingKey {
@@ -23,7 +23,21 @@ struct Member: Codable, Identifiable {
     }
 }
 
-struct HouseInMember: Codable,Hashable {
+struct JoinMember: Codable, Identifiable {
+    let id: Int
+    let houseId: Int
+    let membersId: [Int]
+    let updatedAt: String?
+    let createdAt: String?
+
+    enum CodingKeys: String, CodingKey {
+        case id, updatedAt, createdAt
+        case houseId = "house_id"
+        case membersId = "members_id"
+    }
+}
+
+struct HouseInMember: Codable {
     let userId: Int
     let nickname: String
     let isOwner: Bool

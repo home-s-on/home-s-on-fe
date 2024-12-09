@@ -2,14 +2,14 @@ import SwiftUI
 
 struct MainView: View {
     @StateObject var viewModel = TaskViewModel()
-    @StateObject var appState = SelectedTabViewModel()
+    @StateObject var selectedTabVM = SelectedTabViewModel()
     @StateObject private var getHouseInMemberVM = GetMembersInHouseViewModel()
     @State private var houseId: Int = UserDefaults.standard.integer(forKey: "houseId")
     @State private var userId: Int = UserDefaults.standard.integer(forKey: "userId")
    
     
     var body: some View {
-        TabView(selection: $appState.selectedTab) { 
+        TabView(selection: $selectedTabVM.selectedTab) {
                 TaskListView(houseId: houseId)
                     .tabItem {
                         Image(systemName: "checklist")
@@ -33,7 +33,7 @@ struct MainView: View {
             }
             .environmentObject(viewModel)
             .environmentObject(getHouseInMemberVM)
-            .environmentObject(appState)
+            .environmentObject(selectedTabVM)
             .navigationBarBackButtonHidden(true)
         }
 }

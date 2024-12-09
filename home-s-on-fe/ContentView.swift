@@ -9,9 +9,15 @@ import SwiftUI
 import KakaoSDKCommon
 
 struct ContentView: View {
+    @State var navigateToLoginView = false
+    
     var body: some View {
         VStack {
-            EntryView()
+            if navigateToLoginView {
+                LoginView()
+            } else {
+                EntryView()
+            }
         }
         .padding()
     }

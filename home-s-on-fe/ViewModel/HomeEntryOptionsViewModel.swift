@@ -3,7 +3,7 @@ import SVProgressHUD
 import SwiftUI
 
 class HouseEntryOptionsViewModel: ObservableObject {
-    @Published var inviteCode: String = ""
+    @State private var inviteCode: Int = UserDefaults.standard.integer(forKey: "inviteCode")
     @Published var message = ""
     @Published var isLoading = false
 

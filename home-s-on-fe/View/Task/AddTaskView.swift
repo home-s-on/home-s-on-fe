@@ -123,6 +123,7 @@ struct AddTaskView: View {
                     subtitle: title,
                     body: dueDate
                 )
+
             }
         }
         

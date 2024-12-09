@@ -21,12 +21,12 @@ struct ProfileEditView: View {
             VStack {
                 ZStack {
                     if isUsingDefaultImage {
-                       RoundImage(image: UIImage(named: defaultImageName)!, width: .constant(215.0), height: .constant(215.0))                        
-                   } else if let image = selectedImage {
-                       RoundImage(image: image, width: .constant(180.0), height: .constant(180.0))
-                   } else {
-                       RoundImage(image: UIImage(named: "round-profile")!, width: .constant(195.0), height: .constant(195.0))
-                   }
+                        RoundImage(image: UIImage(named: defaultImageName)!, width: .constant(215.0), height: .constant(215.0))
+                    } else if let image = selectedImage {
+                        RoundImage(image: image, width: .constant(180.0), height: .constant(180.0))
+                    } else {
+                        RoundImage(image: UIImage(named: "round-profile")!, width: .constant(195.0), height: .constant(195.0))
+                    }
                     
                     RoundImage(image: UIImage(systemName: "pencil.circle")!, width: .constant(50.0), height: .constant(50.0))
                         .background(Circle().fill(Color(red: 33/255, green: 174/255, blue: 225/255)).frame(width: 50, height: 55))
@@ -104,6 +104,7 @@ struct ProfileEditView: View {
             if success {
                 completion()
             } else {
+                profileVM.isProfileShowing = true
                 print("Profile update failed.")
             }
         }
@@ -131,7 +132,7 @@ struct ProfileEditView: View {
                 self.parent = parent
             }
             
-            func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+            func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
                 if let uiImage = info[.originalImage] as? UIImage {
                     parent.image = uiImage
                 }

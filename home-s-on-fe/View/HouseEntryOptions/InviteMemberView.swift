@@ -12,8 +12,9 @@ struct InviteMemberView: View {
     @StateObject var kakaoshareVM = KakaoShareViewModel()
     @State private var inviteCode: String = UserDefaults.standard.string(forKey: "inviteCode") ?? ""
     @State private var navigateToView = false
-    @AppStorage("houseId") var houseId: Int?
+    @State private var houseId: Int = UserDefaults.standard.integer(forKey: "houseId")
     var isFromSetting = false
+    
     var body: some View {
         NavigationStack{
             VStack(alignment: .leading) {
@@ -30,17 +31,14 @@ struct InviteMemberView: View {
             
             
             VStack{
-                WideImageButton(icon: "", title: "집 입장하기", backgroundColor: .blue, isHidden: isFromSetting) {
-                    print("집 입장")
-                    if let id = houseId {
-                        joinMemberVM.joinMember(houseId: id)
-                    } else {
-                        print("houseId 에러로 인한 집 입장 실패")
+                if !isFromSetting {
+                    WideImageButton(icon: "", title: "집 입장하기", backgroundColor: .blue) {
+                        print("집 입장")
+                        joinMemberVM.joinMember(houseId: houseId)
+                        navigateToView = true
                     }
-                    navigateToView = true
                 }
-                WideImageButton(icon: "", title: "초대 코드 보내기", backgroundColor: .blue)
-                {
+                WideImageButton(icon: "", title: "초대 코드 보내기", backgroundColor: .blue) {
                     print("초대 코드 보내기")
                     kakaoshareVM.sendKakaoMessage(text: inviteCode)
                 }
