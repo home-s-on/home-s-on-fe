@@ -4,12 +4,12 @@
 //
 //  Created by 안혜지 on 12/4/24.
 //
-
 import SwiftUI
 
 struct EditTaskView: View {
     @EnvironmentObject var viewModel: TaskViewModel
     @EnvironmentObject var appState: SelectedTabViewModel
+    @StateObject private var completeViewModel = TaskCompleteViewModel()
     @Binding var isPresented: Bool
     var task: Task
     
@@ -20,7 +20,8 @@ struct EditTaskView: View {
     @State private var selectedRoom: HouseRoom?
     @State private var dueDate: String
     @State private var isAlarmOn: Bool
-    @State private var selectedAssignees: Set<HouseInMember> = []  // 변경
+    @State private var selectedAssignees: Set<HouseInMember> = []
+    @State private var showDeleteConfirmation = false
     
     init(task: Task, isPresented: Binding<Bool>, houseId: Int) {
         self.task = task
@@ -40,7 +41,6 @@ struct EditTaskView: View {
         
         _isAlarmOn = State(initialValue: task.alarm != nil)
         
-        // 담당자 초기화 수정
         var initialAssignees: Set<HouseInMember> = []
         if let assignees = task.assignees {
             for assignee in assignees {
@@ -71,23 +71,49 @@ struct EditTaskView: View {
     var body: some View {
         NavigationView {
             Form {
-                TextField("할일 제목", text: $title)
+                if task.canEdit {
+                    TextField("할일 제목", text: $title)
+                } else {
+                    Text(title)
+                        .foregroundColor(.primary)
+                }
                 
-                TextField("메모(선택사항)", text: $memo)
+                if task.canEdit {
+                    TextField("메모(선택사항)", text: $memo)
+                } else if !memo.isEmpty {
+                    Text(memo)
+                        .foregroundColor(.gray)
+                }
                 
-                NavigationLink(destination: RoomSelectionView(selectedRoom: $selectedRoom)) {
-                    HStack {
-                        Text("구역 선택")
-                        Spacer()
-                        if let room = selectedRoom {
-                            Text(room.room_name).foregroundColor(.gray)
+                if task.canEdit {
+                    NavigationLink(destination: RoomSelectionView(selectedRoom: $selectedRoom)) {
+                        HStack {
+                            Text("구역 선택")
+                            Spacer()
+                            if let room = selectedRoom {
+                                Text(room.room_name).foregroundColor(.gray)
+                            }
                         }
+                    }
+                } else if let room = selectedRoom {
+                    HStack {
+                        Text("구역")
+                        Spacer()
+                        Text(room.room_name).foregroundColor(.gray)
                     }
                 }
                 
-                NavigationLink {
-                    DateSelectionView(dueDate: $dueDate)
-                } label: {
+                if task.canEdit {
+                    NavigationLink {
+                        DateSelectionView(dueDate: $dueDate)
+                    } label: {
+                        HStack {
+                            Text("날짜")
+                            Spacer()
+                            Text(dueDate).foregroundColor(.gray)
+                        }
+                    }
+                } else {
                     HStack {
                         Text("날짜")
                         Spacer()
@@ -95,27 +121,82 @@ struct EditTaskView: View {
                     }
                 }
                 
-                Toggle("알람", isOn: $isAlarmOn)
-                
-                NavigationLink(destination: AssigneeSelectionView(selectedAssignees: $selectedAssignees).environmentObject(GetMembersInHouseViewModel())) {
+                if task.canEdit {
+                    Toggle("알람", isOn: $isAlarmOn)
+                } else {
                     HStack {
-                        Text("담당자 지정")
+                        Text("알람")
+                        Spacer()
+                        Text(isAlarmOn ? "켜짐" : "꺼짐").foregroundColor(.gray)
+                    }
+                }
+                
+                if task.canEdit {
+                    NavigationLink(destination: AssigneeSelectionView(selectedAssignees: $selectedAssignees).environmentObject(GetMembersInHouseViewModel())) {
+                        HStack {
+                            Text("담당자 지정")
+                            Spacer()
+                            Text(selectedAssignees.map { $0.nickname }.joined(separator: ", "))
+                                .foregroundColor(.gray)
+                        }
+                    }
+                } else {
+                    HStack {
+                        Text("담당자")
                         Spacer()
                         Text(selectedAssignees.map { $0.nickname }.joined(separator: ", "))
                             .foregroundColor(.gray)
                     }
                 }
+                
+                if task.canEdit {
+                    Section {
+                        Button(action: {
+                            showDeleteConfirmation = true
+                        }) {
+                            HStack {
+                                Spacer()
+                                Text("할일 삭제")
+                                    .foregroundColor(.red)
+                                Spacer()
+                            }
+                        }
+                    }
+                }
             }
-            .navigationTitle("할일 수정")
+            .navigationTitle(task.canEdit ? "할일 수정" : "할일 상세")
             .navigationBarItems(
-                leading: Button("취소") {
+                leading: Button("닫기") {
                     isPresented = false
                 },
-                trailing: Button("저장") {
+                trailing: task.canEdit ? Button("저장") {
                     saveTask()
                 }
-                .disabled(!isFormValid)
+                .disabled(!isFormValid) : nil
             )
+            .alert("할일 삭제", isPresented: $showDeleteConfirmation) {
+                Button("취소", role: .cancel) { }
+                Button("삭제", role: .destructive) {
+                    deleteTask()
+                }
+            } message: {
+                Text("정말 삭제하시겠습니까?")
+            }
+            .alert(completeViewModel.message, isPresented: $completeViewModel.showSuccessAlert) {
+                Button("확인") {
+                    completeViewModel.showSuccessAlert = false
+                    if !completeViewModel.isFetchError {
+                        isPresented = false
+                    }
+                }
+            }
+            .alert("오류", isPresented: $completeViewModel.isFetchError) {
+                Button("확인") {
+                    completeViewModel.isFetchError = false
+                }
+            } message: {
+                Text(completeViewModel.message)
+            }
         }
     }
     
@@ -145,7 +226,25 @@ struct EditTaskView: View {
             dueDate: dueDate.isEmpty ? nil : dueDate
         )
         isPresented = false
+        
     }
+    private func deleteTask() {
+        completeViewModel.deleteTask(taskId: task.id) { [self] in
+            if !completeViewModel.isFetchError {
+                if appState.selectedTab == 0 {
+                    viewModel.fetchTasks(houseId: houseId)
+                } else {
+                    viewModel.fetchMyTasks(userId: userId)
+                }
+                
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                    isPresented = false
+                }
+            }
+        }
+        
+    }
+    
 }
 
 #Preview {

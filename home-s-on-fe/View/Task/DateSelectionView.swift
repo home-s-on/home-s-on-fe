@@ -12,16 +12,21 @@ struct DateSelectionView: View {
     @State private var selectedDate = Date()
     @Binding var dueDate: String
     
+    // 오늘 날짜의 시작을 기준으로 설정
+    private var today: Date {
+        Calendar.current.startOfDay(for: Date())
+    }
+    
     var body: some View {
         VStack {
             DatePicker("날짜 선택",
                       selection: $selectedDate,
+                      in: today..., // 오늘 이후의 날짜만 선택 가능
                       displayedComponents: .date)
                 .datePickerStyle(.graphical)
                 .padding()
             
             Button("선택") {
-                // 선택된 날짜 -> 문자열로 변환
                 let formatter = DateFormatter()
                 formatter.dateFormat = "yyyy-MM-dd"
                 dueDate = formatter.string(from: selectedDate)
@@ -35,6 +40,6 @@ struct DateSelectionView: View {
 
 #Preview {
     NavigationView {
-           DateSelectionView(dueDate: .constant("2024-11-28"))
-       }
+        DateSelectionView(dueDate: .constant("2024-11-28"))
+    }
 }
