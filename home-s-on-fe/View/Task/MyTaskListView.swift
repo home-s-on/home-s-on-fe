@@ -27,6 +27,7 @@ struct MyTaskListView: View {
                             .resizable()
                             .scaledToFill()
                             .frame(width: 40, height: 40)
+                            .background(Color.clear)
                             .clipShape(Circle())
                         
                         Text(nickname)
@@ -92,8 +93,3 @@ struct MyTaskListView: View {
         return formatter.string(from: Date())
     }
 }
-
-//#Preview {
-//                let _ = UserDefaults.standard.set("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTYsImlhdCI6MTczMzA1NjE2NiwiZXhwIjoxNzM1NjQ4MTY2fQ.kEMlNTg7gpvn1NMPhNgtTtJGGFU9LIwz6P78zBuGiXA", forKey: "token")
-//                MyTaskListView(userId: 16)
-//            }
