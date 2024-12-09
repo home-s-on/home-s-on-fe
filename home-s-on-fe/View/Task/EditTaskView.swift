@@ -7,6 +7,7 @@
 import SwiftUI
 
 struct EditTaskView: View {
+    @EnvironmentObject var membersViewModel: GetMembersInHouseViewModel
     @EnvironmentObject var viewModel: TaskViewModel
     @EnvironmentObject var appState: SelectedTabViewModel
     @StateObject private var completeViewModel = TaskCompleteViewModel()
@@ -132,7 +133,7 @@ struct EditTaskView: View {
                 }
                 
                 if task.canEdit {
-                    NavigationLink(destination: AssigneeSelectionView(selectedAssignees: $selectedAssignees).environmentObject(GetMembersInHouseViewModel())) {
+                    NavigationLink(destination: AssigneeSelectionView(selectedAssignees: $selectedAssignees).environmentObject(membersViewModel)) {
                         HStack {
                             Text("담당자 지정")
                             Spacer()
