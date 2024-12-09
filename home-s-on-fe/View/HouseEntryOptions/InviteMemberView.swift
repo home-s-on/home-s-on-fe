@@ -43,9 +43,11 @@ struct InviteMemberView: View {
                     kakaoshareVM.sendKakaoMessage(text: inviteCode)
                 }
             }
-            .fullScreenCover(isPresented: $navigateToView, content: {
-                MainView()
-            })
+
+            NavigationLink(destination: MainView(), isActive: $navigateToView) {
+                EmptyView()
+            }
+            
             
         }
     }
