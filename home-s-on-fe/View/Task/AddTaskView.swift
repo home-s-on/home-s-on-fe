@@ -1,6 +1,7 @@
 import SwiftUI
 
 struct AddTaskView: View {
+    @EnvironmentObject var membersViewModel: GetMembersInHouseViewModel
     @EnvironmentObject var viewModel: TaskViewModel
     @EnvironmentObject var appState: SelectedTabViewModel
     @State private var dueDate: String = ""
@@ -62,10 +63,7 @@ struct AddTaskView: View {
                 
                 Toggle("알람", isOn: $isAlarmOn)
                 
-                NavigationLink {
-                    AssigneeSelectionView(selectedAssignees: $selectedAssignees)
-                        .environmentObject(GetMembersInHouseViewModel())
-                } label: {
+                NavigationLink(destination: AssigneeSelectionView(selectedAssignees: $selectedAssignees).environmentObject(membersViewModel)) {
                     HStack {
                         Text("담당자 지정")
                         Spacer()
