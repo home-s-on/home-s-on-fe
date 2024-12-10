@@ -6,35 +6,43 @@ class NotificationViewModel: ObservableObject {
     @Published var isNotificationEnabled: Bool = false
     
     init() {
-        checkNotificationStatus()
+        checkNotificationStatus{ _ in }
     }
     
-    func checkNotificationStatus() {
+    func checkNotificationStatus(completion: @escaping (UNAuthorizationStatus) -> Void) {
         UNUserNotificationCenter.current().getNotificationSettings { settings in
             DispatchQueue.main.async {
-                switch settings.authorizationStatus {
-                case .authorized:
-                    self.isNotificationEnabled = true
-                case .denied:
-                    self.isNotificationEnabled = false
-                case .notDetermined:
-                    self.requestNotificationPermission()
-                default:
-                    break
-                }
+//                switch settings.authorizationStatus {
+//                case .authorized:
+//                    self.isNotificationEnabled = true
+//                case .denied:
+//                    self.isNotificationEnabled = false
+//                case .notDetermined:
+//                    self.requestNotificationPermission { granted in
+//                        self.isNotificationEnabled = granted
+//                    }
+//                default:
+//                    break
+//                }
+                
+                self.isNotificationEnabled = settings.authorizationStatus == .authorized
+                completion(settings.authorizationStatus)
             }
         }
     }
     
-    func requestNotificationPermission() {
+    func requestNotificationPermission(completion: @escaping (Bool)->(Void)) {
         UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound]) { granted, error in
             DispatchQueue.main.async {
+                self.isNotificationEnabled = granted
                 if granted {
-                    self.isNotificationEnabled = true
                     UIApplication.shared.registerForRemoteNotifications()
-                } else {
-                    self.isNotificationEnabled = false
                 }
+                
+                if let error = error {
+                    print("알람 권한 요청 중 오류 발생: \(error.localizedDescription)")
+                }
+                completion(granted)
             }
         }
     }

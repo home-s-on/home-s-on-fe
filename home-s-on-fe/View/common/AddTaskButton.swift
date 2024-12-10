@@ -13,7 +13,8 @@ struct AddTaskButton: View {
     @EnvironmentObject var triggerVM: TriggerViewModel
     @EnvironmentObject var appState: SelectedTabViewModel
     @State private var houseId: Int = UserDefaults.standard.integer(forKey: "houseId")
-
+    @State var showingNotificationAlert = false
+    @EnvironmentObject var notificationVM : NotificationViewModel
     
     var body: some View {
         VStack {
@@ -35,11 +36,30 @@ struct AddTaskButton: View {
             }
         }
         .sheet(isPresented: $isShowingAddTask) {
-            AddTaskView(isPresented: $isShowingAddTask)
+            AddTaskView(isPresented: $isShowingAddTask, showingNotificationAlert: $showingNotificationAlert)
                 .environmentObject(viewModel)  // viewModel을 전달
                 .presentationDetents([.large])
                 .environmentObject(TriggerViewModel())
                 .environmentObject(appState)
+                .environmentObject(notificationVM)
+                .alert("알림 설정", isPresented: $showingNotificationAlert) {
+                    Button("확인") {
+                        notificationVM.requestNotificationPermission { granted in
+                            if granted {
+                                print("알람 권한이 등록되었습니다.")
+                            } else {
+                                print("알람 권한이 거부되었습니다.")
+                            }
+                        }
+                    }
+                    Button("취소") {
+                        print("알람 설정 취소")
+                    }
+                } message: {
+                    Text("할 일 알람을 받고 싶으면 알림을 활성화해주세요")
+                }
+            
+                
         }
     }
 }
