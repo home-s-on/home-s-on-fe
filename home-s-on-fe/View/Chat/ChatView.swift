@@ -13,29 +13,35 @@ struct ChatView: View {
     
     var body: some View {
         VStack {
-            ScrollView {
-                LazyVStack(alignment: .leading, spacing: 10) {
-                    ForEach(chatVM.chatHistory) { chat in
-                        VStack(alignment: .leading, spacing: 5) {
-                            Text("You:")
-                                .font(.caption)
-                                .foregroundColor(.gray)
-                            Text(chat.userMessage)
-                                .padding(10)
-                                .background(Color.blue.opacity(0.1))
-                                .cornerRadius(10)
-                            
-                            Text("Assistant:")
-                                .font(.caption)
-                                .foregroundColor(.gray)
-                            Text(chat.assistantResponse)
-                                .padding(10)
-                                .background(Color.gray.opacity(0.1))
-                                .cornerRadius(10)
+            ScrollViewReader { scrollViewProxy in
+                ScrollView {
+                    LazyVStack(alignment: .leading, spacing: 10) {
+                        ForEach(chatVM.chatHistory) { chat in
+                            VStack(alignment: .leading, spacing: 5) {
+                                Text("You:")
+                                    .font(.caption)
+                                    .foregroundColor(.gray)
+                                Text(chat.userMessage)
+                                    .padding(10)
+                                    .background(Color.blue.opacity(0.1))
+                                    .cornerRadius(10)
+                                
+                                Text("Assistant:")
+                                    .font(.caption)
+                                    .foregroundColor(.gray)
+                                Text(chat.assistantResponse)
+                                    .padding(10)
+                                    .background(Color.gray.opacity(0.1))
+                                    .cornerRadius(10)
+                            }
+                            .id(chat.id) // 각 메시지에 고유 ID 설정
                         }
                     }
+                    .padding()
                 }
-                .padding()
+                .onChange(of: chatVM.chatHistory) { _ in
+                    scrollToBottom(scrollViewProxy: scrollViewProxy)
+                }
             }
             
             HStack {
@@ -58,6 +64,12 @@ struct ChatView: View {
         let messageToSend = newMessage
         newMessage = ""
         chatVM.sendChat(userMessage: messageToSend)
+    }
+    
+    private func scrollToBottom(scrollViewProxy: ScrollViewProxy) {
+        if let lastMessage = chatVM.chatHistory.last {
+            scrollViewProxy.scrollTo(lastMessage.id, anchor: .bottom)
+        }
     }
 }
 
