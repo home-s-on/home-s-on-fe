@@ -18,11 +18,12 @@ struct LoginView: View {
                 
                 VStack(alignment: .center, spacing: 10) {
                     
-                    Text("HOME'S ON")
-                        .font(.title)
-                        .underline()
-                        .fontWeight(.bold)
-                        .padding(.bottom, 130)
+                    Image("homeson-logo") // 이미지 추가
+                        .resizable()
+                        .scaledToFit()
+                        .frame(height: 300)
+                        .padding()
+                    
                         
                     
                     
@@ -52,6 +53,8 @@ struct LoginView: View {
                     LoginButton(loginType: .email, text: "email로 로그인") {
                         isEmailLoginActive = true
                     }
+                    .background(Color.mainColor) .foregroundColor(.white)
+                    .cornerRadius(10)
                     .padding(.vertical, 10)
                     
 //                    Text("HOME'S ON을 계속 진행하면 서비스 약관에 동의하고\n 개인정보 보호정책을 읽은것으로 간주됩니다.")
@@ -62,7 +65,7 @@ struct LoginView: View {
                 Spacer()
                 Text("HOME'S ON을 계속 진행하면 서비스 약관에 동의하고\n 개인정보 보호정책을 읽은것으로 간주됩니다.")
                     .font(.footnote)
-                    .padding(.top, 100)
+                    .padding(.top, 90)
             }
             .padding(20)
             .navigationDestination(isPresented: $isEmailLoginActive) {
