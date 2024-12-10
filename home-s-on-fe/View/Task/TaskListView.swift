@@ -17,6 +17,7 @@ struct TaskListView: View {
     @State private var nickname: String = UserDefaults.standard.string(forKey: "nickname") ?? ""
     @State private var photo: String = UserDefaults.standard.string(forKey: "photo") ?? ""
     
+    
     // 통계 계산을 위한 계산 프로퍼티들
     private var totalTasks: Int {
         viewModel.tasks.count
@@ -89,6 +90,7 @@ struct TaskListView: View {
                 
                 AddTaskButton()
                     .environmentObject(appState)
+                    
             }
             .alert("오류", isPresented: $viewModel.isFetchError) {
                 Button("확인") {
