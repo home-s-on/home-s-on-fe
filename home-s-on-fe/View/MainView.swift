@@ -3,6 +3,7 @@ import SwiftUI
 struct MainView: View {
     @StateObject var viewModel = TaskViewModel()
     @StateObject var selectedTabVM = SelectedTabViewModel()
+    @StateObject var chatVM = ChatViewModel()
     @StateObject private var getHouseInMemberVM = GetMembersInHouseViewModel()
     @StateObject var notificationVM = NotificationViewModel()
     @State private var houseId: Int = UserDefaults.standard.integer(forKey: "houseId")
@@ -25,19 +26,27 @@ struct MainView: View {
                         Text("나의 할일")
                     }
                     .tag(1)
+            
+                ChatView()
+                    .tabItem {
+                        Image(systemName: "lightbulb.min")
+                        Text("Chat AI")
+                    }
+                    .tag(2)
                     
                 SettingView()
                     .tabItem {
                         Image(systemName: "gearshape")
                         Text("설정")
                     }
-                    .tag(2)
+                    .tag(3)
             }
             .accentColor(.mainColor) // 선택한 탭 색
             .environmentObject(viewModel)
             .environmentObject(getHouseInMemberVM)
             .environmentObject(selectedTabVM)
             .environmentObject(notificationVM)
+            .environmentObject(chatVM)
             .navigationBarBackButtonHidden(true)
             
         }

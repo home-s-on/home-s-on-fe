@@ -6,10 +6,60 @@ import KakaoSDKAuth
 @main
 struct home_s_on_feApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
+    
+    @State private var isLoading = true
 
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            if isLoading {
+                            SplashScreenView()
+                                .onAppear {
+                                    // 로딩 시간 제어 (예: API 호출, 초기 설정)
+                                    DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                                        isLoading = false
+                                    }
+                                }
+            } else {
+                ContentView()
+            }
+        }
+    }
+}
+/** 1차 안 */
+//struct SplashScreenView: View {
+//    var body: some View {
+//        ZStack {
+//            Color.white
+//                .edgesIgnoringSafeArea(.all)
+//            Image("LaunchLogo") // LaunchLogo는 Assets에 추가된 이미지 이름
+//                .resizable()
+//                .scaledToFit()
+//                .frame(width: 200, height: 200) // 크기 조정
+//        }
+//    }
+//}
+
+/** 2차 안 */
+struct SplashScreenView: View {
+//    @State private var scale: CGFloat = 0.5
+    @State private var opacity: Double = 0.0
+
+    var body: some View {
+        ZStack {
+            Color.mainColor
+                .edgesIgnoringSafeArea(.all)
+            Image("homeson-logo-w") // LaunchLogo는 Assets에 추가된 이미지 이름
+                .resizable()
+                .scaledToFit()
+                .frame(width: 200, height: 200) // 크기 조정
+//                .scaleEffect(scale)
+                .opacity(opacity)
+                .onAppear {
+                    withAnimation(.easeIn(duration: 1.5)) {
+//                        scale = 1.0
+                        opacity = 1.0
+                    }
+                }
         }
     }
 }
