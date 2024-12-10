@@ -4,8 +4,10 @@ struct MainView: View {
     @StateObject var viewModel = TaskViewModel()
     @StateObject var selectedTabVM = SelectedTabViewModel()
     @StateObject private var getHouseInMemberVM = GetMembersInHouseViewModel()
+    @StateObject var notificationVM = NotificationViewModel()
     @State private var houseId: Int = UserDefaults.standard.integer(forKey: "houseId")
     @State private var userId: Int = UserDefaults.standard.integer(forKey: "userId")
+    
    
     
     var body: some View {
@@ -35,7 +37,9 @@ struct MainView: View {
             .environmentObject(viewModel)
             .environmentObject(getHouseInMemberVM)
             .environmentObject(selectedTabVM)
+            .environmentObject(notificationVM)
             .navigationBarBackButtonHidden(true)
+            
         }
 }
 

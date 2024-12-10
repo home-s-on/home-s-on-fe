@@ -12,19 +12,6 @@ class NotificationViewModel: ObservableObject {
     func checkNotificationStatus(completion: @escaping (UNAuthorizationStatus) -> Void) {
         UNUserNotificationCenter.current().getNotificationSettings { settings in
             DispatchQueue.main.async {
-//                switch settings.authorizationStatus {
-//                case .authorized:
-//                    self.isNotificationEnabled = true
-//                case .denied:
-//                    self.isNotificationEnabled = false
-//                case .notDetermined:
-//                    self.requestNotificationPermission { granted in
-//                        self.isNotificationEnabled = granted
-//                    }
-//                default:
-//                    break
-//                }
-                
                 self.isNotificationEnabled = settings.authorizationStatus == .authorized
                 completion(settings.authorizationStatus)
             }
