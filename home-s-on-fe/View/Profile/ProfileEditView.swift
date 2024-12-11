@@ -96,7 +96,7 @@ struct ProfileEditView: View {
         VStack(alignment: .leading, spacing: 10) {
             Text("별명으로 사용할 이름을 입력하세요")
                 .font(.headline)
-                .foregroundColor(Color.mainColor) // ColorExtension에서 정의한 mainColor 사용
+                .foregroundColor(Color.mainColor)
             
             TextField("별명", text: $nickname)
                 .padding()

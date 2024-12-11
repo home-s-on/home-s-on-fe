@@ -14,14 +14,14 @@ struct EnterInviteCodeView: View {
             VStack {
                 VStack(alignment: .leading) {
                     Text("초대코드를 입력해주세요")
-                        .font(.title)
+                        .font(.title).fontWeight(.bold)
                     
                     CustomTextField(icon: "", placeholder: "받은 초대 코드 입력", text: $inviteCode)
                     
                 }.padding(.horizontal)
                     .padding(.bottom, 400)
                 
-                WideImageButton(icon: "", title: "확인", backgroundColor: .blue) {
+                WideImageButton(icon: "", title: "확인", backgroundColor: .mainColor) {
                     getHouseIdVM.getHouseId(inviteCode: inviteCode) { houseId in
                         if let id = houseId {
                             joinMemberVM.joinMember(houseId: id)

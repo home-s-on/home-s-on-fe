@@ -27,7 +27,7 @@ public enum LoginType {
         case .apple:
             return .black
         case .email:
-            return .blue
+            return .mainColor
         }
     }
     
