@@ -9,6 +9,9 @@ import Foundation
 import AuthenticationServices
 
 class AppleLoginViewModel: NSObject, ObservableObject {
+    public let loginViewModel = LoginViewModel()
+    @Published var nextView: String = ""
+    @Published var isNavigating = false
     @Published var userId: String?
     @Published var email: String?
     @Published var fullName: PersonNameComponents?
@@ -64,6 +67,9 @@ class AppleLoginViewModel: NSObject, ObservableObject {
                                     
                                     self.isAppleLoggedIn = true
                                     print("로그인 성공! 토큰:", loginData.token)
+                                    self.loginViewModel.handleAccountBasedEntry()
+                                    self.nextView = self.loginViewModel.nextView
+                                    self.isNavigating = self.loginViewModel.isNavigating
                                 } else {
                                     print("로그인 실패:", apiResponse.message ?? "알 수 없는 오류")
                                 }
