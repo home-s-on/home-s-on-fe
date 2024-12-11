@@ -27,7 +27,7 @@ struct LoginView: View {
                         
                     
                     
-                    LoginButton(loginType: .kakao, text: "  Sign in with Kakao") {
+                    LoginButton(loginType: .kakao, text: " Sign in with Kakao") {
                         kakaoLoginVM.kakaoLogin()
                     }.onChange(of: kakaoLoginVM.isKakaoLoggedIn) { newValue in
                         if newValue {
