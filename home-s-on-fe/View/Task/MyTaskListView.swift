@@ -16,6 +16,7 @@ struct MyTaskListView: View {
     @State private var nickname: String = UserDefaults.standard.string(forKey: "nickname") ?? ""
     @State private var photo: String = UserDefaults.standard.string(forKey: "photo") ?? ""
     
+    
     // 오늘 마감인 할일 필터링
     private var todayTasks: [Task] {
         let formatter = DateFormatter()
@@ -133,6 +134,7 @@ struct MyTaskListView: View {
                 
                 AddTaskButton()
                     .environmentObject(appState)
+                    
             }
         }
         .alert("오류", isPresented: $viewModel.isFetchError) {

@@ -18,7 +18,7 @@ struct LoginButton: View {
                 HStack {
                     Spacer()
                     Text(text)
-                        .font(.system(size: 14, weight: .medium))
+                        .font(.system(size: 16, weight: .medium))
                         .foregroundColor(loginType.textColor)
                     Spacer()
                 }
@@ -37,8 +37,11 @@ struct LoginButton: View {
                 .cornerRadius(10)
 
                 loginType.logoImage
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 14, height: 14)
                     .foregroundColor(loginType.textColor)
-                    .offset(x: 10)
+                    .offset(x: 80)
             }
         }
     }

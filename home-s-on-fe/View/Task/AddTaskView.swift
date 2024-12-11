@@ -4,8 +4,11 @@ struct AddTaskView: View {
     @EnvironmentObject var membersViewModel: GetMembersInHouseViewModel
     @EnvironmentObject var viewModel: TaskViewModel
     @EnvironmentObject var appState: SelectedTabViewModel
+    @EnvironmentObject var triggerVM: TriggerViewModel
+    @EnvironmentObject var notificationVM : NotificationViewModel
     @State private var dueDate: String = ""
     @Binding var isPresented: Bool
+    @Binding var showingNotificationAlert: Bool
     @State private var title: String = ""
     @State private var memo: String = ""
     @State private var selectedRoom: HouseRoom?
@@ -14,7 +17,6 @@ struct AddTaskView: View {
     @State private var selectedAssignees: Set<HouseInMember> = []  // 변경
     @State private var houseId: Int = UserDefaults.standard.integer(forKey: "houseId")
     @State private var userId: Int = UserDefaults.standard.integer(forKey: "userId")
-    @EnvironmentObject var triggerVM: TriggerViewModel
     @State private var showRepeatSelection = false
     @State private var selectedDays: Set<Int> = []
     let daysOfWeek = ["일요일마다", "월요일마다", "화요일마다", "수요일마다", "목요일마다", "금요일마다", "토요일마다"]
@@ -62,6 +64,25 @@ struct AddTaskView: View {
                 }
                 
                 Toggle("알람", isOn: $isAlarmOn)
+                    .onChange(of: isAlarmOn) { newValue in
+                        if newValue {
+                            notificationVM.checkNotificationStatus { status in
+                                switch status {
+                                //case .authorized:
+                                case .denied, .notDetermined:
+                                    print("알림 권한이 등록되지 않았습니다.")
+                                    //사용자에게 알림 설정 권유하는 알림 표시
+                                    DispatchQueue.main.async {
+                                        self.showingNotificationAlert = true
+                                    }
+                                    
+                                default:
+                                    break
+                                }
+                            }
+                        }
+                    }
+                
                 
                 NavigationLink(destination: AssigneeSelectionView(selectedAssignees: $selectedAssignees).environmentObject(membersViewModel)) {
                     HStack {
@@ -73,6 +94,7 @@ struct AddTaskView: View {
                         }
                     }
                 }
+               
             }
             .navigationTitle("새 작업 추가")
             .navigationBarItems(
@@ -84,7 +106,19 @@ struct AddTaskView: View {
                 }
                 .disabled(!isFormValid)
             )
+           
+
         }
+    }
+    
+    fileprivate func setupAndSendNotifications() {
+        triggerVM.calenderTrigger(subtitle: title, body: dueDate)
+        triggerVM.sendPushNotification(
+            assigneeId: Array(selectedAssignees).map { $0.userId },  // Set을 Array로 변환하고 userId 매핑
+            title: title,
+            subtitle: title,
+            body: dueDate
+        )
     }
     
     private func saveTask() {
@@ -117,14 +151,16 @@ struct AddTaskView: View {
             
             // 알람 설정
             if isAlarmOn {
-                triggerVM.calenderTrigger(subtitle: title, body: dueDate)
-                triggerVM.sendPushNotification(
-                    assigneeId: Array(selectedAssignees).map { $0.userId },  // Set을 Array로 변환하고 userId 매핑
-                    title: title,
-                    subtitle: title,
-                    body: dueDate
-                )
-
+                notificationVM.checkNotificationStatus { status in
+                    switch status {
+                    case .authorized:
+                        self.setupAndSendNotifications()
+                    case .denied, .notDetermined:
+                        print("알림 권한이 등록되지 않았습니다.")
+                    default:
+                        break
+                    }
+                }
             }
         }
         
