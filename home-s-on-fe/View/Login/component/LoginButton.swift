@@ -38,7 +38,7 @@ struct LoginButton: View {
 
                 loginType.logoImage
                     .foregroundColor(loginType.textColor)
-                    .offset(x: 10)
+                    .offset(x: 85)
             }
         }
     }

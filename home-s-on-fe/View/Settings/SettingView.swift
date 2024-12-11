@@ -12,6 +12,7 @@ struct SettingView: View {
     
     var body: some View {
         VStack (spacing: 40){
+            Text("설정")
             SettingButton(icon: "", title: "멤버 확인하기", style: ButtonStyle(isButtonShadowVisible: true)) {
                 print("멤버 확인하기 버튼 탭됨")
                 getHouseInMemberVM.getMembersInHouse()
@@ -29,7 +30,7 @@ struct SettingView: View {
                 }
             }
             Spacer()
-              .frame(height: 300)
+              .frame(height: 250)
             
             Text("로그아웃할래요!")
                 .font(.footnote)

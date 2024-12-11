@@ -27,7 +27,7 @@ struct LoginView: View {
                         
                     
                     
-                    LoginButton(loginType: .kakao, text: "kakao로 로그인") {
+                    LoginButton(loginType: .kakao, text: "  Sign in with Kakao") {
                         kakaoLoginVM.kakaoLogin()
                     }.onChange(of: kakaoLoginVM.isKakaoLoggedIn) { newValue in
                         if newValue {
@@ -50,7 +50,7 @@ struct LoginView: View {
                         Color.gray.frame(height: 0.5)
                     }
 
-                    LoginButton(loginType: .email, text: "email로 로그인") {
+                    LoginButton(loginType: .email, text: "Sign in with Email") {
                         isEmailLoginActive = true
                     }
                     .background(Color.mainColor) .foregroundColor(.white)
@@ -65,7 +65,7 @@ struct LoginView: View {
                 Spacer()
                 Text("HOME'S ON을 계속 진행하면 서비스 약관에 동의하고\n 개인정보 보호정책을 읽은것으로 간주됩니다.")
                     .font(.footnote)
-                    .padding(.top, 90)
+                    .padding(.top, 80)
             }
             .padding(20)
             .navigationDestination(isPresented: $isEmailLoginActive) {
