@@ -17,6 +17,7 @@ struct AddTaskView: View {
     @State private var selectedAssignees: Set<HouseInMember> = []  // 변경
     @State private var houseId: Int = UserDefaults.standard.integer(forKey: "houseId")
     @State private var userId: Int = UserDefaults.standard.integer(forKey: "userId")
+    @State private var nickname: String = UserDefaults.standard.string(forKey: "nickname") ?? ""
     @State private var showRepeatSelection = false
     @State private var selectedDays: Set<Int> = []
     let daysOfWeek = ["일요일마다", "월요일마다", "화요일마다", "수요일마다", "목요일마다", "금요일마다", "토요일마다"]
@@ -116,8 +117,8 @@ struct AddTaskView: View {
         triggerVM.sendPushNotification(
             assigneeId: Array(selectedAssignees).map { $0.userId },  // Set을 Array로 변환하고 userId 매핑
             title: title,
-            subtitle: title,
-            body: dueDate
+            subtitle: nickname+"님이 할 일을 등록했습니다." ,
+            body: title
         )
     }
     

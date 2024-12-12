@@ -10,7 +10,7 @@ import UserNotifications
 import Alamofire
 
 struct FeatureFlags {
-    static let TEST = true
+    static let TEST = false
 }
 
 class TriggerViewModel: ObservableObject {
@@ -39,8 +39,8 @@ class TriggerViewModel: ObservableObject {
         
         UNUserNotificationCenter.current().removeAllPendingNotificationRequests()//등록되어 있는거 다 날림....?
         
-        var currentHour = 12
-        var currentMinute = 25
+        var currentHour = 10
+        var currentMinute = 00
         //테스트 용
         if FeatureFlags.TEST {
             let now = Date()
@@ -52,9 +52,9 @@ class TriggerViewModel: ObservableObject {
         print("currentMinute \(currentMinute)")
         
         var dateComponents = DateComponents()
-        dateComponents.weekday // 나중에 반복에서 가져오기
+        //dateComponents.weekday // 나중에 반복에서 가져오기
         dateComponents.hour = currentHour
-        dateComponents.minute = currentMinute+1
+        dateComponents.minute = currentMinute
         
         let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: isRepeat)//repeat true이면 매일, hour:minute에 알람
         

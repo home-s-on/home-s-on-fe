@@ -6,6 +6,7 @@ struct MainView: View {
     @StateObject var chatVM = ChatViewModel()
     @StateObject private var getHouseInMemberVM = GetMembersInHouseViewModel()
     @StateObject var notificationVM = NotificationViewModel()
+    @StateObject var triggerVM = TriggerViewModel()
     @State private var houseId: Int = UserDefaults.standard.integer(forKey: "houseId")
     @State private var userId: Int = UserDefaults.standard.integer(forKey: "userId")
     
@@ -47,6 +48,7 @@ struct MainView: View {
             .environmentObject(selectedTabVM)
             .environmentObject(notificationVM)
             .environmentObject(chatVM)
+            .environmentObject(triggerVM)
             .navigationBarBackButtonHidden(true)
             
         }

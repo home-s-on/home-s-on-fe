@@ -11,6 +11,7 @@ import Kingfisher
 struct TaskListView: View {
     @EnvironmentObject var viewModel: TaskViewModel
     @EnvironmentObject var appState: SelectedTabViewModel
+    @EnvironmentObject var triggerVM: TriggerViewModel
     @State private var photoURL: URL?
     @State private var errorMessage: String?
     let houseId: Int

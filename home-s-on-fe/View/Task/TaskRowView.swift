@@ -10,9 +10,11 @@ struct TaskRowView: View {
     let task: Task
     @EnvironmentObject var viewModel: TaskViewModel
     @EnvironmentObject var appState: SelectedTabViewModel
+    @EnvironmentObject var triggerVM: TriggerViewModel
     @StateObject private var completeViewModel = TaskCompleteViewModel()
     @State private var showEditTask = false
     @State private var userId: Int = UserDefaults.standard.integer(forKey: "userId")
+    @State private var nickname = UserDefaults.standard.string(forKey: "nickname") ?? ""
     
     private var isAssignee: Bool {
         appState.selectedTab == 1 && (task.assignees?.contains(where: { $0.id == userId }) ?? false)
@@ -118,5 +120,8 @@ struct TaskRowView: View {
                 viewModel.fetchMyTasks(userId: userId)
             }
         }
+        
+        triggerVM.sendPushNotification(assigneeId: task.assigneeId, title: "", subtitle: nickname+"님이 할 일을 완료했습니다.", body: task.title)
+        
     }
 }
