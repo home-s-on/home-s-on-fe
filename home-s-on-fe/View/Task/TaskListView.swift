@@ -63,15 +63,25 @@ struct TaskListView: View {
                     
                     // 에러메세지 할일 목록
                     if viewModel.isLoading {
-                        ProgressView()
+                        // 전체 스켈레톤 뷰 표시
+                        ForEach(0..<6) { _ in
+                            Rectangle()
+                                .fill(Color.gray.opacity(0.1))
+                                .frame(height: 90)
+                                .cornerRadius(10)
+                                .padding(.bottom, 4)
+                                .shadow(color: Color.black.opacity(0.1), radius: 5, x: 0, y: 2)
+                                .padding(.horizontal)
+                                .padding(.horizontal)
+                        }
+                    } else if viewModel.tasks.isEmpty && !viewModel.isFetchError {
+                        // 등록된 할 일이 없을 때 메시지 표시
+                        Text("등록된 할일이 없습니다")
+                            .foregroundColor(.gray)
+                            .padding()
                     } else {
                         ScrollView {
                             LazyVStack(spacing: 12) {
-                                if viewModel.tasks.isEmpty && !viewModel.isFetchError {
-                                    Text("등록된 할일이 없습니다")
-                                        .foregroundColor(.gray)
-                                        .padding()
-                                } else {
                                     ForEach(viewModel.tasks) { task in
                                         TaskRowView(task: task)
                                             .environmentObject(viewModel)
@@ -101,7 +111,7 @@ struct TaskListView: View {
             }
         }
     }
-}
+
 
 //#Preview {
 //    let _ = UserDefaults.standard.set("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzMyNzIyMzc1LCJleHAiOjE3MzI4MDg3NzV9.6gcH_Dwa5gGi9hYDIAvsKosJBoij93Na9oxjfGlAb8g", forKey: "token")

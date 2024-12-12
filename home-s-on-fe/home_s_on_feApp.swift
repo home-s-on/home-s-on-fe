@@ -12,13 +12,13 @@ struct home_s_on_feApp: App {
     var body: some Scene {
         WindowGroup {
             if isLoading {
-                            SplashScreenView()
-                                .onAppear {
-                                    // 로딩 시간 제어 (예: API 호출, 초기 설정)
-                                    DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-                                        isLoading = false
-                                    }
-                                }
+                SplashScreenView()
+                    .onAppear {
+                        // 로딩 시간 제어 (예: API 호출, 초기 설정)
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                            isLoading = false
+                        }
+                    }
             } else {
                 ContentView()
             }
