@@ -10,9 +10,20 @@ import SwiftUI
 struct ChatView: View {
     @EnvironmentObject private var chatVM : ChatViewModel
     @State private var newMessage = ""
+    @State private var showInstructions = true
     
     var body: some View {
         VStack {
+            if showInstructions {
+                Text("이 채팅에서는 AI에게 집안일과 관련된 질문이나 조언을 요청할 수 있습니다.")
+                    .font(.subheadline)
+                    .foregroundColor(.gray)
+                    .padding()
+                    .background(Color.gray.opacity(0.1))
+                    .cornerRadius(10)
+                    .padding(.horizontal)
+            }
+            
             ScrollViewReader { scrollViewProxy in
                 ScrollView {
                     LazyVStack(alignment: .leading, spacing: 10) {
@@ -53,7 +64,8 @@ struct ChatView: View {
                 }
                 .disabled(newMessage.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
             }
-            .padding()
+            .padding(.horizontal)
+            .padding(.bottom, 8)
         }
         .onAppear {
             chatVM.getChat()
@@ -61,9 +73,14 @@ struct ChatView: View {
     }
     
     private func sendMessage() {
+        guard !newMessage.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else { return }
+        
         let messageToSend = newMessage
         newMessage = ""
         chatVM.sendChat(userMessage: messageToSend)
+
+        // 메시지를 보낸 후 설명 텍스트 숨기기
+        showInstructions = false
     }
     
     private func scrollToBottom(scrollViewProxy: ScrollViewProxy) {

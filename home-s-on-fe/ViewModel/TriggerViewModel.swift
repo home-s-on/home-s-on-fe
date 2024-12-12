@@ -10,7 +10,7 @@ import UserNotifications
 import Alamofire
 
 struct FeatureFlags {
-    static let TEST = true
+    static let TEST = false
 }
 
 class TriggerViewModel: ObservableObject {
