@@ -50,7 +50,6 @@ class LoginViewModel: ObservableObject {
                 DispatchQueue.main.async {
                     self.isLoading = false
                     SVProgressHUD.dismiss()
-                    
                     switch response.result {
                     case .success(let apiResponse):
                         if apiResponse.status == "success" {
@@ -61,10 +60,11 @@ class LoginViewModel: ObservableObject {
                                 UserDefaults.standard.set(loginData.user.email, forKey: "email")
                                 UserDefaults.standard.set(loginData.user.photo, forKey: "photo")
                                 UserDefaults.standard.set(loginData.user.nickname, forKey: "nickname")
+                                
                                 if let deviceToken = UserDefaults.standard.string(forKey: "deviceToken"){
-                                    print("send deviceToken")
                                     self.notificationViewModel.sendDeviceTokenToServer(deviceToken: deviceToken)
-                                    
+                                } else {
+                                    self.notificationViewModel.checkDeviceToken()
                                 }
                                 self.handleAccountBasedEntry()
                             }
