@@ -4,6 +4,7 @@ import SVProgressHUD
 
 class NotificationViewModel: ObservableObject {
     @Published var isNotificationEnabled: Bool = false
+    @Published var deviceToken: String = ""
     
     init() {
         checkNotificationStatus{ _ in }
@@ -16,6 +17,18 @@ class NotificationViewModel: ObservableObject {
                 completion(settings.authorizationStatus)
             }
         }
+    }
+    
+    func checkDeviceToken() {
+        if let token = UserDefaults.standard.string(forKey: "deviceToken"){
+            self.deviceToken = token
+        } else {
+            //deviceToken 이 없는 경우, 원격 알림 등록 프로세스 다시 시작
+            DispatchQueue.main.async {
+                UIApplication.shared.registerForRemoteNotifications()
+            }
+        }
+            
     }
     
     func requestNotificationPermission(completion: @escaping (Bool)->(Void)) {
@@ -43,6 +56,7 @@ class NotificationViewModel: ObservableObject {
     }
     
     func sendDeviceTokenToServer(deviceToken: String) {
+        
         //guard let userId = UserDefaults.standard.string(forKey: "userId"),
         guard let token = UserDefaults.standard.string(forKey: "token") else {
             print("사용자 ID 또는 token을 찾을 수 없습니다.")
@@ -56,10 +70,17 @@ class NotificationViewModel: ObservableObject {
         let params: Parameters = ["deviceToken": deviceToken]
         
         AF.request(url, method: .post, parameters: params, headers: headers)
-            .responseJSON { response in
+            .responseDecodable(of: ApiResponse<User?>.self) { [weak self] response in
+                
+                guard let self = self else { return }
+                
                 switch response.result {
                 case .success(let value):
-                    print("디바이스 토큰이 성공적으로 서버에 전송되었습니다. ") // 응답: \(value)
+                    if value.status == "success" {
+                        print("디바이스 토큰이 성공적으로 서버에 전송되었습니다. ") // 응답: \(value)
+                    } else {
+                        print("등록 실패 \(value.message)")
+                    }
                 case .failure(let error):
                     print("Error sending device token to server: \(error.localizedDescription)")
                 }
