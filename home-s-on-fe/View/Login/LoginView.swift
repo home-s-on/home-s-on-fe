@@ -93,9 +93,11 @@ struct LoginView: View {
             }
             
             .navigationDestination(isPresented: $appleLoginVM.isAppleLoggedIn) {
-                    appleLoginVM.loginViewModel.destinationView()
+                    appleLoginVM.destinationView()
                 }
-            
+            .navigationDestination(isPresented: $kakaoLoginVM.isKakaoLoggedIn) {
+                    kakaoLoginVM.destinationView()
+                }
         }
     }
 }

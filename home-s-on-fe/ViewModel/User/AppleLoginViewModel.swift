@@ -7,6 +7,8 @@
 
 import Foundation
 import AuthenticationServices
+import Alamofire
+import SwiftUI
 
 class AppleLoginViewModel: NSObject, ObservableObject {
     public let loginViewModel = LoginViewModel()
@@ -67,9 +69,8 @@ class AppleLoginViewModel: NSObject, ObservableObject {
                                     
                                     self.isAppleLoggedIn = true
                                     print("로그인 성공! 토큰:", loginData.token)
-                                    self.loginViewModel.handleAccountBasedEntry()
-                                    self.nextView = self.loginViewModel.nextView
-                                    self.isNavigating = self.loginViewModel.isNavigating
+                                    self.handleAccountBasedEntry()
+                                    self.isNavigating = true
                                 } else {
                                     print("로그인 실패:", apiResponse.message ?? "알 수 없는 오류")
                                 }
@@ -91,5 +92,60 @@ class AppleLoginViewModel: NSObject, ObservableObject {
                 }
             }
         }.resume()
+    }
+    
+    func handleAccountBasedEntry() {
+        let token = UserDefaults.standard.string(forKey: "token")
+        let url = "\(APIEndpoints.baseURL)/user"
+        let headers: HTTPHeaders = ["Authorization": "Bearer \(token ?? "")"]
+        
+        AF.request(url, method: .get, headers: headers)
+            .responseDecodable(of: ApiResponse<Member?>.self) { [weak self] response in
+                guard let self = self else { return }
+                
+                switch response.result {
+                case .success(let apiResponse):
+                    print("API Response for account-based entry: \(apiResponse)")
+                    
+                    DispatchQueue.main.async {
+                        self.nextView = apiResponse.message ?? "다음뷰"
+                        self.isNavigating = true
+                        print("Navigating to view after login")
+                    }
+                    if apiResponse.message == "entry 뷰로 진입합니다." {
+                        if let houseId = apiResponse.houseId,
+                           let inviteCode = apiResponse.inviteCode {
+                            UserDefaults.standard.set(houseId, forKey: "houseId")
+                            UserDefaults.standard.set(inviteCode, forKey: "inviteCode")
+                            print("handleAccountBasedEntry, houseId: \(houseId) inviteCode: \(inviteCode)")
+                        }
+                    }
+                    if let memberData = apiResponse.data {
+                        UserDefaults.standard.set(memberData?.houseId, forKey: "houseId")
+                        UserDefaults.standard.set(memberData?.house?.inviteCode, forKey: "inviteCode")
+                        print("handleAccountBasedEntry, houseId: \(memberData?.houseId) inviteCode: \(memberData?.house?.inviteCode ?? "No invite code")")
+                    }
+                case .failure(let error):
+                    print("Error: \(error.localizedDescription)")
+                }
+            }
+    }
+    
+    @ViewBuilder func destinationView() -> some View {
+        let trimmedNextView = nextView.trimmingCharacters(in: .whitespacesAndNewlines)
+        switch trimmedNextView {
+        case "profile 뷰로 진입합니다.":
+            ProfileEditView()
+                .onAppear { print("destinationView to ProfileEditView") }
+        case "main 뷰로 진입합니다.":
+            MainView()
+                .onAppear { print("destinationView to MainView") }
+        case "entry 뷰로 진입합니다.":
+            HouseEntryOptionsView()
+                .onAppear { print("destinationView to EntryView") }
+        default:
+            Text("알 수 없는 뷰: \(nextView)")
+                .onAppear { print("unknown view: \(self.nextView)") }
+        }
     }
 }

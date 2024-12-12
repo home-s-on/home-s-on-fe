@@ -1,18 +1,16 @@
-//
-//  KakaoLoginViewModel.swift
-//  home-s-on-fe
-//
-//  Created by songhee jeong on 11/27/24.
-//
-
+import SwiftUI
 import Foundation
 import KakaoSDKAuth
 import KakaoSDKUser
+import Alamofire
 
 class KakaoLoginViewModel: ObservableObject {
+    public let loginViewModel = LoginViewModel()
     @Published var userId: String?
     @Published var email: String?
     @Published var isKakaoLoggedIn: Bool = false
+    @Published var nextView: String = ""
+    @Published var isNavigating: Bool = false
 
     func kakaoLogin() {
         if UserApi.isKakaoTalkLoginAvailable() {
@@ -20,7 +18,6 @@ class KakaoLoginViewModel: ObservableObject {
                 if let error = error {
                     print(error.localizedDescription)
                 } else if let token = token?.accessToken {
-                    print(token)
                     self.sendTokenToBackend(token: token)
                 }
             }
@@ -29,7 +26,6 @@ class KakaoLoginViewModel: ObservableObject {
                 if let error = error {
                     print(error.localizedDescription)
                 } else if let token = token?.accessToken {
-                    print(token)
                     self.sendTokenToBackend(token: token)
                 }
             }
@@ -52,14 +48,9 @@ class KakaoLoginViewModel: ObservableObject {
                 return
             }
 
-            if let httpResponse = response as? HTTPURLResponse {
-//                print("Response status code: \(httpResponse.statusCode)")
-            }
-
             if let data = data {
                 do {
                     let apiResponse = try JSONDecoder().decode(ApiResponse<EmailLoginData>.self, from: data)
-                    print(apiResponse)
                     if apiResponse.status == "success", let loginData = apiResponse.data {
                         // UserDefaults에 저장
                         UserDefaults.standard.set(loginData.token, forKey: "token")
@@ -69,7 +60,7 @@ class KakaoLoginViewModel: ObservableObject {
 
                         DispatchQueue.main.async {
                             self.isKakaoLoggedIn = true
-                            print("로그인 성공! 토큰:", loginData.token)
+                            self.handleAccountBasedEntry()
                         }
                     } else {
                         print("로그인 실패:", apiResponse.message ?? "알 수 없는 오류")
@@ -79,5 +70,53 @@ class KakaoLoginViewModel: ObservableObject {
                 }
             }
         }.resume()
+    }
+
+    func handleAccountBasedEntry() {
+        let token = UserDefaults.standard.string(forKey: "token")
+        let url = "\(APIEndpoints.baseURL)/user"
+        let headers: HTTPHeaders = ["Authorization": "Bearer \(token ?? "")"]
+
+        AF.request(url, method: .get, headers: headers)
+            .responseDecodable(of: ApiResponse<Member?>.self) { [weak self] response in
+                guard let self = self else { return }
+
+                switch response.result {
+                case .success(let apiResponse):
+                    DispatchQueue.main.async {
+                        self.nextView = apiResponse.message ?? "다음뷰"
+                        self.isNavigating = true
+                    }
+
+                    if apiResponse.message == "entry 뷰로 진입합니다." {
+                        if let houseId = apiResponse.houseId,
+                           let inviteCode = apiResponse.inviteCode {
+                            UserDefaults.standard.set(houseId, forKey: "houseId")
+                            UserDefaults.standard.set(inviteCode, forKey: "inviteCode")
+                        }
+                    }
+
+                    if let memberData = apiResponse.data {
+                        UserDefaults.standard.set(memberData?.houseId, forKey: "houseId")
+                        UserDefaults.standard.set(memberData?.house?.inviteCode, forKey: "inviteCode")
+                    }
+                case .failure(let error):
+                    print("Error: \(error.localizedDescription)")
+                }
+            }
+    }
+
+    @ViewBuilder func destinationView() -> some View {
+        let trimmedNextView = nextView.trimmingCharacters(in: .whitespacesAndNewlines)
+        switch trimmedNextView {
+        case "profile 뷰로 진입합니다.":
+            ProfileEditView()
+        case "main 뷰로 진입합니다.":
+            MainView()
+        case "entry 뷰로 진입합니다.":
+            HouseEntryOptionsView()
+        default:
+            Text("알 수 없는 뷰: \(nextView)")
+        }
     }
 }
