@@ -148,8 +148,9 @@ class LoginViewModel: ObservableObject {
                     switch response.result {
                     case .success(let apiResponse):
                         print("API Response for account-based entry: \(apiResponse)")
-                        self.nextView = apiResponse.message ?? "다음뷰"
+                        
                         DispatchQueue.main.async {
+                            self.nextView = apiResponse.message ?? "다음뷰"
                             self.isNavigating = true
                             print("Navigating to view after login")
                         }
@@ -175,23 +176,22 @@ class LoginViewModel: ObservableObject {
                 }
         }
     
-    @ViewBuilder
-        func destinationView() -> some View {
-            let trimmedNextView = nextView.trimmingCharacters(in: .whitespacesAndNewlines)
-            
-            switch trimmedNextView {
-            case "profile 뷰로 진입합니다.":
-                ProfileEditView()
-                    .onAppear { print("destinationView to ProfileEditView") }
-            case "main 뷰로 진입합니다.":
-                MainView()
-                    .onAppear { print("destinationView to MainView") }
-            case "entry 뷰로 진입합니다.":
-                HouseEntryOptionsView()
-                    .onAppear { print("destinationView to EntryView") }
-            default:
-                Text("알 수 없는 뷰: \(nextView)")
-                    .onAppear { print("unknown view: \(self.nextView)") }
-            }
+    @ViewBuilder func destinationView() -> some View {
+        let trimmedNextView = nextView.trimmingCharacters(in: .whitespacesAndNewlines)
+        switch trimmedNextView {
+        case "profile 뷰로 진입합니다.":
+            ProfileEditView()
+                .onAppear { print("destinationView to ProfileEditView") }
+        case "main 뷰로 진입합니다.":
+            MainView()
+                .onAppear { print("destinationView to MainView") }
+        case "entry 뷰로 진입합니다.":
+            HouseEntryOptionsView()
+                .onAppear { print("destinationView to EntryView") }
+        default:
+            Text("알 수 없는 뷰: \(nextView)")
+                .onAppear { print("unknown view: \(self.nextView)") }
         }
+    }
+
 }

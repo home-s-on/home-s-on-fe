@@ -92,7 +92,12 @@ struct LoginView: View {
                 ProfileEditView()
             }
             
-            
+            .navigationDestination(isPresented: $appleLoginVM.isAppleLoggedIn) {
+                    appleLoginVM.destinationView()
+                }
+            .navigationDestination(isPresented: $kakaoLoginVM.isKakaoLoggedIn) {
+                    kakaoLoginVM.destinationView()
+                }
         }
     }
 }
