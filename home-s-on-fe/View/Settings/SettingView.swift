@@ -11,36 +11,45 @@ struct SettingView: View {
     @EnvironmentObject var loginVM : LoginViewModel
     
     var body: some View {
-        VStack (spacing: 40){
-            Text("설정")
-            SettingButton(icon: "", title: "멤버 확인하기", style: ButtonStyle(isButtonShadowVisible: true)) {
-                print("멤버 확인하기 버튼 탭됨")
-                getHouseInMemberVM.getMembersInHouse()
-                isShowHouseInMembers = true
-            }
-            SettingButton(icon: "", title: "지난 할 일", style: ButtonStyle(isButtonShadowVisible: true)) {
-                print("지난 할 일 버튼 탭됨")
-                isShowPastTasks = true
-            }
-            if let currentUser = getHouseInMemberVM.houseMembers.first(where: { $0.userId == UserDefaults.standard.integer(forKey: "userId") }),
-                   currentUser.isOwner {
-                    SettingButton(icon: "", title: "초대 코드", style: ButtonStyle(isButtonShadowVisible: true)) {
-                        print("초대 코드 버튼 탭됨")
-                        isShowInviteCode = true
-                }
-            }
-            Spacer()
-              .frame(height: 250)
-            
-            Text("로그아웃할래요!")
-                .font(.footnote)
-                .foregroundColor(.gray)
-                .underline()
-                .onTapGesture {
-                    showLogoutAlert = true
-                }
-        }
-        .navigationBarTitle("설정", displayMode: .inline)
+        VStack {
+                   Text("설정")
+                       .font(.headline)
+                       .foregroundColor(.primary)
+                       .frame(maxWidth: .infinity, alignment: .center)
+                       .padding(.top, 5)  // 상단 여백 추가
+
+                   VStack(spacing: 40) {
+                       SettingButton(icon: "", title: "멤버 확인하기", style: ButtonStyle(isButtonShadowVisible: true)) {
+                           print("멤버 확인하기 버튼 탭됨")
+                           getHouseInMemberVM.getMembersInHouse()
+                           isShowHouseInMembers = true
+                       }
+                       SettingButton(icon: "", title: "지난 할 일", style: ButtonStyle(isButtonShadowVisible: true)) {
+                           print("지난 할 일 버튼 탭됨")
+                           isShowPastTasks = true
+                       }
+                       if let currentUser = getHouseInMemberVM.houseMembers.first(where: { $0.userId == UserDefaults.standard.integer(forKey: "userId") }),
+                          currentUser.isOwner {
+                           SettingButton(icon: "", title: "초대 코드", style: ButtonStyle(isButtonShadowVisible: true)) {
+                               print("초대 코드 버튼 탭됨")
+                               isShowInviteCode = true
+                           }
+                       }
+                   }
+                   .padding(.top, 40)  // 버튼들 상단 여백 추가
+
+                   Spacer()  // 나머지 공간을 채움
+
+                   Text("로그아웃할래요!")
+                       .font(.footnote)
+                       .foregroundColor(.gray)
+                       .underline()
+                       .onTapGesture {
+                           showLogoutAlert = true
+                       }
+                       .padding(.bottom, 20)  // 하단 여백 추가
+               }
+//        .navigationBarTitle("설정", displayMode: .inline)
         .navigationBarBackButtonHidden(false)
         .navigationDestination(isPresented: $isShowInviteCode) {
             InviteMemberView(isFromSetting: true)
