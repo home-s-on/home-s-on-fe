@@ -85,6 +85,7 @@ struct SettingView: View {
         resetUserDefaults()
         navigateToLoginView = true  // 로그아웃 후 로그인 화면으로 이동
         loginVM.isNavigating = false
+        loginVM.nextView = "logout"
     }
 
     private func resetUserDefaults() {

@@ -39,6 +39,7 @@ class LoginViewModel: ObservableObject {
     
     func emailLogin(email: String, password: String) {
         isLoading = true
+        isNavigating = false
         SVProgressHUD.show()
         
         let url = "\(APIEndpoints.baseURL)/auth/email"
@@ -72,10 +73,12 @@ class LoginViewModel: ObservableObject {
                             self.isLoginShowing = true
                             self.isLoginError = true
                             self.message = apiResponse.message ?? "알 수 없는 오류가 발생했습니다."
+                            self.isNavigating = false
                         }
                     case .failure(let error):
                         self.isLoginShowing = true
                         self.isLoginError = true
+                        self.isNavigating = false
                         if let data = response.data {
                             do {
                                 let errorResponse = try JSONDecoder().decode(ApiResponse<EmailLoginData>.self, from: data)
@@ -170,6 +173,7 @@ class LoginViewModel: ObservableObject {
                                 print("handleAccountBasedEntry, houseId: \(memberData?.houseId) inviteCode: \(memberData?.house?.inviteCode ?? "No invite code")")
                             }
                     case .failure(let error):
+                        self.isNavigating = false
                         print("Error: \(error.localizedDescription)")
                         self.message = "데이터를 가져오는 데 실패했습니다."
                     }
@@ -188,6 +192,10 @@ class LoginViewModel: ObservableObject {
         case "entry 뷰로 진입합니다.":
             HouseEntryOptionsView()
                 .onAppear { print("destinationView to EntryView") }
+        case "logout":
+                LoginView()
+                    .navigationBarBackButtonHidden(true)
+                    .onAppear { print("destinationView to LoginView") }
         default:
             Text("알 수 없는 뷰: \(nextView)")
                 .onAppear { print("unknown view: \(self.nextView)") }

@@ -63,6 +63,7 @@ class AppleLoginViewModel: NSObject, ObservableObject {
                                 
                                 if apiResponse.status == "success", let loginData = apiResponse.data {
                                     UserDefaults.standard.set(loginData.token, forKey: "token")
+                                    UserDefaults.standard.set(loginData.user.id, forKey: "userId")
                                     UserDefaults.standard.set(loginData.user.email, forKey: "email")
                                     UserDefaults.standard.set(loginData.user.nickname ?? "", forKey: "nickname")
                                     UserDefaults.standard.set(loginData.user.photo ?? "", forKey: "photo")
