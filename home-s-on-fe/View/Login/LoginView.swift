@@ -92,10 +92,9 @@ struct LoginView: View {
                 ProfileEditView()
             }
             
-            .navigationDestination(isPresented: $appleLoginVM.loginViewModel.isNavigating) {
-                appleLoginVM.loginViewModel.destinationView()
-            }
-            
+            .navigationDestination(isPresented: $appleLoginVM.isAppleLoggedIn) {
+                    appleLoginVM.loginViewModel.destinationView()
+                }
             
         }
     }
