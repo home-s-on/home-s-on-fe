@@ -10,9 +10,12 @@ struct TaskRowView: View {
     let task: Task
     @EnvironmentObject var viewModel: TaskViewModel
     @EnvironmentObject var appState: SelectedTabViewModel
+    @EnvironmentObject var triggerVM: TriggerViewModel
+    @EnvironmentObject var getMemberVM: GetMembersInHouseViewModel
     @StateObject private var completeViewModel = TaskCompleteViewModel()
     @State private var showEditTask = false
     @State private var userId: Int = UserDefaults.standard.integer(forKey: "userId")
+    @State private var nickname = UserDefaults.standard.string(forKey: "nickname") ?? ""
     
     private var isAssignee: Bool {
         appState.selectedTab == 1 && (task.assignees?.contains(where: { $0.id == userId }) ?? false)
@@ -117,6 +120,20 @@ struct TaskRowView: View {
             } else {
                 viewModel.fetchMyTasks(userId: userId)
             }
+        }
+        
+        // 먼저 하우스 멤버 정보를 가져옵니다.
+        getMemberVM.getMembersInHouse()
+        
+        // 멤버 정보 로딩 완료를 기다립니다.
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+            let memberIds = getMemberVM.houseMembers.map { $0.userId }
+            triggerVM.sendPushNotification(
+                assigneeId: memberIds,
+                title: "",
+                subtitle: "\(nickname)님이 할 일을 완료했습니다.",
+                body: task.title
+            )
         }
     }
 }
