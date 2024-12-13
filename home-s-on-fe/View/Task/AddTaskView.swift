@@ -128,10 +128,12 @@ struct AddTaskView: View {
         viewModel.addTask(
           houseRoomId: roomId,
           title: title,
-          assigneeId: selectedAssignees.map { $0.userId },  // 변경
+          assigneeId: selectedAssignees.map { $0.userId },
           memo: memo.isEmpty ? nil : memo,
           alarm: isAlarmOn,
-          dueDate: dueDate.isEmpty ? nil : dueDate
+          dueDate: dueDate.isEmpty ? nil : dueDate,
+          repeatDay: selectedDays.isEmpty ? nil : Array(selectedDays)  // 반복 요일 추가
+          
         )
 
         

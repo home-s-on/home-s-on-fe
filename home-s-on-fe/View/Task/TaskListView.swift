@@ -18,7 +18,7 @@ struct TaskListView: View {
     @State private var photo: String = UserDefaults.standard.string(forKey: "photo") ?? ""
     
     
-    // 통계 계산을 위한 계산 프로퍼티들
+    // 통계 계산을 위한 계산 프로퍼티
     private var totalTasks: Int {
         viewModel.tasks.count
     }

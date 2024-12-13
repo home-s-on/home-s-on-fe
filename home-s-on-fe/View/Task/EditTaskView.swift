@@ -164,6 +164,7 @@ struct EditTaskView: View {
                         }
                     }
                 }
+                
             }
             .navigationTitle(task.canEdit ? "할일 수정" : "할일 상세")
             .navigationBarItems(
@@ -248,37 +249,37 @@ struct EditTaskView: View {
     
 }
 
-#Preview {
-    EditTaskView(
-        task: Task(
-            id: 1,
-            houseId: 1,
-            houseRoomId: 1,
-            userId: 1,
-            title: "테스트 할일",
-            memo: "테스트 메모",
-            alarm: false,
-            repeatDay: [],
-            assigneeId: [1],
-            dueDate: "2024-12-06T00:00:00.000Z",
-            complete: false,
-            createdAt: "2024-12-06T00:00:00.000Z",
-            updatedAt: "2024-12-06T00:00:00.000Z",
-            houseRoom: HouseRoom(
-                id: 1,
-                house_id: 1,
-                room_name: "거실"
-            ),
-            assignees: [
-                TaskUser(
-                    id: 1,
-                    nickname: "테스트 유저"
-                )
-            ]
-        ),
-        isPresented: .constant(true),
-        houseId: 1
-    )
-    .environmentObject(TaskViewModel())
-    .environmentObject(SelectedTabViewModel())
-}
+//#Preview {
+//    EditTaskView(
+//        task: Task(
+//            id: 1,
+//            houseId: 1,
+//            houseRoomId: 1,
+//            userId: 1,
+//            title: "테스트 할일",
+//            memo: "테스트 메모",
+//            alarm: false,
+//            repeatDay: [],
+//            assigneeId: [1],
+//            dueDate: "2024-12-06T00:00:00.000Z",
+//            complete: false,
+//            createdAt: "2024-12-06T00:00:00.000Z",
+//            updatedAt: "2024-12-06T00:00:00.000Z",
+//            houseRoom: HouseRoom(
+//                id: 1,
+//                house_id: 1,
+//                room_name: "거실"
+//            ),
+//            assignees: [
+//                TaskUser(
+//                    id: 1,
+//                    nickname: "테스트 유저"
+//                )
+//            ]
+//        ),
+//        isPresented: .constant(true),
+//        houseId: 1
+//    )
+//    .environmentObject(TaskViewModel())
+//    .environmentObject(SelectedTabViewModel())
+//}
