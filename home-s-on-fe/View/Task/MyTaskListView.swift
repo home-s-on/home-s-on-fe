@@ -52,7 +52,7 @@ struct MyTaskListView: View {
                     .padding()
                     
                     if viewModel.isLoading {
-                        ProgressView()
+                        LoadingView()
                     } else {
                         ScrollView {
                             LazyVStack(spacing: 12) {

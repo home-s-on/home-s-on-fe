@@ -64,7 +64,7 @@ struct TaskListView: View {
                     
                     // 에러메세지 할일 목록
                     if viewModel.isLoading {
-                        ProgressView()
+                        LoadingView()
                     } else {
                         ScrollView {
                             LazyVStack(spacing: 12) {

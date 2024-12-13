@@ -117,7 +117,7 @@ struct AddTaskView: View {
         triggerVM.sendPushNotification(
             assigneeId: Array(selectedAssignees).map { $0.userId },  // Set을 Array로 변환하고 userId 매핑
             title: title,
-            subtitle: nickname+"님이 할 일을 등록했습니다." ,
+            subtitle: nickname+"님이 당신의 할일을 등록했습니다." ,
             body: title
         )
     }
