@@ -17,47 +17,24 @@ struct MyTaskListView: View {
     @State private var nickname: String = UserDefaults.standard.string(forKey: "nickname") ?? ""
     @State private var photo: String = UserDefaults.standard.string(forKey: "photo") ?? ""
     
-    
-    // 오늘 마감인 할일 필터링
+    // 통계 계산 프로퍼티
     private var todayTasks: [Task] {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
-        formatter.timeZone = TimeZone(abbreviation: "UTC")
-        
-        let today = Calendar.current.startOfDay(for: Date())
-        
-        return viewModel.tasks.filter { task in
-            if let dueDateString = task.dueDate,
-               let taskDate = formatter.date(from: dueDateString) {
-                let startOfTaskDate = Calendar.current.startOfDay(for: taskDate)
-                return startOfTaskDate == today
-            }
-            return false
-        }
+        filterTasks(for: .today, completed: false)
     }
-
-    // 다른 날짜 마감인 할일 필터링
-    private var otherTasks: [Task] {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
-        formatter.timeZone = TimeZone(abbreviation: "UTC")
-        
-        let today = Calendar.current.startOfDay(for: Date())
-        
-        return viewModel.tasks.filter { task in
-            if let dueDateString = task.dueDate,
-               let taskDate = formatter.date(from: dueDateString) {
-                let startOfTaskDate = Calendar.current.startOfDay(for: taskDate)
-                return startOfTaskDate != today
-            }
-            return false
-        }
+    
+    private var upcomingTasks: [Task] {
+        filterTasks(for: .upcoming, completed: false)
+    }
+    
+    private var completedTasks: [Task] {
+        viewModel.tasks.filter { $0.complete }
     }
     
     var body: some View {
         NavigationView {
             ZStack {
                 VStack {
+                    // 프로필 영역 표시
                     HStack(spacing: 12) {
                         let photoURL = URL(string: "\(APIEndpoints.blobURL)/\(photo)")
                         KFImage(photoURL)
@@ -93,36 +70,9 @@ struct MyTaskListView: View {
                                         .foregroundColor(.gray)
                                         .padding()
                                 } else {
-                                    // 오늘 마감 할일 섹션
-                                    if !todayTasks.isEmpty {
-                                        Text("오늘 마감")
-                                            .font(.headline)
-                                            .frame(maxWidth: .infinity, alignment: .leading)
-                                            .padding(.horizontal)
-                                        
-                                        ForEach(todayTasks) { task in
-                                            TaskRowView(task: task)
-                                                .environmentObject(viewModel)
-                                                .environmentObject(appState)
-                                                .padding(.horizontal)
-                                        }
-                                    }
-                                    
-                                    // 다른 할일 섹션
-                                    if !otherTasks.isEmpty {
-                                        Text("예정된 할일")
-                                            .font(.headline)
-                                            .frame(maxWidth: .infinity, alignment: .leading)
-                                            .padding(.horizontal)
-                                            .padding(.top, 20)
-                                        
-                                        ForEach(otherTasks) { task in
-                                            TaskRowView(task: task)
-                                                .environmentObject(viewModel)
-                                                .environmentObject(appState)
-                                                .padding(.horizontal)
-                                        }
-                                    }
+                                    taskSection(title: "오늘 마감", tasks: todayTasks)
+                                    taskSection(title: "예정된 할일", tasks: upcomingTasks)
+                                    taskSection(title: "완료된 할일", tasks: completedTasks)
                                 }
                             }
                             .padding()
@@ -135,7 +85,6 @@ struct MyTaskListView: View {
                 
                 AddTaskButton()
                     .environmentObject(appState)
-                    
             }
         }
         .alert("오류", isPresented: $viewModel.isFetchError) {
@@ -147,10 +96,82 @@ struct MyTaskListView: View {
         }
     }
     
+    //할일 섹션 생성
+    private func taskSection(title: String, tasks: [Task]) -> some View {
+        Group {
+            if !tasks.isEmpty {
+                Text(title)
+                    .font(.headline)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(.horizontal)
+                    .padding(.top, 20)
+                
+                ForEach(tasks) { task in
+                    TaskRowView(task: task)
+                        .environmentObject(viewModel)
+                        .environmentObject(appState)
+                        .padding(.horizontal)
+                }
+            }
+        }
+    }
+    
+    //시간(오늘마감),완료여부 필터링
+    private func filterTasks(for timeFrame: TimeFrame, completed: Bool) -> [Task] {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
+        formatter.timeZone = TimeZone(abbreviation: "UTC")
+        
+        let today = Calendar.current.startOfDay(for: Date())
+        let currentDayOfWeek = Calendar.current.component(.weekday, from: Date()) - 1
+        
+        return viewModel.tasks.filter { task in
+            guard task.complete == completed else { return false }
+            
+            // 반복 할일 처리
+            if let repeatDay = task.repeatDay, !repeatDay.isEmpty {
+                switch timeFrame {
+                case .today:
+                    // 오늘 요일 = 반복 요일 확인
+                    return repeatDay.contains(currentDayOfWeek)
+                case .upcoming:
+                    // 다음 반복일 = 마감일 이전 확인
+                    if let dueDateString = task.dueDate,
+                       let dueDate = formatter.date(from: dueDateString) {
+                        let nextDate = Calendar.current.nextDate(
+                            after: today,
+                            matching: DateComponents(weekday: repeatDay[0] + 1),
+                            matchingPolicy: .nextTime
+                        )
+                        return nextDate != nil && nextDate! <= dueDate
+                    }
+                }
+            }
+            
+            if let dueDateString = task.dueDate,
+               let taskDate = formatter.date(from: dueDateString) {
+                let startOfTaskDate = Calendar.current.startOfDay(for: taskDate)
+                switch timeFrame {
+                case .today:
+                    return startOfTaskDate == today
+                case .upcoming:
+                    return startOfTaskDate > today
+                }
+            }
+            
+            return false
+        }
+    }
+    //현재날짜->문자열
     private func formattedDate() -> String {
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy년 MM월 dd일"
         formatter.locale = Locale(identifier: "ko_KR")
         return formatter.string(from: Date())
     }
+}
+
+enum TimeFrame {
+    case today //오늘
+    case upcoming //예정
 }

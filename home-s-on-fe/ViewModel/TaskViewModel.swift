@@ -34,6 +34,7 @@ class TaskViewModel: ObservableObject {
             
             switch response.result {
             case .success(let taskResponse):
+                // 모든 할일을 표시
                 self?.tasks = taskResponse.data
                 self?.isFetchError = false
                 self?.message = ""
@@ -45,13 +46,11 @@ class TaskViewModel: ObservableObject {
             }
         }
     }
+
     
     //나의 할일 가져오기
     func fetchMyTasks(userId: Int) {
-        guard !isLoading else {
-            print("로딩 진행 중")
-            return
-        }
+        guard !isLoading else { return }
         isLoading = true
         
         guard let token = UserDefaults.standard.string(forKey: "token") else {
@@ -60,32 +59,53 @@ class TaskViewModel: ObservableObject {
             message = "로그인이 필요합니다"
             return
         }
+        
         let headers: HTTPHeaders = [
-                "Authorization": "Bearer \(token)",
-                "Content-Type": "application/json"
-            ]
-            
+            "Authorization": "Bearer \(token)",
+            "Content-Type": "application/json"
+        ]
+        
         AF.request("\(APIEndpoints.baseURL)/tasks/mytasks",
-                      method: .get,
-                      headers: headers)
-                .validate()
-                .responseDecodable(of: TaskResponse<Task>.self) { [weak self] response in
-                    self?.isLoading = false
-                    
-                    switch response.result {
-                    case .success(let taskResponse):
-                        self?.tasks = taskResponse.data
-                        self?.isFetchError = false
-                        self?.message = ""
+                   method: .get,
+                   headers: headers)
+            .validate()
+            .responseDecodable(of: TaskResponse<Task>.self) { [weak self] response in
+                self?.isLoading = false
+                
+                switch response.result {
+                case .success(let taskResponse):
+                    // 반복 할일 처리
+                    let filteredTasks = taskResponse.data.filter { task in
+                        // 일반 할일은 모두 표시
+                        if task.repeatDay == nil || task.repeatDay?.isEmpty == true {
+                            return true
+                        }
                         
-                    case .failure(let error):
-                        print("Network error:", error)
-                        self?.isFetchError = true
-                        self?.message = "할일 목록을 불러올 수 없습니다"
-                        
+                        // 반복 할일의 경우 마감일까지의 다음 발생일 확인
+                        if let dueDate = self?.dateFromString(task.dueDate ?? ""),
+                           let repeatDay = task.repeatDay?.first {
+                            let today = Date()
+                            let nextDate = Calendar.current.nextDate(
+                                after: today,
+                                matching: DateComponents(weekday: repeatDay + 1),
+                                matchingPolicy: .nextTime
+                            )
+                            return nextDate != nil && nextDate! <= dueDate
+                        }
+                        return false
                     }
+                    
+                    self?.tasks = filteredTasks
+                    self?.isFetchError = false
+                    self?.message = ""
+                    
+                case .failure(let error):
+                    print("Network error:", error)
+                    self?.isFetchError = true
+                    self?.message = "할일 목록을 불러올 수 없습니다"
                 }
-        }
+            }
+    }
     
     
     // 지난 할일 가져오기
@@ -144,7 +164,7 @@ class TaskViewModel: ObservableObject {
     
     // 할일추가
     var onTaskAdded: (() -> Void)?
-    func addTask(houseRoomId: Int, title: String, assigneeId: [Int], memo: String?, alarm: Bool, dueDate: String?) {
+    func addTask(houseRoomId: Int, title: String, assigneeId: [Int], memo: String?, alarm: Bool, dueDate: String?,repeatDay: [Int]?) {
             print("=== Add Task Debug Logs ===")
             isLoading = true
             
@@ -181,6 +201,12 @@ class TaskViewModel: ObservableObject {
             if let memo = memo, !memo.isEmpty { parameters["memo"] = memo }
 //            if let alarm = alarm { parameters["alarm"] = alarm }
             if let dueDate = dueDate, !dueDate.isEmpty { parameters["due_date"] = dueDate }
+            //반복요일
+            if let repeatDay = repeatDay, !repeatDay.isEmpty {
+                parameters["repeat_day"] = repeatDay
+                parameters["is_recurring"] = true
+                
+            }
             
             print("Request parameters:", parameters)
             

@@ -16,6 +16,9 @@ struct Task: Identifiable, Codable {
     let updatedAt: String?
     let houseRoom: HouseRoom?
     let assignees: [TaskUser]?
+    //반복요일을 위한 필드
+    let parentTaskId: Int?
+    let isRecurring: Bool
     
     // 편집 권한 확인용
         var canEdit: Bool {
@@ -35,6 +38,8 @@ struct Task: Identifiable, Codable {
         case createdAt, updatedAt
         case houseRoom = "HouseRoom"
         case assignees
+        case parentTaskId = "parent_task_id"
+        case isRecurring = "is_recurring"
     }
 }
 

@@ -29,7 +29,7 @@ struct RepeatSelectionView: View {
                             Spacer()
                             if selectedDays.contains(index) {
                                 Image(systemName: "checkmark")
-                                    .foregroundColor(.orange)
+                                    .foregroundColor(.blue)
                             }
                         }
                     }

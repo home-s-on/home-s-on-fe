@@ -44,6 +44,8 @@ class TaskCompleteViewModel: ObservableObject {
                 self?.isFetchError = false
                 self?.message = taskResponse.message ?? ""
                 self?.showSuccessAlert = true
+                
+    
                 completion()
                 
             case .failure(let error):

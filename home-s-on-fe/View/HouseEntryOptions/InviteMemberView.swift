@@ -32,13 +32,13 @@ struct InviteMemberView: View {
             
             VStack{
                 if !isFromSetting {
-                    WideImageButton(icon: "", title: "집 입장하기", backgroundColor: .blue) {
+                    WideImageButton(icon: "", title: "집 입장하기", backgroundColor: .mainColor) {
                         print("집 입장")
                         joinMemberVM.joinMember(houseId: houseId)
                         navigateToView = true
                     }
                 }
-                WideImageButton(icon: "", title: "초대 코드 보내기", backgroundColor: .blue) {
+                WideImageButton(icon: "", title: "초대 코드 보내기", backgroundColor: .mainColor) {
                     print("초대 코드 보내기")
                     kakaoshareVM.sendKakaoMessage(text: inviteCode)
                 }
