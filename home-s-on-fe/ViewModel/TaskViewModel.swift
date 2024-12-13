@@ -250,7 +250,7 @@ class TaskViewModel: ObservableObject {
     
     //할 일 편집
     var onTaskEdited: (() -> Void)?
-    func editTask(taskId: Int, houseRoomId: Int, title: String, assigneeId: [Int], memo: String?, alarm: String?, dueDate: String?) {
+    func editTask(taskId: Int, houseRoomId: Int, title: String, assigneeId: [Int], memo: String?, alarm: String?, dueDate: String?, repeatDay: [Int]?) {
         print("=== Edit Task Debug Logs ===")
         isLoading = true
         
@@ -277,6 +277,7 @@ class TaskViewModel: ObservableObject {
         if let memo = memo, !memo.isEmpty { parameters["memo"] = memo }
         if let alarm = alarm { parameters["alarm"] = alarm }
         if let dueDate = dueDate, !dueDate.isEmpty { parameters["due_date"] = dueDate }
+        if let repeatDay = repeatDay { parameters["repeat_day"] = repeatDay }
         
         let url = "\(APIEndpoints.baseURL)/tasks/\(taskId)"
         
@@ -288,18 +289,12 @@ class TaskViewModel: ObservableObject {
             .validate()
             .responseData { response in
                 self.isLoading = false
-
                 
                 switch response.result {
                 case .success(let data):
                     do {
                         let taskResponse = try JSONDecoder().decode(AddTaskResponse<Task>.self, from: data)
-//                        print("Success: Task updated")
-//                        self?.fetchTasks(houseId: Int(savedHouseId)!)
-                        
-                        // 콜백 호출
                         self.onTaskEdited?()
-                        
                         self.isFetchError = false
                         self.message = ""
                     } catch {
@@ -311,10 +306,10 @@ class TaskViewModel: ObservableObject {
                     print("Network error:", error)
                     self.isFetchError = true
                     self.message = "할일을 수정할 수 없습니다"
-
                 }
             }
     }
+
         
         // 할일 삭제
         func deleteTask(taskId: Int) {
