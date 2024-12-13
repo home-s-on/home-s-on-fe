@@ -8,17 +8,22 @@ struct home_s_on_feApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     
     @State private var isLoading = true
+    
+    init() {
+        // 스케줄링 코드를 추가합니다.
+        NotificationManager.shared.scheduleWeeklyMotivation()
+    }
 
     var body: some Scene {
         WindowGroup {
             if isLoading {
-                            SplashScreenView()
-                                .onAppear {
-                                    // 로딩 시간 제어 (예: API 호출, 초기 설정)
-                                    DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-                                        isLoading = false
-                                    }
-                                }
+                SplashScreenView()
+                    .onAppear {
+                        // 로딩 시간 제어 (예: API 호출, 초기 설정)
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                            isLoading = false
+                        }
+                    }
             } else {
                 ContentView()
             }
@@ -163,6 +168,34 @@ class SceneDelegate: NSObject, UIWindowSceneDelegate {
             if (AuthApi.isKakaoTalkLoginUrl(url)) {
                 _ = AuthController.handleOpenUrl(url: url)
             }
+        }
+    }
+}
+
+class NotificationManager {
+    static let shared = NotificationManager()
+    private let aiMotivationViewModel = AiMotivationViewModel()
+    
+    func scheduleWeeklyMotivation() {
+        aiMotivationViewModel.getAiMotivation { message in
+        let content = UNMutableNotificationContent()
+        content.title = "홈즈온의 주간 활력 충전소"
+        content.body = message
+        
+        var dateComponents = DateComponents()
+        dateComponents.weekday = 1  // 일요일
+        dateComponents.hour = 10
+        dateComponents.minute = 0
+        
+        let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: true)
+        
+        let request = UNNotificationRequest(identifier: "weeklyMotivation", content: content, trigger: trigger)
+        
+        UNUserNotificationCenter.current().add(request) { error in
+            if let error = error {
+                print("알림 스케줄링 오류: \(error)")
+            }
+        }
         }
     }
 }
