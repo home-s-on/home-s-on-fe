@@ -31,4 +31,9 @@ struct Chat: Codable, Identifiable, Equatable {
     }
 }
 
+struct MotivationChat: Codable {
+    let status: String
+    let message: String
+}
+
 
