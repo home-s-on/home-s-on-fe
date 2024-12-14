@@ -115,6 +115,16 @@ struct AddTaskView: View {
                 )
             }
         }
+    
+    fileprivate func setupAndSendNotifications() {
+        triggerVM.calenderTrigger(subtitle: title, body: dueDate)
+        triggerVM.sendPushNotification(
+            assigneeId: Array(selectedAssignees).map { $0.userId },  // Set을 Array로 변환하고 userId 매핑
+            title: title,
+            subtitle: nickname+"님이 당신의 할일을 등록했습니다." ,
+            body: title
+        )
+    }
 
         private func saveTask() {
             guard let roomId = selectedRoom?.id else { return }
