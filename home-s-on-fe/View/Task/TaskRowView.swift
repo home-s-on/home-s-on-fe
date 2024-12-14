@@ -66,6 +66,15 @@ struct TaskRowView: View {
                             .font(.system(size: 12))
                             .foregroundColor(Color.mainColor.opacity(0.8))
                     }
+                    //반복
+                    if let repeatDays = task.repeatDay, !repeatDays.isEmpty {
+                        Text(task.repeatDay?.map { ["일", "월", "화", "수", "목", "금", "토"][$0] }.joined(separator: ", ") ?? "")
+                               .font(.system(size: 12))
+                               .foregroundColor(.blue)
+                               .padding(.horizontal, 4)
+                               .background(Color.blue.opacity(0.2))
+                               .cornerRadius(4)
+                       }
                     Spacer()
                     
                     // 모든 할 일 화면 - 모든 담당자 표시

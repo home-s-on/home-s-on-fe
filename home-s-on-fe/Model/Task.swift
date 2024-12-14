@@ -11,6 +11,7 @@ struct Task: Identifiable, Codable {
     let repeatDay: [Int]?
     let assigneeId: [Int]
     let dueDate: String?
+    let end_date: String?
     let complete: Bool
     let createdAt: String?
     let updatedAt: String?
@@ -34,6 +35,7 @@ struct Task: Identifiable, Codable {
         case repeatDay = "repeat_day"
         case assigneeId = "assignee_id"
         case dueDate = "due_date"
+        case end_date = "end_date"
         case complete
         case createdAt, updatedAt
         case houseRoom = "HouseRoom"

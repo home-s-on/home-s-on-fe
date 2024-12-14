@@ -144,7 +144,7 @@ class TaskViewModel: ObservableObject {
     
     // 할일추가
     var onTaskAdded: (() -> Void)?
-    func addTask(houseRoomId: Int, title: String, assigneeId: [Int], memo: String?, alarm: Bool, dueDate: String?,repeatDay: [Int]?) {
+    func addTask(houseRoomId: Int, title: String, assigneeId: [Int], memo: String?, alarm: Bool, dueDate: String?,repeatDay: [Int]?,endDate: String?) {
             print("=== Add Task Debug Logs ===")
             isLoading = true
             
@@ -185,6 +185,10 @@ class TaskViewModel: ObservableObject {
             if let repeatDay = repeatDay, !repeatDay.isEmpty {
                 parameters["repeat_day"] = repeatDay
                 parameters["is_recurring"] = true
+                //
+                if let endDate = endDate, !endDate.isEmpty {
+                            parameters["end_date"] = endDate
+                        }
                 
             }
             
@@ -230,7 +234,7 @@ class TaskViewModel: ObservableObject {
     
     //할 일 편집
     var onTaskEdited: (() -> Void)?
-    func editTask(taskId: Int, houseRoomId: Int, title: String, assigneeId: [Int], memo: String?, alarm: Bool?, dueDate: String?, repeatDay: [Int]?) {
+    func editTask(taskId: Int, houseRoomId: Int, title: String, assigneeId: [Int], memo: String?, alarm: Bool?, dueDate: String?, repeatDay: [Int]?,endDate: String?) {
         print("=== Edit Task Debug Logs ===")
         isLoading = true
         
@@ -257,7 +261,13 @@ class TaskViewModel: ObservableObject {
         if let memo = memo { parameters["memo"] = memo }
         if let alarm = alarm { parameters["alarm"] = alarm }
         if let dueDate = dueDate { parameters["due_date"] = dueDate }
-        if let repeatDay = repeatDay { parameters["repeat_day"] = repeatDay }
+        if let repeatDay = repeatDay, !repeatDay.isEmpty {
+              parameters["repeat_day"] = repeatDay
+              parameters["is_recurring"] = true
+              if let endDate = endDate { parameters["end_date"] = endDate }
+          } else {
+              parameters["is_recurring"] = false
+          }
         
         let url = "\(APIEndpoints.baseURL)/tasks/\(taskId)"
         
