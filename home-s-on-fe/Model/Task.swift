@@ -60,13 +60,23 @@ struct TaskResponse<T: Codable>: Codable {
 
 struct CompleteTaskResponse<T: Codable>: Codable {
     let success: Bool
-    let data: T
-    let message: String?
+    let data: TaskData
+    let message: String
+    
+    struct TaskData: Codable {
+        let completedTask: T
+        let nextTask: T?
+    }
 }
 
 struct AddTaskResponse<T: Codable>: Codable {
     let success: Bool
     let data: T
+}
+
+struct EditTaskResponse: Codable {
+    let success: Bool
+    let data: Task
 }
 
 struct DeleteResponse: Codable {

@@ -237,7 +237,7 @@ struct EditTaskView: View {
             title: title,
             assigneeId: selectedAssignees.map { $0.userId },
             memo: memo.isEmpty ? nil : memo,
-            alarm: isAlarmOn ? "on" : nil,
+            alarm: isAlarmOn,
             dueDate: dueDate.isEmpty ? nil : dueDate,
             repeatDay: selectedDays.isEmpty ? nil : Array(selectedDays)
         )
@@ -261,9 +261,8 @@ struct EditTaskView: View {
                 } else {
                     viewModel.fetchMyTasks(userId: userId)
                 }
-                DispatchQueue.main.asyncAfter(deadline: .now() + 5.0) {
                     isPresented = false
-                }
+
             }
         }
     }
