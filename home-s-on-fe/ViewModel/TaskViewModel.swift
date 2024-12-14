@@ -74,28 +74,7 @@ class TaskViewModel: ObservableObject {
                 
                 switch response.result {
                 case .success(let taskResponse):
-                    // 반복 할일 처리
-                    let filteredTasks = taskResponse.data.filter { task in
-                        // 일반 할일은 모두 표시
-                        if task.repeatDay == nil || task.repeatDay?.isEmpty == true {
-                            return true
-                        }
-                        
-                        // 반복 할일의 경우 마감일까지의 다음 발생일 확인
-                        if let dueDate = self?.dateFromString(task.dueDate ?? ""),
-                           let repeatDay = task.repeatDay?.first {
-                            let today = Date()
-                            let nextDate = Calendar.current.nextDate(
-                                after: today,
-                                matching: DateComponents(weekday: repeatDay + 1),
-                                matchingPolicy: .nextTime
-                            )
-                            return nextDate != nil && nextDate! <= dueDate
-                        }
-                        return false
-                    }
-                    
-                    self?.tasks = filteredTasks
+                    self?.tasks = taskResponse.data
                     self?.isFetchError = false
                     self?.message = ""
                     
@@ -106,6 +85,7 @@ class TaskViewModel: ObservableObject {
                 }
             }
     }
+
     
     
     // 지난 할일 가져오기
@@ -164,7 +144,7 @@ class TaskViewModel: ObservableObject {
     
     // 할일추가
     var onTaskAdded: (() -> Void)?
-    func addTask(houseRoomId: Int, title: String, assigneeId: [Int], memo: String?, alarm: Bool, dueDate: String?,repeatDay: [Int]?) {
+    func addTask(houseRoomId: Int, title: String, assigneeId: [Int], memo: String?, alarm: Bool, dueDate: String?,repeatDay: [Int]?,endDate: String?) {
             print("=== Add Task Debug Logs ===")
             isLoading = true
             
@@ -205,6 +185,10 @@ class TaskViewModel: ObservableObject {
             if let repeatDay = repeatDay, !repeatDay.isEmpty {
                 parameters["repeat_day"] = repeatDay
                 parameters["is_recurring"] = true
+                //
+                if let endDate = endDate, !endDate.isEmpty {
+                            parameters["end_date"] = endDate
+                        }
                 
             }
             
@@ -250,7 +234,7 @@ class TaskViewModel: ObservableObject {
     
     //할 일 편집
     var onTaskEdited: (() -> Void)?
-    func editTask(taskId: Int, houseRoomId: Int, title: String, assigneeId: [Int], memo: String?, alarm: String?, dueDate: String?, repeatDay: [Int]?) {
+    func editTask(taskId: Int, houseRoomId: Int, title: String, assigneeId: [Int], memo: String?, alarm: Bool?, dueDate: String?, repeatDay: [Int]?,endDate: String?) {
         print("=== Edit Task Debug Logs ===")
         isLoading = true
         
@@ -274,10 +258,16 @@ class TaskViewModel: ObservableObject {
             "assignee_id": assigneeId
         ]
         
-        if let memo = memo, !memo.isEmpty { parameters["memo"] = memo }
+        if let memo = memo { parameters["memo"] = memo }
         if let alarm = alarm { parameters["alarm"] = alarm }
-        if let dueDate = dueDate, !dueDate.isEmpty { parameters["due_date"] = dueDate }
-        if let repeatDay = repeatDay { parameters["repeat_day"] = repeatDay }
+        if let dueDate = dueDate { parameters["due_date"] = dueDate }
+        if let repeatDay = repeatDay, !repeatDay.isEmpty {
+              parameters["repeat_day"] = repeatDay
+              parameters["is_recurring"] = true
+              if let endDate = endDate { parameters["end_date"] = endDate }
+          } else {
+              parameters["is_recurring"] = false
+          }
         
         let url = "\(APIEndpoints.baseURL)/tasks/\(taskId)"
         
@@ -287,21 +277,15 @@ class TaskViewModel: ObservableObject {
                    encoding: JSONEncoding.default,
                    headers: headers)
             .validate()
-            .responseData { response in
+            .responseDecodable(of: EditTaskResponse.self) { response in
                 self.isLoading = false
                 
                 switch response.result {
-                case .success(let data):
-                    do {
-                        let taskResponse = try JSONDecoder().decode(AddTaskResponse<Task>.self, from: data)
-                        self.onTaskEdited?()
-                        self.isFetchError = false
-                        self.message = ""
-                    } catch {
-                        print("Decoding error:", error)
-                        self.isFetchError = true
-                        self.message = "할일을 수정할 수 없습니다"
-                    }
+                case .success(let taskResponse):
+                    self.onTaskEdited?()
+                    self.isFetchError = false
+                    self.message = "할일이 성공적으로 수정되었습니다"
+                    print("Updated task:", taskResponse.data)
                 case .failure(let error):
                     print("Network error:", error)
                     self.isFetchError = true
@@ -309,6 +293,9 @@ class TaskViewModel: ObservableObject {
                 }
             }
     }
+
+
+
 
         
         // 할일 삭제

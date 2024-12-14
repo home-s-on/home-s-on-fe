@@ -22,6 +22,7 @@ struct EditTaskView: View {
     @State private var memo: String
     @State private var selectedRoom: HouseRoom?
     @State private var dueDate: String
+    @State private var endDate: String
     @State private var isAlarmOn: Bool
     @State private var selectedAssignees: Set<HouseInMember> = []
     @State private var showDeleteConfirmation = false
@@ -45,8 +46,16 @@ struct EditTaskView: View {
             _dueDate = State(initialValue: "")
         }
         
+        if let endDate = task.end_date {
+                   let formattedEndDate = Self.formatDate(endDate)
+                   _endDate = State(initialValue: formattedEndDate)
+               } else {
+                   _endDate = State(initialValue: "")
+               }
+        
         _isAlarmOn = State(initialValue: task.alarm != nil)
         
+        //담당자초기화
         var initialAssignees: Set<HouseInMember> = []
         if let assignees = task.assignees {
             for assignee in assignees {
@@ -59,6 +68,7 @@ struct EditTaskView: View {
         }
         _selectedAssignees = State(initialValue: initialAssignees)
         
+        //반복요일초기화
         if let repeatDays = task.repeatDay {
             _selectedDays = State(initialValue: Set(repeatDays))
         }
@@ -112,25 +122,6 @@ struct EditTaskView: View {
                         Text(room.room_name).foregroundColor(.gray)
                     }
                 }
-
-                if task.canEdit {
-                    NavigationLink {
-                        DateSelectionView(dueDate: $dueDate)
-                    } label: {
-                        HStack {
-                            Text("날짜")
-                            Spacer()
-                            Text(dueDate).foregroundColor(.gray)
-                        }
-                    }
-                } else {
-                    HStack {
-                        Text("날짜")
-                        Spacer()
-                        Text(dueDate).foregroundColor(.gray)
-                    }
-                }
-
                 if task.canEdit {
                     NavigationLink(destination: RepeatSelectionView(selectedDays: $selectedDays)) {
                         HStack {
@@ -144,12 +135,48 @@ struct EditTaskView: View {
                             }
                         }
                     }
-                } else if !selectedDays.isEmpty {
+                    
+                    NavigationLink {
+                        DateSelectionView(dueDate: $dueDate)
+                    } label: {
+                        HStack {
+                            Text("마감 날짜")
+                            Spacer()
+                            Text(dueDate).foregroundColor(.gray)
+                        }
+                    }
+                    
+                    if !selectedDays.isEmpty {
+                        NavigationLink {
+                            DateSelectionView(dueDate: $endDate)
+                        } label: {
+                            HStack {
+                                Text("반복 종료 날짜")
+                                Spacer()
+                                Text(endDate).foregroundColor(.gray)
+                            }
+                        }
+                    }
+                } else {
+                    if !selectedDays.isEmpty {
+                        HStack {
+                            Text("반복")
+                            Spacer()
+                            Text(selectedDays.sorted().map { daysOfWeek[$0] }.joined(separator: ", "))
+                                .foregroundColor(.gray)
+                        }
+                    }
                     HStack {
-                        Text("반복")
+                        Text("마감 날짜")
                         Spacer()
-                        Text(selectedDays.sorted().map { daysOfWeek[$0] }.joined(separator: ", "))
-                            .foregroundColor(.gray)
+                        Text(dueDate).foregroundColor(.gray)
+                    }
+                    if !selectedDays.isEmpty {
+                        HStack {
+                            Text("반복 종료 날짜")
+                            Spacer()
+                            Text(endDate).foregroundColor(.gray)
+                        }
                     }
                 }
 
@@ -237,9 +264,10 @@ struct EditTaskView: View {
             title: title,
             assigneeId: selectedAssignees.map { $0.userId },
             memo: memo.isEmpty ? nil : memo,
-            alarm: isAlarmOn ? "on" : nil,
+            alarm: isAlarmOn,
             dueDate: dueDate.isEmpty ? nil : dueDate,
-            repeatDay: selectedDays.isEmpty ? nil : Array(selectedDays)
+            repeatDay: selectedDays.isEmpty ? nil : Array(selectedDays),
+            endDate: selectedDays.isEmpty ? nil : endDate
         )
 
         viewModel.onTaskEdited = { [self] in
@@ -261,9 +289,8 @@ struct EditTaskView: View {
                 } else {
                     viewModel.fetchMyTasks(userId: userId)
                 }
-                DispatchQueue.main.asyncAfter(deadline: .now() + 5.0) {
                     isPresented = false
-                }
+
             }
         }
     }

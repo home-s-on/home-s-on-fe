@@ -42,8 +42,17 @@ class TaskCompleteViewModel: ObservableObject {
             case .success(let taskResponse):
                 print("성공:", taskResponse)
                 self?.isFetchError = false
-                self?.message = taskResponse.message ?? ""
+                self?.message = taskResponse.message
                 self?.showSuccessAlert = true
+                
+                // 완료 task & 다음 task 처리
+                let completedTask = taskResponse.data.completedTask
+                if let nextTask = taskResponse.data.nextTask {
+                    print("다음 주 요일의 새로운 할일이 생성되었습니다: \(nextTask.id)")
+                    
+                } else {
+                    print("다음 주 요일의 새로운 할일이 생성되지 않았습니다")
+                }
                 
     
                 completion()
