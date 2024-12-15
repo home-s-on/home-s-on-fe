@@ -9,8 +9,8 @@ import SwiftUI
 
 struct EmailLoginView: View {
     @EnvironmentObject var loginVM: LoginViewModel
-    @State var email: String = "song@gmail.com"
-    @State var password: String = "123456"
+    @State var email: String = ""
+    @State var password: String = ""
     @State private var isEmailSignUpActive = false
 
     var body: some View {

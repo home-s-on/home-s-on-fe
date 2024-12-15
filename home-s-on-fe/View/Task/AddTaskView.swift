@@ -129,6 +129,7 @@ struct AddTaskView: View {
         private func saveTask() {
             guard let roomId = selectedRoom?.id else { return }
 
+            print("saveTask 시작")
             viewModel.addTask(
                 houseRoomId: roomId,
                 title: title,
@@ -144,10 +145,27 @@ struct AddTaskView: View {
                 if appState.selectedTab == 0 {
                     self.viewModel.fetchTasks(houseId: self.houseId)
                 } else if appState.selectedTab == 1 {
+                    self.viewModel.isLoading = false
                     self.viewModel.fetchMyTasks(userId: self.userId)
                 }
+                
+                print("saveTask 끝")
+                            
+                // 알람 설정
+                if isAlarmOn {
+                    notificationVM.checkNotificationStatus { status in
+                        switch status {
+                        case .authorized:
+                            self.setupAndSendNotifications()
+                        case .denied, .notDetermined:
+                            print("알림 권한이 등록되지 않았습니다.")
+                        default:
+                            break
+                        }
+                    }
+                }
+            }
 
                 isPresented = false
             }
         }
-    }
